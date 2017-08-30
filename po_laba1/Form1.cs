@@ -198,65 +198,38 @@ namespace po_laba1
         }
         #endregion
         /*
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        void    vectorical()
         {
-            modelyuvannya = false;
-            otkr_pub = true;
-
             Stream myStream = null;
-            OpenFileDialog openF = new OpenFileDialog();
-            openF.InitialDirectory = Application.StartupPath.ToString();
+            OpenFileDialog openf = new OpenFileDialog();
+            openf.InitialDirectory = Application.StartupPath.ToString();
 
-            openF.Filter = "txt files (*.txt)|*.txt";
-            openF.FilterIndex = 1;
-            openF.RestoreDirectory = true;
+            openf.Filter = "txt files (*.txt)|*.txt";
+            openf.FilterIndex = 1;
+            openf.RestoreDirectory = true;
             string data = "";
-            if (openF.ShowDialog() == DialogResult.OK)
+
+            if (openf.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                    if ((myStream = openF.OpenFile()) != null)
+                    if ((myStream = openf.OpenFile()) != null)
                     {
                         using (myStream)
                         {
-                            try
-                            {
-                                data = File.ReadAllText(openF.FileName);
-                                lst4click = true;
-                            }
-                            catch
-                            {
-                                MessageBox.Show("Error: file \"{0}\" is empty(", openF.FileName);
-                            }
+
                         }
                     }
                 }
-                catch
-                {
-                    MessageBox.Show("Error: Could not read file");
-                }
             }
-            else return;
+        }*/
 
-            data = data.Replace("\r", " ");
-            data = data.Replace("\n", " ");
-            data = data.Replace("\t", " ");
-            data = data.Replace("  ", " ");
-            data = data.Replace(".", ",");
-            data_mas = Regex.Split(data, " ");
-            massiv = new double[data_mas.Length];
+        private void зчитатиПовекторноToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
-            for (int i = 0; i < data_mas.Length; i++)
-            {
-                massiv[i] = Convert.ToDouble(data_mas[i]);
-            }
-            Array.Sort(massiv);
-
-            list_mass.Add(massiv);
         }
-        */
-        //Відкриття файлу
-        private void toolStripButton1_Click(object sender, EventArgs e)
+
+        private void зчитатиНапрямуToolStripMenuItem_Click(object sender, EventArgs e)
         {
             modelyuvannya = false;
             otkr_pub = true;
@@ -296,19 +269,23 @@ namespace po_laba1
             else return;
 
             data = data.Replace("\r", " ");
-            data = data.Replace("\t", " ");
             data = data.Replace("\n", " ");
+            data = data.Replace("\t", " ");
             data = data.Replace("  ", " ");
             data = data.Replace(".", ",");
-
             data_mas = Regex.Split(data, " ");
-
-
             massiv = new double[data_mas.Length];
 
             for (int i = 0; i < data_mas.Length; i++)
             {
-                massiv[i] = Convert.ToDouble(data_mas[i]);
+                try
+                {
+                    massiv[i] = Convert.ToDouble(data_mas[i]);
+                }
+                catch
+                {
+
+                }
             }
             Array.Sort(massiv);
 
@@ -499,7 +476,7 @@ namespace po_laba1
             {
                 for (int j = 0; j < massiv.Length; j++)
                 {
-                    if ((massiv[j] > minimum - 0.000005) && (massiv[j] < (minimum + step + 0.000005)))
+                    if ((massiv[j] >= minimum - 0.000005) && (massiv[j] <= (minimum + step + 0.000005)))
                     {
                         num2++;
                     }
@@ -1810,8 +1787,7 @@ namespace po_laba1
                     rung_sum_mass[i] = i + 1;
                 }
             }
-
-            double[,] big_mass = new double[mass1.Length, 1];
+            double[,] big_mass = new double[mass1.Length, 2];
             for(int i = 0; i < mass1.Length; i++)
             {
                 big_mass[i, 0] = mass1[i];
@@ -1843,14 +1819,16 @@ namespace po_laba1
                 return;
             }
 
-            int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
-            int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
-            int N = N1 + N2;
+            //int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
+            //int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+            //int N = N1 + N2;
 
-            if (comboBox1.Text == "Вілкоксона")
+            if (comboBox1.Text == "Вілкоксона ")
             {
                 double W = 0;
-
+                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
+                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                int N = N1 + N2;
                 double[] sum_mass = new double[list_mass[Convert.ToInt32(textBox12.Text) - 1].Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Length];
                 for(int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i++)
                 {
@@ -1859,7 +1837,7 @@ namespace po_laba1
 
                 for (int i = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Length; i++)
                 {
-                    sum_mass[i] = list_mass[Convert.ToInt32(textBox13.Text) - 1][i] - list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
+                    sum_mass[i] = list_mass[Convert.ToInt32(textBox13.Text) - 1][i - list_mass[Convert.ToInt32(textBox12.Text) - 1].Length];
                 }
 
 
@@ -1891,6 +1869,9 @@ namespace po_laba1
             {
                 int z = 0;
                 double u = 0;
+                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
+                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                int N = N1 + N2;
                 for (int j = 0; j < N2; j++)
                 {
                     for (int i = 0; i < N1; i++)
@@ -1924,6 +1905,9 @@ namespace po_laba1
             }
             else if (comboBox1.Text == "Різниці середніх рангів")
             {
+                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
+                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                int N = N1 + N2;
                 double[] sum_mass = new double[list_mass[Convert.ToInt32(textBox12.Text) - 1].Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Length];
                 for (int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i++)
                 {
@@ -1932,7 +1916,7 @@ namespace po_laba1
 
                 for (int i = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Length; i++)
                 {
-                    sum_mass[i] = list_mass[Convert.ToInt32(textBox13.Text) - 1][i] - list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
+                    sum_mass[i] = list_mass[Convert.ToInt32(textBox13.Text) - 1][i - list_mass[Convert.ToInt32(textBox12.Text) - 1].Length];
                 }
 
                 double sum_r1 = 0;
@@ -1970,7 +1954,10 @@ namespace po_laba1
             }
             else if (comboBox1.Text == "Критерій знаків")
             {
-                if(list_mass[Convert.ToInt32(textBox12.Text)].Length != list_mass[Convert.ToInt32(textBox13.Text)].Length)
+                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
+                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                int N = N1 + N2;
+                if (list_mass[Convert.ToInt32(textBox12.Text) - 1].Length != list_mass[Convert.ToInt32(textBox13.Text) - 1].Length)
                 {
                     MessageBox.Show("Розмір вибірок не однаковий!");
                     return;
@@ -2015,13 +2002,18 @@ namespace po_laba1
                 label18.Text += "\n-----------------------------------\n" + s + "\n-----------------------------------\n";
             }
             #region Abbe
-            else if (comboBox1.Text == "Критерій Аббе")
+            else if (comboBox1.Text == "Критерій Аббе(два випадки)")
             {
                 if(textBox12.Text != "" || textBox13.Text != "")
                 {
                     double d = 0;
                     double[] array1 = list_mass[Convert.ToInt32(textBox12.Text) - 1];
                     double[] array2 = list_mass[Convert.ToInt32(textBox13.Text) - 1];
+                    if (array1.Length != array2.Length)
+                    {
+                        MessageBox.Show("Довжина вибірок різна!");
+                        return;
+                    }
                     double[] array = new double[array1.Length];
                     int just_N = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
 
@@ -2043,11 +2035,11 @@ namespace po_laba1
                     string s = "";
                     if (U < Quantil.NormalQuantil())
                     {
-                        s = "\nТест за критерієм Аббе дані величини незалежні.\n   U = " + U.ToString() + "\n";
+                        s = "\nТест за критерієм Аббе:\n дані величини незалежні.\n   U = " + U.ToString() + "\n";
                     }
                     else
                     {
-                        s = "\nТест за критерієм Аббе дані величини незалежні.\n   U = " + U.ToString() + "\n";
+                        s = "\nТест за критерієм Аббе:\n дані величини незалежні.\n   U = " + U.ToString() + "\n";
                     }
                     label18.Text += "\n-----------------------------------\n" + s + "\n-----------------------------------\n";
                 }
@@ -2135,6 +2127,9 @@ namespace po_laba1
             }
             else if (comboBox1.Text == "Збіг середніх(незалежні вибірки)")
             {
+                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
+                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                int N = N1 + N2;
                 if (Convert.ToInt32(textBox12.Text) == Convert.ToInt32(textBox13.Text))
                 {
                     MessageBox.Show("Дані вибірки є залежними!");
@@ -2179,7 +2174,7 @@ namespace po_laba1
 
                 if(disp_x >= disp_y)
                 {
-                    f = disp_x / disp_y;
+                    f = disp_x / disp_y; 
                 }
                 else
                 {
@@ -2198,30 +2193,54 @@ namespace po_laba1
                 label18.Text += "\n-----------------------------------\n" + s + "\n-----------------------------------\n";
             }
             else if (comboBox1.Text == "Смирнова-Колмогорова")
-            {/*
+            {
+                int just_N = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
                 int N_ = Math.Min(list_mass[Convert.ToInt32(textBox12.Text) - 1].Length, list_mass[Convert.ToInt32(textBox13.Text) - 1].Length);
-
-                double z = Math.Abs(Rozpodil_F(index1, Array_number_variation[0][0]) - Rozpodil_F(index2, Array_number_variation[0][0]));
-                for (int i = 1; i < M; i++)
-                {
-                    if (z > Math.Abs((Rozpodil_F(index1, Array_number_variation[0][i])) - (Rozpodil_F(index2, Array_number_variation[0][i])))) ;
-                    z = Math.Abs((Rozpodil_F(index1, Array_number_variation[0][i])) - (Rozpodil_F(index2, Array_number_variation[0][i])));  // supremum від чогось just assk another person
-                }
-                double L = 1 - Math.Exp(-2 * z * z) * (1 - (2 * z) / (3 * Math.Sqrt(just_N)) * (1 - (2 * z * z) / 3) + (4 * z / (9 * Math.Sqrt(Math.Pow(just_N, 3)))) * (1.0 / 5 - (19 * z * z) / 15 + (2 * z * z * z * z) / 3));
-                */
-                /*for (int i = 0; i < massiv.Length; i++)
+                double[] arr_f1 = new double[N_];
+                double[] arr_f2 = new double[N_];
+                for (int i = 0; i < N_; i++)
                 {
                     double a = 0;
-                    for (int j = 0; j < massiv.Length; j++)
+                    for (int j = 0; j < N_; j++)
                     {
-                        if (massiv[j] <= massiv[i])
+                        if (list_mass[Convert.ToInt32(textBox12.Text) - 1][j] <= list_mass[Convert.ToInt32(textBox12.Text) - 1][i])
                         {
                             a++;
                         }
                     }
 
-                    chart2.Series["points"].Points.AddXY(Math.Round(massiv[i], 4), a / massiv.Length);
-                }*/
+                    arr_f1[i] =  a / list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
+                }
+                for (int i = 0; i < N_; i++)
+                {
+                    double a = 0;
+                    for (int j = 0; j < N_; j++)
+                    {
+                        if (list_mass[Convert.ToInt32(textBox13.Text) - 1][j] <= list_mass[Convert.ToInt32(textBox13.Text) - 1][i])
+                        {
+                            a++;
+                        }
+                    }
+
+                    arr_f2[i] = a / list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                }
+                double z = Math.Abs(arr_f1[0] - arr_f2[0]);
+                for (int i = 1; i < N_; i++)
+                {
+                    if (z > Math.Abs(arr_f1[i] - arr_f2[i])) ;
+                    z = Math.Abs(arr_f1[i] - arr_f2[i]);  // supremum від чогось just assk another person
+                }
+                double L = 1 - Math.Exp(-2 * z * z) * (1 - (2 * z) / (3 * Math.Sqrt(just_N)) * (1 - (2 * z * z) / 3) + (4 * z / (9 * Math.Sqrt(Math.Pow(just_N, 3)))) * (1.0 / 5 - (19 * z * z) / 15 + (2 * z * z * z * z) / 3));
+                string s = "";
+                if (Math.Abs(1 - L) > Quantil.NormalQuantil())
+                {
+                    s = "\nКритерій однорідності Колмогорова-Смирнова негативний.\n   Статистика L = " + L.ToString() + "\n";
+                }
+                else
+                {
+                    s = "\nКритерій однорідності Колмогорова-Смирнова позитивний.\n    Статистика L = " + L.ToString() + "\n";
+                }
+                label18.Text += "\n-----------------------------------\n" + s + "\n-----------------------------------\n";
             }
             else
             {
@@ -2378,6 +2397,15 @@ namespace po_laba1
             }
             else if (comboBox2.Text == "Кохрена")
             {
+                for (int i = 0; i < list_mass.Count() - 1; i++)
+                {
+                    if (list_mass[i].Length != list_mass[i+1].Length)
+                    {
+                        MessageBox.Show("Довжина вибірок не однакова!");
+                        return;
+                    }
+                }
+
                 double[][] koh = new double[list_mass.Count()][];
                 for (int i = 0; i < koh.Length; i++)
                     koh[i] = (double[])list_mass[i].Clone();
@@ -2433,7 +2461,7 @@ namespace po_laba1
                 string s = "";
                 if (hik < Q)
                 {
-                    s = "\nОднофакторний дисперсійний аналіз не пройдено.\n";
+                    s = "\nКритерій Кохрена не пройдено.\n Статистика Q = " + Q.ToString() + "\n" + "Квантиль Xi = " + hik.ToString() + "\n";
                 }
                 else
                 {
@@ -2442,30 +2470,50 @@ namespace po_laba1
                 label18.Text += "\n-----------------------------------\n" + s + "\n-----------------------------------\n";
             }
             else if (comboBox2.Text == "Н-критерій")
-            {/*
-                int size = 0;
-                for(int i = 0; i < list_mass.Count(); i++)
+            {
+                int N = 0;
+                for (int i = 0; i < list_mass.Count(); i++)
                 {
-                    size += list_mass[i].Length;
-                }
-
-                double[] sum_mass = new double[size];
-                string s = "";
-                for(int i = 0; i < list_mass.Count(); i++)
-                {
-                    for(int j = 0; j < list_mass[i].Length; j = j + list_mass[i].Length)
+                    for (int j= 0; j < list_mass[i].Length; j++)
                     {
-                        sum_mass[j] = list_mass[i][j] - list_mass[i].Length;
-                        s += sum_mass[j].ToString() + " ";
+                        N++;
                     }
                 }
-                MessageBox.Show(s);*/
+                double[] all_arr = new double[N];
+                for (int i = 0; i < list_mass.Count(); i++)
+                {
+                    for(int j = 0; j < list_mass[i].Length; j++)
+                    {
+                        for (int k = 0; k < all_arr.Length; k++)
+                        {
+                            all_arr[k] = list_mass[i][j];
+                        }
+                    }
+                }
             }
             else
             {
                 MessageBox.Show("Невірно вибрано критерій!");
                 return;
             }
+        }
+
+        //t-test
+        private void button17_Click(object sender, EventArgs e)
+        {
+            double O = Convert.ToDouble(textBox11.Text);
+
+            double t_stat = (O - ser_ar(massiv)) / sigma_x_ser(massiv);
+            string s = "";
+            if (Math.Abs(t_stat) > Quantil.StudentQuantil(massiv.Length, massiv))
+            {
+                s = "\nt-тест не пройдено.\n Статистика t = " + t_stat.ToString() + "\n";
+            }
+            else
+            {
+                s = "\nt-тест пройдено.\n   Статистика t = " + t_stat.ToString() + "\n";
+            }
+            label18.Text += "\n-----------------------------------\n" + s + "\n-----------------------------------\n";
         }
     }
 
@@ -2512,7 +2560,14 @@ namespace po_laba1
             return SQ;
         }
 
-        static double start_moment(int k, double[] mass)
+        static public double XIquantil(double[] arr)
+        {
+            double first = (1 - 2 / (9 * start_moment(1, arr)) + NormalQuantil() * Math.Sqrt(2 / (9 * start_moment(1, arr))));
+            double second = start_moment(1, arr) * Math.Pow(first, 3);
+            return second;
+        }
+
+        static public double start_moment(int k, double[] mass)
         {
             double nyu = 0;
 
