@@ -30,7 +30,6 @@ namespace po_laba1
 
         ////////////////
         public int numb_vybirok = 0;
-
         #region peretvorennya
         //logarifmization
         private void button4_Click_1(object sender, EventArgs e)
@@ -226,8 +225,76 @@ namespace po_laba1
 
         private void зчитатиПовекторноToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Stream myStream = null;
+            OpenFileDialog openF = new OpenFileDialog();
+            openF.InitialDirectory = Application.StartupPath.ToString();
 
+            openF.Filter = "txt files (*.txt)|*.txt";
+            openF.FilterIndex = 1;
+            openF.RestoreDirectory = true;
+            string data = "";
+            if (openF.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if ((myStream = openF.OpenFile()) != null)
+                    {
+                        using (myStream)
+                        {
+                            try
+                            {
+                                data = File.ReadAllText(openF.FileName);
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Error: file \"{0}\" is empty(", openF.FileName);
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Error: Could not read file");
+                }
+            }
+            else return;
+
+            char[] charSeparators = new char[] { '\n' };
+            string[] space_str = data.Split(charSeparators, StringSplitOptions.RemoveEmptyEntries);
         }
+
+        /*string[] remove_spaces(string str)
+        {
+            int num = 0;
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (str[i] == ' ' || str[i] == '\t')
+                    continue;
+                for (int j = 0; str[j] != ' ' && str[j] != '\t'; j++)
+                {
+                    if (str[j] == ' ' || str[j] == '\t')
+                    {
+                        num++;
+                    }
+                }
+            }
+
+            string[] res = new string[num];
+            for (int i = 0; i < str.Length; i++)
+            {
+                string var = "";
+                if (str[i] == ' ' || str[i] == '\t')
+                    continue;
+                for (int j = 0; str[j] != ' ' && str[j] != '\t'; j++)
+                {
+                    if (str[j] == ' ' || str[j] == '\t')
+                    {
+                        break;
+                    }
+                    str
+                }
+            }
+        }*/
 
         private void зчитатиНапрямуToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -299,21 +366,14 @@ namespace po_laba1
             chart2.Series.Clear();
             dataGridView2.Rows.Clear();
             dataGridView1.Rows.Clear();
-
             if (massiv == null)
             {
                 MessageBox.Show("Не вибрано ніяких початкових даних");
                 return;
             }
-
-            //////////////////////////////////////////////////////////////////////////
-
             but = 1;
             vyb = 1;
             kvantili = 1;
-
-            //////////////////////////////////////////////////////////////////////
-
             int count_elem = 0;
             for (int i = 0; i < list_mass.Count(); i++)
             {
@@ -322,18 +382,10 @@ namespace po_laba1
                         count_elem = list_mass[i].Length;
                     }
             }
-            //removing
             while (dataGridView4.ColumnCount > 0)
-            {
                 dataGridView4.Columns.RemoveAt(0);
-            }
-            //
-
             for (int j = 0; j < count_elem; j++)
-            {
                 dataGridView4.Columns.Add("", "El_"+j.ToString());
-            }
-            //////////
 
             for (int i = 0; i < list_mass.Count(); i++)
             {
@@ -343,8 +395,6 @@ namespace po_laba1
                     dataGridView4.Rows[i].Cells[j].Value = Math.Round(list_mass[i][j],4).ToString();
                 }
             }
-
-            ///////////////////////////////////////////////////////////////
 
             //Data grid filling 1
             dataGridView1.Rows.Add("Cереднє арифметичне", Math.Round(ser_ar(massiv) - Quantil.StudentQuantil(massiv.Length, massiv) * sigma_x_ser(massiv), 4), ser_ar(massiv), Math.Round(ser_ar(massiv) + Quantil.StudentQuantil(massiv.Length, massiv) * sigma_x_ser(massiv), 4), sigma_x_ser(massiv));
@@ -361,7 +411,7 @@ namespace po_laba1
             if (MED(massiv) != 0)
                 dataGridView1.Rows.Add("Непараметричний коефіцієнт варіації", "", Math.Round(MAD(massiv) / MED(massiv), 4), "", "");
             else
-                MessageBox.Show("MED = 0 неможливо порахувати MED");
+                MessageBox.Show("MED = 0 неможливо порахувати MAD");
             dataGridView1.Rows.Add("Коефіцієнт варіації Пірсона", Math.Round(koef_var_pirs(massiv) - Quantil.StudentQuantil(massiv.Length, massiv) * sigma_koef_var_pirs(massiv), 4), koef_var_pirs(massiv), Math.Round(koef_var_pirs(massiv) + Quantil.StudentQuantil(massiv.Length, massiv) * sigma_koef_var_pirs(massiv), 4), sigma_koef_var_pirs(massiv));
 
             //Data grid filling 2
@@ -375,7 +425,6 @@ namespace po_laba1
             }
 
             ////////////////////
-
             if (massiv.Length < 100)
             {
                 int kakaha = (int)Math.Truncate(Math.Sqrt(massiv.Length));
@@ -392,42 +441,32 @@ namespace po_laba1
                 else
                     numclass = (int)kakaha;
             }
-
             label4.Visible = true;
             label4.Text = "Cтандартна к - сть класів - " + Convert.ToString(numclass);
 
             //CHART_1
-
             chart1.Series.Add("lala");
-
             chart1.Series["lala"].BorderColor = Color.Black;
             chart1.Series["lala"].ChartType = SeriesChartType.Column;
             chart1.Series["lala"].CustomProperties = "PointWidth=1";
-
-
             if (textBox3.Text != "")
             {
                 numclass = Convert.ToInt32(textBox3.Text);
             }
-
             step = (max1(massiv) - min1(massiv)) / numclass;
             double min = min1(massiv);
-
             chart1.ChartAreas[0].AxisX.Minimum = min1(massiv);
             chart1.ChartAreas[0].AxisX.Maximum = max1(massiv) + 2;
-
             chart1.ChartAreas[0].AxisX.LabelStyle.Format = "###,##0.000";
             chart1.ChartAreas[0].AxisY.LabelStyle.Format = "###,##0.000";
             chart1.ChartAreas[0].CursorX.IsUserEnabled = true;
             chart1.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
             chart1.ChartAreas[0].AxisX.ScaleView.Zoomable = true;
             chart1.ChartAreas[0].AxisX.ScrollBar.IsPositionedInside = true;
-
             chart1.ChartAreas[0].CursorY.IsUserEnabled = true;
             chart1.ChartAreas[0].CursorY.IsUserSelectionEnabled = true;
             chart1.ChartAreas[0].AxisY.ScaleView.Zoomable = true;
             chart1.ChartAreas[0].AxisY.ScrollBar.IsPositionedInside = true;
-
             chart1.ChartAreas[0].AxisX.Interval = step;
             for (int j = 0; j < numclass; j++)
             {
@@ -442,32 +481,21 @@ namespace po_laba1
                 chart1.Series["lala"].Points.AddXY(Math.Round(min + step / 2, 4), (num1 / massiv.Length));
                 min = min + step;
             }
-
             //CHART_2
-
             chart2.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
             chart2.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
-
             chart2.ChartAreas[0].CursorX.IsUserEnabled = true;
             chart2.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
             chart2.ChartAreas[0].CursorX.Interval = 0.01D;
-            //chart2.ChartAreas[0].AxisX.ScaleView.Zoomable = true;
-            //chart2.ChartAreas[0].AxisX.ScrollBar.IsPositionedInside = true;
-
             chart2.ChartAreas[0].CursorY.IsUserEnabled = true;
             chart2.ChartAreas[0].CursorY.IsUserSelectionEnabled = true;
             chart2.ChartAreas[0].CursorY.Interval = 0.01D;
-
-            //chart2.ChartAreas[0].AxisY.ScaleView.Zoomable = true;
-            //chart2.ChartAreas[0].AxisY.ScrollBar.IsPositionedInside = true;
-
             chart2.ChartAreas[0].AxisX.LabelStyle.Format = "###,##0.000";
             chart2.ChartAreas[0].AxisY.LabelStyle.Format = "###,##0.000";
+
             chart2.Series.Add("gaga");
             chart2.Series["gaga"].ChartType = SeriesChartType.StepLine;
-
             double minimum = min1(massiv);
-
             double num2 = 0;
             chart2.ChartAreas[0].AxisX.Minimum = min1(massiv);
             chart2.ChartAreas[0].AxisX.Maximum = max1(massiv) + 0.1;
@@ -485,7 +513,6 @@ namespace po_laba1
                 chart2.Series["gaga"].Points.AddXY(Math.Round(minimum, 4), (num2 / massiv.Length));
                 minimum = minimum + step;
             }
-
             if (massiv.Length <= 3000)
             {
                 chart2.Series.Add("points");
@@ -542,7 +569,7 @@ namespace po_laba1
             for (int i = 0; i < mass.Length; i++)
                 ga += mass[i];
 
-            ser_ar = Math.Round(ga / massiv.Length, 4);
+            ser_ar = Math.Round(ga / mass.Length, 4);
             return ser_ar;
         }
 
@@ -744,6 +771,8 @@ namespace po_laba1
             vyb = 0;
             chart1.Series.Clear();
             chart2.Series.Clear();
+            chart3.Series.Clear();
+            chart4.Series.Clear();
             dataGridView1.Rows.Clear();
             dataGridView2.Rows.Clear();
             dataGridView4.Rows.Clear();
@@ -1844,10 +1873,7 @@ namespace po_laba1
                 for (int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i++)
                 {
                     if (list_mass[Convert.ToInt32(textBox12.Text) - 1][i] == rang1(sum_mass)[i, 0])
-                    {
                         W += rang1(sum_mass)[i, 1];
-                    }
-                    //W += rang1(list_mass[Convert.ToInt32(textBox12.Text) - 1])[i];
                 }
 
                 double E_W = N1 * (N + 1) / 2;
@@ -2515,6 +2541,157 @@ namespace po_laba1
             }
             label18.Text += "\n-----------------------------------\n" + s + "\n-----------------------------------\n";
         }
+        
+        #region korelation 
+        private void button20_Click(object sender, EventArgs e)
+        {
+            chart4.Series.Clear();
+            if (textBox14.Text == "" || textBox15.Text == "")
+            {
+                string message = "Не заповнено всі поля для вводу!";
+                string caption = "Помилка вхідних даних!";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+
+                result = MessageBox.Show(message, caption, buttons);
+
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+                return;
+            }
+            int length1 = list_mass[Convert.ToInt32(textBox14.Text) - 1].Length;
+            int length2 = list_mass[Convert.ToInt32(textBox15.Text) - 1].Length;
+            double[] arr1 = list_mass[Convert.ToInt32(textBox14.Text) - 1];
+            double[] arr2 = list_mass[Convert.ToInt32(textBox15.Text) - 1];
+
+            /*if (length1 != length2)
+            {
+                string message = "Вибырки не э залежними!";
+                string caption = "Помилка вхідних даних!";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                // Displays the MessageBox.
+
+                result = MessageBox.Show(message, caption, buttons);
+
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    // Closes the parent form.
+                    this.Close();
+                }
+                return;
+            }*/
+            chart4.Series.Add("points");
+            chart4.Series["points"].BorderColor = Color.Yellow;
+            chart4.Series["points"].ChartType = SeriesChartType.Point;
+            chart4.ChartAreas[0].CursorX.IsUserEnabled = true;
+            chart4.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
+            chart4.ChartAreas[0].CursorX.Interval = 0.01D;
+            chart4.ChartAreas[0].CursorY.IsUserEnabled = true;
+            chart4.ChartAreas[0].CursorY.IsUserSelectionEnabled = true;
+            chart4.ChartAreas[0].CursorY.Interval = 0.01D;
+            double min = min1(arr1);
+            for (int j = 0; j < numclass; j++)
+            {
+                double num1 = 0;
+                for (int i = 0; i < arr1.Length; i++)
+                {
+                    if ((arr1[i] >= min) && (arr1[i] <= (min + step + 0.00005)))
+                    {
+                        num1++;
+                    }
+                }
+                chart3.Series["Series1"].Points.AddXY(Math.Round(min + step / 2, 4), (num1 / arr1.Length));
+                min = min + step;
+            }
+
+            for (int i = 0; i < length1; i++)
+                chart4.Series["points"].Points.AddXY(arr1[i], arr2[i]);
+
+            dataGridView5.Columns.Add("gl", "");
+            dataGridView5.Columns.Add("left", "Нижнє");
+            dataGridView5.Columns.Add("mark", "Оцінка");
+            dataGridView5.Columns.Add("right", "Верхнє");
+            dataGridView5.Rows.Add("Коефіцієнт кореляції", Math.Round(koef_kor_nyzh(koef_kor(arr1, arr2), arr1), 8), Math.Round(koef_kor(arr1, arr2), 10), Math.Round(koef_kor_verh(koef_kor(arr1, arr2), arr1), 8));
+
+            /////////////////////////////////////////////////////////
+            string RESULT = "Результат:\n";
+            double res_t_test = t_test_kor(koef_kor(arr1, arr2), length1);
+            if (Math.Abs(res_t_test) < Quantil.StudentQuantil(arr1.Length,arr1))
+            {
+                RESULT += "1) Парний коефіцієнт кореляції незначyщий\n   Статистика T = " + Math.Round(res_t_test, 8).ToString() + "\n";
+            }
+            else
+            {
+                RESULT += "1) Парний коефіцієнт кореляції значyщий\n   Статистика T = " + Math.Round(res_t_test, 8).ToString() + "\n";
+            }
+
+            label25.Text = RESULT;
+        }
+
+        double  koef_kor(double[] first, double[] second)
+        {
+            int N = first.Length;
+            double var = 0;
+
+            for (int i = 0; i < N; i++)
+                var += first[i] * second[i];
+            var = var / N;
+            return (N) * (var - ser_ar(first)* ser_ar(second)) / ((N - 1)*dispersion(first)*dispersion(second));
+        }
+
+        /*double  koef_kor_spirm(double[] first, double[] second)
+        {
+            int N = first.Length;
+            double[] ALL_arr = new double[N * 2];
+
+            for (int i = 0; i < N; i++)
+            {
+                ALL_arr[i] = first[i];
+            }
+            for (int i = N; i < N * 2; i++)
+            {
+                ALL_arr[i] = second[i - N];
+            }
+
+
+        }*/
+            /*
+        double  coincidence_kor(double[] first, double[] second)
+        {
+            double z_f = Math.Log((1 + koef_kor(first, second)) / (1 - koef_kor(first, second))) / 2;
+            double z_s = Math.Log((1 + koef_kor(first, second)) / (1 - koef_kor(first, second))) / 2;
+        }
+
+        double[] ret_arr_kor(List<double[]> elements)
+        {
+            for (int i = 0; i < elements.Count; i++)
+            {
+                for (int j)
+            }
+        }*/
+
+        double  t_test_kor(double koef, int len)
+        {
+            return koef * (len - 2) / Math.Sqrt(1 - koef * koef);
+        }
+
+        double koef_kor_nyzh(double koef, double[] arr)
+        {
+            return koef + koef * (1 - koef * koef) / (2 * arr.Length) - Quantil.NormalQuantil() * (1 - koef * koef) / Math.Sqrt(arr.Length - 1);
+        }
+
+        double koef_kor_verh(double koef, double[] arr)
+        {
+            return koef + koef * (1 - koef * koef) / (2 * arr.Length) + Quantil.NormalQuantil() * (1 - koef * koef) / Math.Sqrt(arr.Length - 1);
+        }
+        #endregion
     }
 
     public class Quantil
