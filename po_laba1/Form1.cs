@@ -18,6 +18,7 @@ namespace po_laba1
         }
         
         List<double[]> list_mass = new List<double[]>();
+        List<double[,]> list_double_mass = new List<double[,]>();
         public double[] massiv;
         public string[] data_mas;
         public double step;
@@ -27,6 +28,8 @@ namespace po_laba1
         public bool otkr_pub = false;
         public bool modelyuvannya = false;
         int numclass = 0;
+        string[] GorisontalArr;
+        double[,] GorDoubArr;
 
         ////////////////
         public int numb_vybirok = 0;
@@ -196,105 +199,51 @@ namespace po_laba1
             return m;
         }
         #endregion
-        /*
-        void    vectorical()
-        {
-            Stream myStream = null;
-            OpenFileDialog openf = new OpenFileDialog();
-            openf.InitialDirectory = Application.StartupPath.ToString();
-
-            openf.Filter = "txt files (*.txt)|*.txt";
-            openf.FilterIndex = 1;
-            openf.RestoreDirectory = true;
-            string data = "";
-
-            if (openf.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    if ((myStream = openf.OpenFile()) != null)
-                    {
-                        using (myStream)
-                        {
-
-                        }
-                    }
-                }
-            }
-        }*/
 
         private void зчитатиПовекторноToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Stream myStream = null;
-            OpenFileDialog openF = new OpenFileDialog();
-            openF.InitialDirectory = Application.StartupPath.ToString();
-
-            openF.Filter = "txt files (*.txt)|*.txt";
-            openF.FilterIndex = 1;
-            openF.RestoreDirectory = true;
-            string data = "";
-            if (openF.ShowDialog() == DialogResult.OK)
+            Stream stream = null;
+            OpenFileDialog openf = new OpenFileDialog();
+            openf.InitialDirectory = Application.StartupPath.ToString();
+            openf.Filter = "txt files (*.txt)|*.txt";
+            openf.FilterIndex = 1;
+            openf.RestoreDirectory = true;
+            string all_f = "";
+            if (openf.ShowDialog() == DialogResult.OK)
             {
-                try
-                {
-                    if ((myStream = openF.OpenFile()) != null)
+                if ((stream = openf.OpenFile()) != null)
+                    using (stream)
                     {
-                        using (myStream)
+                        try
                         {
-                            try
-                            {
-                                data = File.ReadAllText(openF.FileName);
-                            }
-                            catch
-                            {
-                                MessageBox.Show("Error: file \"{0}\" is empty(", openF.FileName);
-                            }
+                            all_f = File.ReadAllText(openf.FileName);
+                        }
+                        catch
+                        {
+                            MessageBox.Show("nu da");
                         }
                     }
-                }
-                catch
+                else
                 {
-                    MessageBox.Show("Error: Could not read file");
+                    MessageBox.Show("couldn't read file");
+                    return;
                 }
             }
-            else return;
+            else
+                return;
+            string[] sep = { "\n" };
+            GorisontalArr = all_f.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+            GorDoubArr = new double[GorisontalArr.Length, Strfunc.ft_split_whitespaces(GorisontalArr[0]).Length];
+            for (int i = 0; i < GorisontalArr.Length; i++)
+            {
+                for (int j = 0; j < Strfunc.ft_split_whitespaces(GorisontalArr[i]).Length; j++)
+                {
+                    GorDoubArr[i, j] = Convert.ToDouble(Strfunc.ft_split_whitespaces(GorisontalArr[i])[j]);
+                }
+            }
 
-            char[] charSeparators = new char[] { '\n' };
-            string[] space_str = data.Split(charSeparators, StringSplitOptions.RemoveEmptyEntries);
+            list_double_mass.Add(GorDoubArr);
         }
-
-        /*string[] remove_spaces(string str)
-        {
-            int num = 0;
-            for (int i = 0; i < str.Length; i++)
-            {
-                if (str[i] == ' ' || str[i] == '\t')
-                    continue;
-                for (int j = 0; str[j] != ' ' && str[j] != '\t'; j++)
-                {
-                    if (str[j] == ' ' || str[j] == '\t')
-                    {
-                        num++;
-                    }
-                }
-            }
-
-            string[] res = new string[num];
-            for (int i = 0; i < str.Length; i++)
-            {
-                string var = "";
-                if (str[i] == ' ' || str[i] == '\t')
-                    continue;
-                for (int j = 0; str[j] != ' ' && str[j] != '\t'; j++)
-                {
-                    if (str[j] == ' ' || str[j] == '\t')
-                    {
-                        break;
-                    }
-                    str
-                }
-            }
-        }*/
 
         private void зчитатиНапрямуToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -779,29 +728,7 @@ namespace po_laba1
             dataGridView4.Columns.Clear();
             label18.Text = "Резульати оцінок:\n";
         }
-
-        //Початкові дані
-        private void toolStripButton4_Click(object sender, EventArgs e)
-        {
-            if (otkr_pub == true)
-            {
-                massiv = new double[data_mas.Length];
-                for (int i = 0; i < massiv.Length; i++)
-                {
-                    massiv[i] = Convert.ToDouble(data_mas[i]);
-                }
-            }
-            else if (modelyuvannya == true)
-            {
-                massiv = new double[mass1.Length];
-                for (int i = 0; i < mass1.Length; i++)
-                {
-                    massiv[i] = mass1[i];
-                }
-            }
-
-        }
-
+        
         //Збереження файлу
         int count = 0;
         private void toolStripButton2_Click(object sender, EventArgs e)
@@ -1558,8 +1485,6 @@ namespace po_laba1
                 sum1 += (double)teor[i];
             }
 
-            //double q = massiv.Length / numclass;
-
             Array.Sort(massiv);
 /*
             for (int i = 0; i < massiv.Length; i++)
@@ -1690,7 +1615,6 @@ namespace po_laba1
                         a++;
                     }
                 }
-                //MessageBox.Show((a / massiv.Length).ToString() +" "+ (1 - Math.Exp(-Math.Pow(i, beta_kr) / alfa_kr)).ToString());
                 if (Dn_plus < Math.Abs(a / massiv.Length - 1 + Math.Exp(-Math.Pow(massiv[i], beta_kr) / alfa_kr)))
                     Dn_plus = Math.Abs(a / massiv.Length - 1 + Math.Exp(-Math.Pow(massiv[i], beta_kr) / alfa_kr));
                 if (i > 0)
@@ -1836,21 +1760,14 @@ namespace po_laba1
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
                 DialogResult result;
 
-                // Displays the MessageBox.
-
                 result = MessageBox.Show(message, caption, buttons);
 
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
-                    // Closes the parent form.
                     this.Close();
                 }
                 return;
             }
-
-            //int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
-            //int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
-            //int N = N1 + N2;
 
             if (comboBox1.Text == "Вілкоксона ")
             {
@@ -2546,6 +2463,11 @@ namespace po_laba1
         private void button20_Click(object sender, EventArgs e)
         {
             chart4.Series.Clear();
+            dataGridView5.Rows.Clear();
+            dataGridView5.Columns.Clear();
+            chart3.Series.Clear();
+
+            /*
             if (textBox14.Text == "" || textBox15.Text == "")
             {
                 string message = "Не заповнено всі поля для вводу!";
@@ -2569,7 +2491,7 @@ namespace po_laba1
             double[] arr1 = list_mass[Convert.ToInt32(textBox14.Text) - 1];
             double[] arr2 = list_mass[Convert.ToInt32(textBox15.Text) - 1];
 
-            /*if (length1 != length2)
+            if (length1 != length2)
             {
                 string message = "Вибырки не э залежними!";
                 string caption = "Помилка вхідних даних!";
@@ -2587,43 +2509,103 @@ namespace po_laba1
                 }
                 return;
             }*/
-            chart4.Series.Add("points");
-            chart4.Series["points"].BorderColor = Color.Yellow;
-            chart4.Series["points"].ChartType = SeriesChartType.Point;
+            chart4.Series.Add("korelation");
+            chart4.Series["korelation"].ChartType = SeriesChartType.Point;
             chart4.ChartAreas[0].CursorX.IsUserEnabled = true;
             chart4.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
             chart4.ChartAreas[0].CursorX.Interval = 0.01D;
             chart4.ChartAreas[0].CursorY.IsUserEnabled = true;
             chart4.ChartAreas[0].CursorY.IsUserSelectionEnabled = true;
             chart4.ChartAreas[0].CursorY.Interval = 0.01D;
-            double min = min1(arr1);
-            for (int j = 0; j < numclass; j++)
-            {
-                double num1 = 0;
-                for (int i = 0; i < arr1.Length; i++)
-                {
-                    if ((arr1[i] >= min) && (arr1[i] <= (min + step + 0.00005)))
-                    {
-                        num1++;
-                    }
-                }
-                chart3.Series["Series1"].Points.AddXY(Math.Round(min + step / 2, 4), (num1 / arr1.Length));
-                min = min + step;
-            }
+            double[] X = new double[GorisontalArr.Length];
+            double[] Y = new double[GorisontalArr.Length];
+            int N = X.Length;
+            korelation.Sort(GorDoubArr, N);
 
-            for (int i = 0; i < length1; i++)
-                chart4.Series["points"].Points.AddXY(arr1[i], arr2[i]);
+            for (int i = 0; i < N; i++)
+            {
+                X[i] = GorDoubArr[i, 0];
+                Y[i] = GorDoubArr[i, 1];
+                chart4.Series["korelation"].Points.AddXY(X[i], Y[i]);
+                dataGridView1.Rows.Add(X[i], Y[i]);
+            }
 
             dataGridView5.Columns.Add("gl", "");
             dataGridView5.Columns.Add("left", "Нижнє");
             dataGridView5.Columns.Add("mark", "Оцінка");
             dataGridView5.Columns.Add("right", "Верхнє");
-            dataGridView5.Rows.Add("Коефіцієнт кореляції", Math.Round(koef_kor_nyzh(koef_kor(arr1, arr2), arr1), 8), Math.Round(koef_kor(arr1, arr2), 10), Math.Round(koef_kor_verh(koef_kor(arr1, arr2), arr1), 8));
+            dataGridView5.Rows.Add("Коефіцієнт кореляції", Math.Round(koef_kor_nyzh(koef_kor(X, Y), X), 8), Math.Round(koef_kor(X, Y), 10), Math.Round(koef_kor_verh(koef_kor(X, Y), X), 8));
+            dataGridView5.Rows.Add("Кореляційне відношення по X",0, korelation.korel_vidn(X), 0);
+            dataGridView5.Rows.Add("Кореляційне відношення по Y", 0, korelation.korel_vidn(Y), 0);
+
+            int numclass = korelation.num_class(X);
+            double stepX = (korelation.max1(X) - korelation.min1(X)) / korelation.num_class(X);
+            double stepY = (korelation.max1(Y) - korelation.min1(Y)) / korelation.num_class(X);
+            double minX = korelation.min1(X);
+            double minY = korelation.min1(Y);
+            //chart1.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
+            //chart1.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
+            chart3.ChartAreas[0].AxisX.Minimum = minX;
+            chart3.ChartAreas[0].AxisY.Minimum = minY;
+            chart3.ChartAreas[0].AxisX.Maximum = X.Max();
+            chart3.ChartAreas[0].AxisY.Maximum = Y.Max();
+            chart3.ChartAreas[0].AxisX.Interval = stepX;
+            chart3.ChartAreas[0].AxisY.Interval = stepY;
+            chart4.ChartAreas[0].AxisX.Minimum = minX;
+            chart4.ChartAreas[0].AxisY.Minimum = minY;
+            chart4.ChartAreas[0].AxisX.Maximum = X.Max();
+            chart4.ChartAreas[0].AxisY.Maximum = Y.Max();
+            chart4.ChartAreas[0].AxisX.Interval = stepX;
+            chart4.ChartAreas[0].AxisY.Interval = stepY;
+            chart3.ChartAreas[0].AxisX.LabelStyle.Format = "###,##0.000";
+            chart3.ChartAreas[0].AxisY.LabelStyle.Format = "###,##0.000";
+            chart4.ChartAreas[0].AxisX.LabelStyle.Format = "###,##0.000";
+            chart4.ChartAreas[0].AxisY.LabelStyle.Format = "###,##0.000";
+
+            double[,] pervynna_ocinka = new double[numclass, numclass];
+
+            for (int x = 0; x < numclass; x++)
+            {
+                for (int y = 0; y < numclass; y++)
+                {
+                    for (int i = 0; i < N; i++)
+                        if ((X[i] >= minX && X[i] <= minX + stepX + 0.00005) && (Y[i] >= minY && Y[i] <= minY + stepY + 0.00005))
+                            pervynna_ocinka[x, y]++;
+                    minY = minY + stepY;
+                }
+                minX = minX + stepX;
+                minY = korelation.min1(Y);
+            }
+
+            for (int i = 0; i < numclass; i++)
+                for (int j = 0; j < numclass; j++)
+                    pervynna_ocinka[i, j] = pervynna_ocinka[i, j] / N;
+
+            Series[,] series = new Series[numclass, numclass];
+            for (int i = 0; i < numclass; i++)
+            {
+                for (int j = 0; j < numclass; j++)
+                {
+                    if (pervynna_ocinka[i, j] > 0.005)
+                    {
+                        series[i, j] = new Series();
+                        for (int k = 0; k < 100; k++)
+                        {
+                            series[i, j].Points.AddXY(korelation.min1(X) + j * stepX, korelation.min1(Y) + i * stepY + (stepY * k) / 100.0);
+                            series[i, j].Points.AddXY(korelation.min1(X) + (j + 1) * stepX, korelation.min1(Y) + i * stepY + (stepY * k) / 100.0);
+                        }
+                        series[i, j].ChartType = SeriesChartType.Line;
+                        series[i, j].Color = Color.FromArgb(240, 240 - (int)(240 * pervynna_ocinka[i, j]), 240 - (int)(240 * pervynna_ocinka[i, j]), 240 - (int)(255 * pervynna_ocinka[i, j]));
+                        chart3.Series.Add(series[i, j]);
+                    }
+                }
+            }
 
             /////////////////////////////////////////////////////////
+
             string RESULT = "Результат:\n";
-            double res_t_test = t_test_kor(koef_kor(arr1, arr2), length1);
-            if (Math.Abs(res_t_test) < Quantil.StudentQuantil(arr1.Length,arr1))
+            double res_t_test = t_test_kor(koef_kor(X, Y), N);
+            if (Math.Abs(res_t_test) < Quantil.StudentQuantil(N, X))
             {
                 RESULT += "1) Парний коефіцієнт кореляції незначyщий\n   Статистика T = " + Math.Round(res_t_test, 8).ToString() + "\n";
             }
@@ -2646,37 +2628,6 @@ namespace po_laba1
             return (N) * (var - ser_ar(first)* ser_ar(second)) / ((N - 1)*dispersion(first)*dispersion(second));
         }
 
-        /*double  koef_kor_spirm(double[] first, double[] second)
-        {
-            int N = first.Length;
-            double[] ALL_arr = new double[N * 2];
-
-            for (int i = 0; i < N; i++)
-            {
-                ALL_arr[i] = first[i];
-            }
-            for (int i = N; i < N * 2; i++)
-            {
-                ALL_arr[i] = second[i - N];
-            }
-
-
-        }*/
-            /*
-        double  coincidence_kor(double[] first, double[] second)
-        {
-            double z_f = Math.Log((1 + koef_kor(first, second)) / (1 - koef_kor(first, second))) / 2;
-            double z_s = Math.Log((1 + koef_kor(first, second)) / (1 - koef_kor(first, second))) / 2;
-        }
-
-        double[] ret_arr_kor(List<double[]> elements)
-        {
-            for (int i = 0; i < elements.Count; i++)
-            {
-                for (int j)
-            }
-        }*/
-
         double  t_test_kor(double koef, int len)
         {
             return koef * (len - 2) / Math.Sqrt(1 - koef * koef);
@@ -2692,6 +2643,89 @@ namespace po_laba1
             return koef + koef * (1 - koef * koef) / (2 * arr.Length) + Quantil.NormalQuantil() * (1 - koef * koef) / Math.Sqrt(arr.Length - 1);
         }
         #endregion
+
+        //Початкові дані
+        private void button21_Click(object sender, EventArgs e)
+        {
+            if (otkr_pub == true)
+            {
+                massiv = new double[data_mas.Length];
+                for (int i = 0; i < massiv.Length; i++)
+                {
+                    massiv[i] = Convert.ToDouble(data_mas[i]);
+                }
+            }
+            else if (modelyuvannya == true)
+            {
+                massiv = new double[mass1.Length];
+                for (int i = 0; i < mass1.Length; i++)
+                {
+                    massiv[i] = mass1[i];
+                }
+            }
+        }
+    }
+
+    public class Strfunc
+    {
+        static public int str_size(string str)
+        {
+            int i;
+            int count;
+
+            i = 0;
+            count = 0;
+            if (str == null)
+                return (0);
+            while (i != str.Length)
+            {
+                if (str[i] == '\t' || str[i] == ' ')
+                    i++;
+                while (i != str.Length && str[i] != ' ' && str[i] != '\t')
+                {
+                    i++;
+                    if (i == str.Length || str[i] == ' ' || str[i] == '\t')
+                        count++;
+                }
+            }
+            return (count);
+        }
+
+        int word_size(string str, int i)
+        {
+            int count;
+
+            count = 0;
+            while (i != str.Length && str[i] != ' ' && str[i] != '\t')
+            {
+                count++;
+                i++;
+            }
+            return (count);
+        }
+
+        static public string[] ft_split_whitespaces(string str)
+        {
+            string[] arr;
+            int i;
+            int j;
+
+            arr = new string[str_size(str)];
+            i = 0;
+            j = 0;
+            while (i != str.Length)
+            {
+                if ((str[i] == '\t' || str[i] == ' ') && (i != str.Length))
+                {
+                    i++;
+                    continue;
+                }
+                while (i != str.Length && str[i] != ' ' && str[i] != '\t')
+                    arr[j] += str[i++];
+                j++;
+            }
+            return (arr);
+        }
     }
 
     public class Quantil
@@ -2765,6 +2799,164 @@ namespace po_laba1
             }
 
             return myu / mass.Length;
+        }
+    }
+
+    public class korelation
+    {
+        static public double ser_ar(double[] mass)
+        {
+            double ser_ar = 0;
+            double ga = 0;
+            for (int i = 0; i < mass.Length; i++)
+                ga += mass[i];
+
+            ser_ar = Math.Round(ga / mass.Length, 4);
+            return ser_ar;
+        }
+
+        static public double dispersion(double[] mass)
+        {
+
+            double[] mass_disp = new double[mass.Length];
+            for (int i = 0; i < mass.Length; i++)
+            {
+                mass_disp[i] = Math.Pow((mass[i] - korelation.ser_ar(mass)), 2);
+            }
+            double gb = 0;
+            for (int i = 0; i < mass_disp.Length; i++)
+                gb += mass_disp[i];
+            return Math.Round(gb / (mass_disp.Length - 1), 4);
+        }
+        static public double korel_vidn(double[] arr1)
+        {
+            int numclass = korelation.num_class(arr1);
+            double min = korelation.min1(arr1);
+            double disp = korelation.dispersion(arr1);
+            double step = (korelation.max1(arr1) - korelation.min1(arr1)) / korelation.num_class(arr1);
+            double sum = 0;
+
+            for (int i = 0; i < numclass; i++)
+            {
+                //MessageBox.Show(korelation.num_y(arr1, min, min + step).ToString() + " " + ser_ar(arr1).ToString() + " " + ser_y(arr1, min, min + step).ToString());
+                sum += korelation.num_y(arr1, min, min + step) * Math.Pow(ser_ar(arr1) - ser_y(arr1, min, min + step), 2);
+                min = min + step;
+            }
+            return sum / (disp * (arr1.Length - 1));
+        }
+
+        static double ser_y(double[] arr, double min, double max)
+        {
+            double sum = 0;
+            int num = 0;
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] >= min && arr[i] <= max)
+                {
+                    sum += arr[i];
+                    num++;
+                }
+            }
+            return sum / num;
+        }
+
+        static int num_y(double[] arr, double min, double max)
+        {
+            int num = 0;
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] >= min && arr[i] <= max)
+                    num++;
+            }
+            return (num);
+        }
+
+        public int num_entr(double[] X, double[] Y, int num)
+        {
+            int N = X.Length;
+            double minX = korelation.min1(X);
+            double minY = korelation.min1(Y);
+            int numclass = korelation.num_class(X);
+            double stepX = (korelation.max1(X) - korelation.min1(X)) / numclass;
+            double stepY = (korelation.max1(Y) - korelation.min1(Y)) / numclass;
+
+            for (int i = 0; i < numclass; i++)
+            {
+                if (X[num] >= minX && X[num] <= minX + stepX + 0.00005)
+                {
+
+                }
+                minX = minX + stepX;
+            }
+
+            return num;
+        }
+
+        static public void Sort(double[,] Arr, int length)
+        {
+            double temp1 = 0;
+            double temp2 = 0;
+            bool exit = false;
+
+            while (!exit)
+            {
+                exit = true;
+                for (int i = 0; i < (length - 1); i++)
+                {
+                    if (Arr[i, 0] > Arr[i + 1, 0])
+                    {
+                        temp1 = Arr[i, 0];
+                        Arr[i, 0] = Arr[i + 1, 0];
+                        Arr[i + 1, 0] = temp1;
+
+                        temp2 = Arr[i, 1];
+                        Arr[i, 1] = Arr[i + 1, 1];
+                        Arr[i + 1, 1] = temp2;
+                        exit = false;
+                    }
+                }
+            }
+        }
+        static public int num_class(double[] arr)
+        {
+            int numclass = 0;
+            if (arr.Length < 100)
+            {
+                int kakaha = (int)Math.Truncate(Math.Sqrt(arr.Length));
+                if (kakaha % 2 == 0)
+                    numclass = kakaha - 1;
+                else
+                    numclass = kakaha;
+            }
+            else
+            {
+                double kakaha = Math.Truncate(Math.Pow(arr.Length, 1.0 / 3.0));
+                if (kakaha % 2 == 0)
+                    numclass = (int)kakaha - 1;
+                else
+                    numclass = (int)kakaha;
+            }
+            return numclass;
+        }
+        static public double max1(double[] A)
+        {
+            double m = A[0];
+            int i = 0;
+            for (; i < A.Length; i++)
+                if (m < A[i])
+                    m = A[i];
+            return m;
+        }
+        static public double min1(double[] A)
+        {
+            double m = A[0];
+            int i = 0;
+            for (; i < A.Length; i++)
+                if (m > A[i])
+                    m = A[i];
+            return m;
         }
     }
 }
