@@ -147,7 +147,6 @@
             this.textBox15 = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
             this.textBox14 = new System.Windows.Forms.TextBox();
-            this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.label25 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -155,7 +154,12 @@
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.button22 = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.dataGridView6 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             this.toolStrip1.SuspendLayout();
@@ -182,14 +186,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).BeginInit();
-            this.groupBox12.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart4)).BeginInit();
             this.tabControl2.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.tabPage8.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.tabPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).BeginInit();
             this.SuspendLayout();
             // 
             // chart1
@@ -1236,7 +1241,7 @@
             // 
             // button20
             // 
-            this.button20.Location = new System.Drawing.Point(118, 107);
+            this.button20.Location = new System.Drawing.Point(12, 602);
             this.button20.Name = "button20";
             this.button20.Size = new System.Drawing.Size(75, 28);
             this.button20.TabIndex = 2;
@@ -1246,7 +1251,7 @@
             // 
             // textBox15
             // 
-            this.textBox15.Location = new System.Drawing.Point(118, 81);
+            this.textBox15.Location = new System.Drawing.Point(353, 607);
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(24, 20);
             this.textBox15.TabIndex = 1;
@@ -1254,7 +1259,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(71, 67);
+            this.label23.Location = new System.Drawing.Point(123, 610);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(194, 13);
             this.label23.TabIndex = 1;
@@ -1262,30 +1267,16 @@
             // 
             // textBox14
             // 
-            this.textBox14.Location = new System.Drawing.Point(61, 81);
+            this.textBox14.Location = new System.Drawing.Point(323, 607);
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(24, 20);
             this.textBox14.TabIndex = 0;
             // 
-            // groupBox12
-            // 
-            this.groupBox12.Controls.Add(this.label25);
-            this.groupBox12.Controls.Add(this.button20);
-            this.groupBox12.Controls.Add(this.label23);
-            this.groupBox12.Controls.Add(this.textBox15);
-            this.groupBox12.Controls.Add(this.textBox14);
-            this.groupBox12.Location = new System.Drawing.Point(235, 432);
-            this.groupBox12.Name = "groupBox12";
-            this.groupBox12.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.groupBox12.Size = new System.Drawing.Size(322, 164);
-            this.groupBox12.TabIndex = 0;
-            this.groupBox12.TabStop = false;
-            this.groupBox12.Text = "Перевірка гіпотез";
-            // 
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(6, 16);
+            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label25.Location = new System.Drawing.Point(3, 6);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(62, 13);
             this.label25.TabIndex = 0;
@@ -1359,10 +1350,16 @@
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.dataGridView6);
+            this.tabPage8.Controls.Add(this.button22);
+            this.tabPage8.Controls.Add(this.panel3);
+            this.tabPage8.Controls.Add(this.label23);
             this.tabPage8.Controls.Add(this.dataGridView5);
+            this.tabPage8.Controls.Add(this.button20);
             this.tabPage8.Controls.Add(this.chart3);
             this.tabPage8.Controls.Add(this.chart4);
-            this.tabPage8.Controls.Add(this.groupBox12);
+            this.tabPage8.Controls.Add(this.textBox15);
+            this.tabPage8.Controls.Add(this.textBox14);
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
@@ -1370,6 +1367,27 @@
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "Двовимірні дані";
             this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // button22
+            // 
+            this.button22.Location = new System.Drawing.Point(401, 605);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(103, 23);
+            this.button22.TabIndex = 30;
+            this.button22.Text = "Лінійна регресія";
+            this.button22.UseVisualStyleBackColor = true;
+            this.button22.Click += new System.EventHandler(this.button22_Click);
+            // 
+            // panel3
+            // 
+            this.panel3.AutoScroll = true;
+            this.panel3.BackColor = System.Drawing.Color.Silver;
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel3.Controls.Add(this.label25);
+            this.panel3.Location = new System.Drawing.Point(265, 432);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(292, 164);
+            this.panel3.TabIndex = 29;
             // 
             // tabPage6
             // 
@@ -1380,6 +1398,29 @@
             this.tabPage6.TabIndex = 2;
             this.tabPage6.Text = "Усі дані";
             this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView6
+            // 
+            this.dataGridView6.AllowUserToAddRows = false;
+            this.dataGridView6.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView6.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn8,
+            this.dataGridViewTextBoxColumn9});
+            this.dataGridView6.Location = new System.Drawing.Point(6, 432);
+            this.dataGridView6.Name = "dataGridView6";
+            this.dataGridView6.Size = new System.Drawing.Size(256, 163);
+            this.dataGridView6.TabIndex = 31;
+            this.dataGridView6.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView6_UserDeletingRow);
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.HeaderText = "Елемент";
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.HeaderText = "Значення";
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
             // 
             // Form1
             // 
@@ -1435,8 +1476,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).EndInit();
-            this.groupBox12.ResumeLayout(false);
-            this.groupBox12.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart3)).EndInit();
@@ -1444,7 +1483,11 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
+            this.tabPage8.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.tabPage6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1555,7 +1598,6 @@
         private System.Windows.Forms.ToolStripMenuItem однуВибіркуToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem двіВибіркиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem всіВибіркиToolStripMenuItem;
-        private System.Windows.Forms.GroupBox groupBox12;
         private System.Windows.Forms.TextBox textBox15;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox textBox14;
@@ -1570,5 +1612,10 @@
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.Button button21;
         private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button button22;
+        private System.Windows.Forms.DataGridView dataGridView6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
     }
 }
