@@ -515,6 +515,8 @@ namespace po_laba1
         }
         public void dataGridView6_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
+            string s1 = "";
+            string s2 = "";
             List<double> lstX = new List<double>(X);
             List<double> lstY = new List<double>(Y);
             lstX.RemoveAt(e.Row.Index);
@@ -525,8 +527,12 @@ namespace po_laba1
             for (int i = 0; i < X.Length; i++)
             {
                 GorDoubArr[i, 0] = X[i];
+                s1 += X[i].ToString() + " ";
                 GorDoubArr[i, 1] = Y[i];
+                s2 += Y[i].ToString() + " ";
             }
+            MessageBox.Show(s1);
+            MessageBox.Show(s2);
         }
 
         #region Point marks funktions
@@ -771,22 +777,29 @@ namespace po_laba1
         int count = 0;
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            count++;
-            string[] massiv_str = new string[massiv.Length];
-            for (int i = 0; i < massiv.Length; i++)
-            {
-                massiv_str[i] = Convert.ToString(Math.Round(massiv[i], 4));
+            try
+            { 
+                count++;
+                string[] massiv_str = new string[massiv.Length];
+                for (int i = 0; i < massiv.Length; i++)
+                {
+                    massiv_str[i] = Convert.ToString(Math.Round(massiv[i], 4));
+                }
+
+                // Set a variable to the My Documents path.
+                string mydocpath =
+                    Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+                // Write the string array to a new file named "WriteLines.txt".
+                using (StreamWriter outputFile = new StreamWriter(mydocpath + @"\Data(" + count.ToString() + ").txt"))
+                {
+                    for (int i = 0; i < massiv_str.Length; i++)
+                        outputFile.WriteLine(massiv_str[i]);
+                }
             }
-
-            // Set a variable to the My Documents path.
-            string mydocpath =
-                Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-            // Write the string array to a new file named "WriteLines.txt".
-            using (StreamWriter outputFile = new StreamWriter(mydocpath + @"\Data(" + count.ToString() + ").txt"))
+            catch
             {
-                for (int i = 0; i < massiv_str.Length; i++)
-                    outputFile.WriteLine(massiv_str[i]);
+                return;
             }
         }
 
@@ -2603,8 +2616,7 @@ namespace po_laba1
             double stepY = (korelation.max1(Y) - korelation.min1(Y)) / korelation.num_class(X);
             double minX = korelation.min1(X);
             double minY = korelation.min1(Y);
-            //chart1.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
-            //chart1.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
+
             chart3.ChartAreas[0].AxisX.Minimum = minX;
             chart3.ChartAreas[0].AxisY.Minimum = minY;
             chart3.ChartAreas[0].AxisX.Maximum = X.Max();
@@ -2842,7 +2854,6 @@ namespace po_laba1
             }
 
             double stuart = 2 * (P - Q) * numclass / (N * N * (numclass - 1));
-            //double first = 2 * numclass / (N * N * N * (numclass - 1));
             dataGridView5.Rows.Add("статистика Стюарда", "", stuart, "");
 
             label25.Text = RESULT;
@@ -2960,7 +2971,7 @@ namespace po_laba1
             double koef = korelation.korel_vidn(arr);
             double nyu1 = Math.Pow(k - 1 + N * koef, 2) / (k - 1 + N * 2 * koef);
             double nyu2 = N - k;
-            return nyu2 * koef / (N * (1 - koef) * Quantil.QuantilFishera1(0.975, nyu1, nyu2)) - (k - 1) / N;
+            return (N - k) * koef / (N * (1 - koef) * Quantil.QuantilFishera1(0.975, nyu1, nyu2)) - (k - 1) / N;
         }
 
         double kor_vidn_nyzh(double[] arr)
@@ -2970,7 +2981,8 @@ namespace po_laba1
             double koef = korelation.korel_vidn(arr);
             double nyu1 = Math.Pow(k - 1 + N * koef, 2) / (k - 1 + N * 2 * koef);
             double nyu2 = N - k;
-            return nyu2 * koef / (N * (1 - koef) * Quantil.QuantilFishera1(0.025, nyu1, nyu2)) - (k - 1) / N;
+            MessageBox.Show((nyu2 * koef).ToString());
+            return ((nyu2 * koef) / (N * (1 - koef) * Quantil.QuantilFishera1(0.025, nyu1, nyu2)) - (k - 1) / N);
         }
 
         double  koef_kor(double[] first, double[] second)
@@ -3266,20 +3278,16 @@ namespace po_laba1
         }
 
 
-        static public double QuantilFishera1(double p, double N1, double N2)
+        static public double QuantilFishera1(double alpha, double v1, double v2)
         {
-            double res;
-            double norm_kv = Quantil.NormalQuantil1(p);
-            double sig = (1.0 / N1) + (1.0 / N2);
-            double delta = (1.0 / N1) - (1.0 / N2);
-            res = norm_kv * Math.Sqrt(sig / 2.0);
-            res -= (1.0 / 6) * delta * (Math.Pow(norm_kv, 2) + 2);
-            res += Math.Sqrt(sig / 2.0) * ((sig / 24) * (Math.Pow(norm_kv, 2) + 3 * norm_kv) + (1.0 / 72) * (delta * delta / sig) * (Math.Pow(norm_kv, 3) + 11 * norm_kv));
-            res -= (delta * sig / 120) * (Math.Pow(norm_kv, 4) + 9 * Math.Pow(norm_kv, 2) + 8);
-            res += Math.Pow(delta, 3) / (sig * 3240) * (3 * Math.Pow(norm_kv, 4) + 7 * Math.Pow(norm_kv, 2) - 16);
-            res += Math.Sqrt(sig / 2.0) * ((Math.Pow(sig, 2) / 1920) * (Math.Pow(norm_kv, 5) + 20 * Math.Pow(norm_kv, 3) + 15 * norm_kv) + (Math.Pow(delta, 4) / 2880) * (Math.Pow(norm_kv, 5) + 44 * Math.Pow(norm_kv, 3) + 183 * norm_kv) + (Math.Pow(delta, 4) / (155520 * sig * sig)) * (9 * Math.Pow(norm_kv, 5) - 284 * Math.Pow(norm_kv, 3) - 1513 * norm_kv));
-            res = Math.Exp(2 * res);
-            return res;
+            double s = 1 / v1 + 1 / v2;
+            double d = 1 / v1 - 1 / v2;
+            double u = NormalQuantil1(alpha);
+            double z = u * Math.Sqrt(s / 2) - 1 / 6.0 * d * (u * u + 2) + Math.Sqrt(s / 2) * (s / 24.0 * (u * u + 3 * u) + 1 / 72.0 * d * d / s * (u * u * u + 11 * u));
+            z -= s * d / 120.0 * (Math.Pow(u, 4) + 9 * u * u + 8);
+            z += d * d * d / 3240 / s * (3 * Math.Pow(u, 4) + 7 * u * u - 16) + Math.Sqrt(s / 2) * (s * s / 1920.0 * (Math.Pow(u, 5) + 20 * u * u * u + 15 * u));
+            z += Math.Pow(d, 4) / 2880.0 * (Math.Pow(u, 5) + 44 * u * u * u + 183 * u) + Math.Pow(d, 4) / (155520.0 * s * s) * (9 * Math.Pow(u, 5) - 284 * u * u * u - 1513 * u);
+            return Math.Exp(2 * z);
         }
 
         static public double StudentQuantil(double sum, double[] A)
@@ -3363,7 +3371,7 @@ namespace po_laba1
                 sum += korelation.num_y(arr1, min, min + step) * Math.Pow(ser_ar(arr1) - ser_y(arr1, min, min + step), 2);
                 min = min + step;
             }
-            return sum / (disp * (arr1.Length - 1));
+            return Math.Sqrt(sum / (disp * (arr1.Length - 1)));
         }
 
         static double ser_y(double[] arr, double min, double max)
