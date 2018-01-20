@@ -18,7 +18,6 @@ namespace po_laba1
         }
         
         List<double[]> list_mass = new List<double[]>();
-        List<double[,]> list_double_mass = new List<double[,]>();
         public double[] massiv;
         public string[] data_mas;
         public double step;
@@ -32,6 +31,12 @@ namespace po_laba1
         int numclass = 0;
         string[] GorisontalArr;
         double[,] GorDoubArr;
+
+        List<Tuple<double[,], int>> TupleList = new List<Tuple<double[,], int>>();
+        public Tuple<double[,], int> ReturnTuple(int num)
+        {
+            return TupleList[num];
+        }
 
         ////////////////
         public int numb_vybirok = 0;
@@ -266,9 +271,9 @@ namespace po_laba1
                     return;
                 }
             }
-            list_double_mass.Add(GorDoubArr);
+            var tuple = Tuple.Create(GorDoubArr, N);
+            TupleList.Add(tuple);
         }
-
         private void зчитатиНапрямуToolStripMenuItem_Click(object sender, EventArgs e)
         {
             modelyuvannya = false;
@@ -334,6 +339,7 @@ namespace po_laba1
         //Побудова даних
         public void button1_Click(object sender, EventArgs e)
         {
+
             chart1.Series.Clear();
             chart2.Series.Clear();
             dataGridView2.Rows.Clear();
@@ -369,22 +375,22 @@ namespace po_laba1
             }
 
             //Data grid filling 1
-            dataGridView1.Rows.Add("Cереднє арифметичне", Math.Round(ser_ar(massiv) - Quantil.StudentQuantil(massiv.Length, massiv) * sigma_x_ser(massiv), 4), ser_ar(massiv), Math.Round(ser_ar(massiv) + Quantil.StudentQuantil(massiv.Length, massiv) * sigma_x_ser(massiv), 4), sigma_x_ser(massiv));
+            dataGridView1.Rows.Add("Cереднє арифметичне", Math.Round(ser_ar(massiv) - Quantil.StudentQuantil(massiv) * sigma_x_ser(massiv), 4), ser_ar(massiv), Math.Round(ser_ar(massiv) + Quantil.StudentQuantil(massiv) * sigma_x_ser(massiv), 4), sigma_x_ser(massiv));
             dataGridView1.Rows.Add("Математичне сподівання", "", mat_spod(massiv), "", "");
             dataGridView1.Rows.Add("МЕД", "", MED(massiv), "", "");
             dataGridView1.Rows.Add("Усічене середнє", "", Math.Round(usichene_ser(massiv, 0.05), 4), "", "");
             dataGridView1.Rows.Add("Дисперсія", "", dispersion(massiv), "", "");
-            dataGridView1.Rows.Add("Середнє квадратичне відхилення", Math.Round(ser_kvad_vidh(massiv) - Quantil.StudentQuantil(massiv.Length, massiv) * sigma_sigma(massiv), 4), ser_kvad_vidh(massiv), Math.Round(ser_kvad_vidh(massiv) + Quantil.StudentQuantil(massiv.Length, massiv) * sigma_sigma(massiv), 4), sigma_sigma(massiv));
+            dataGridView1.Rows.Add("Середнє квадратичне відхилення", Math.Round(ser_kvad_vidh(massiv) - Quantil.StudentQuantil(massiv) * sigma_sigma(massiv), 4), ser_kvad_vidh(massiv), Math.Round(ser_kvad_vidh(massiv) + Quantil.StudentQuantil(massiv) * sigma_sigma(massiv), 4), sigma_sigma(massiv));
             dataGridView1.Rows.Add("МАД", "", MAD(massiv), "", "");
             dataGridView1.Rows.Add("Медіана середніх Уолша", "", Math.Round(Yolsh(massiv), 4), "", "");
-            dataGridView1.Rows.Add("Коефіцієнт асиметрії", Math.Round(koef_asym(massiv) - Quantil.StudentQuantil(massiv.Length, massiv) * sigma_koef_as(massiv), 4), koef_asym(massiv), Math.Round(koef_asym(massiv) + Quantil.StudentQuantil(massiv.Length, massiv) * sigma_koef_as(massiv), 4), sigma_koef_as(massiv));
-            dataGridView1.Rows.Add("Коефіцієнт eксцесу", Math.Round(koef_aksc(massiv) - Quantil.StudentQuantil(massiv.Length, massiv) * sigma_koef_aksc(massiv), 4), koef_aksc(massiv), Math.Round(koef_aksc(massiv) + Quantil.StudentQuantil(massiv.Length, massiv) * sigma_koef_aksc(massiv), 4), sigma_koef_aksc(massiv));
-            dataGridView1.Rows.Add("Контрeксцес", Math.Round(kontraksc(massiv) - Quantil.StudentQuantil(massiv.Length, massiv) * sigma_kontreks(massiv), 4), kontraksc(massiv), Math.Round(kontraksc(massiv) + Quantil.StudentQuantil(massiv.Length, massiv) * sigma_kontreks(massiv), 4), sigma_kontreks(massiv));
+            dataGridView1.Rows.Add("Коефіцієнт асиметрії", Math.Round(koef_asym(massiv) - Quantil.StudentQuantil(massiv) * sigma_koef_as(massiv), 4), koef_asym(massiv), Math.Round(koef_asym(massiv) + Quantil.StudentQuantil(massiv) * sigma_koef_as(massiv), 4), sigma_koef_as(massiv));
+            dataGridView1.Rows.Add("Коефіцієнт eксцесу", Math.Round(koef_aksc(massiv) - Quantil.StudentQuantil(massiv) * sigma_koef_aksc(massiv), 4), koef_aksc(massiv), Math.Round(koef_aksc(massiv) + Quantil.StudentQuantil(massiv) * sigma_koef_aksc(massiv), 4), sigma_koef_aksc(massiv));
+            dataGridView1.Rows.Add("Контрeксцес", Math.Round(kontraksc(massiv) - Quantil.StudentQuantil(massiv) * sigma_kontreks(massiv), 4), kontraksc(massiv), Math.Round(kontraksc(massiv) + Quantil.StudentQuantil(massiv) * sigma_kontreks(massiv), 4), sigma_kontreks(massiv));
             if (MED(massiv) != 0)
                 dataGridView1.Rows.Add("Непараметричний коефіцієнт варіації", "", Math.Round(MAD(massiv) / MED(massiv), 4), "", "");
             else
                 MessageBox.Show("MED = 0 неможливо порахувати MAD");
-            dataGridView1.Rows.Add("Коефіцієнт варіації Пірсона", Math.Round(koef_var_pirs(massiv) - Quantil.StudentQuantil(massiv.Length, massiv) * sigma_koef_var_pirs(massiv), 4), koef_var_pirs(massiv), Math.Round(koef_var_pirs(massiv) + Quantil.StudentQuantil(massiv.Length, massiv) * sigma_koef_var_pirs(massiv), 4), sigma_koef_var_pirs(massiv));
+            dataGridView1.Rows.Add("Коефіцієнт варіації Пірсона", Math.Round(koef_var_pirs(massiv) - Quantil.StudentQuantil(massiv) * sigma_koef_var_pirs(massiv), 4), koef_var_pirs(massiv), Math.Round(koef_var_pirs(massiv) + Quantil.StudentQuantil(massiv) * sigma_koef_var_pirs(massiv), 4), sigma_koef_var_pirs(massiv));
 
             //Data grid filling 2
             if (massiv.Length <= 3000)
@@ -515,8 +521,6 @@ namespace po_laba1
         }
         public void dataGridView6_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            string s1 = "";
-            string s2 = "";
             List<double> lstX = new List<double>(X);
             List<double> lstY = new List<double>(Y);
             lstX.RemoveAt(e.Row.Index);
@@ -527,12 +531,8 @@ namespace po_laba1
             for (int i = 0; i < X.Length; i++)
             {
                 GorDoubArr[i, 0] = X[i];
-                s1 += X[i].ToString() + " ";
                 GorDoubArr[i, 1] = Y[i];
-                s2 += Y[i].ToString() + " ";
             }
-            MessageBox.Show(s1);
-            MessageBox.Show(s2);
         }
 
         #region Point marks funktions
@@ -552,7 +552,7 @@ namespace po_laba1
             double gc = 0;
             for (int i = 0; i < mass.Length; i++)
                 gc += mass[i] * mass[i];
-            return Math.Round(Math.Pow(gc / massiv.Length - Math.Pow(ser_ar(mass), 2), 3 / 2), 4);
+            return Math.Round(Math.Pow(gc / mass.Length- Math.Pow(ser_ar(mass), 2), 3 / 2), 4);
         }
 
         public double ser_ar(double[] mass)
@@ -2107,7 +2107,7 @@ namespace po_laba1
                 double t = Math.Abs(z_ser * Math.Sqrt(z.Length) / Math.Sqrt(z_disp));
 
                 string s = "";
-                if (t > Quantil.StudentQuantil(z.Length, z))
+                if (t > Quantil.StudentQuantil( z))
                 {
                     s = "\nЗначення статистики t потрапило до критичної області, отже результат перевірки на збіг середніх негативний.\n   Статистика t = " + t.ToString() + "\n";
                 }
@@ -2148,7 +2148,7 @@ namespace po_laba1
                     new_mas[i] = list_mass[Convert.ToInt32(textBox13.Text) - 1][i - list_mass[Convert.ToInt32(textBox12.Text) - 1].Length];
                 }
 
-                if (t > Quantil.StudentQuantil(N - 2, new_mas))
+                if (t > Quantil.StudentQuantil(new_mas))
                 {
                     s = "\nЗначення статистики t потрапило до критичної області, отже результат перевірки на збіг середніх негативний.\n   Статистика t = " + t.ToString() + "\n";
                 }
@@ -2497,7 +2497,7 @@ namespace po_laba1
 
             double t_stat = (O - ser_ar(massiv)) / sigma_x_ser(massiv);
             string s = "";
-            if (Math.Abs(t_stat) > Quantil.StudentQuantil(massiv.Length, massiv))
+            if (Math.Abs(t_stat) > Quantil.StudentQuantil(massiv))
             {
                 s = "\nt-тест не пройдено.\n Статистика t = " + t_stat.ToString() + "\n";
             }
@@ -2509,6 +2509,82 @@ namespace po_laba1
         }
         
         #region korelation 
+        double[]     ArrCopy(double[] arr)
+        {
+            int N = arr.Length;
+            double[] arr1 = new double[N];
+            for (int i = 0; i < N; i++)
+                arr1[i] = arr[i];
+            return (arr1);
+        }
+        double func(double[] X, double[] Y, double x, double y)
+        {
+            double sigmaX = sigma(X);
+            double sigmaY = sigma(Y);
+            double serX = ser_ar(X);
+            double serY = ser_ar(Y);
+            double kor = koef_kor(X, Y);
+
+            double square = Math.Pow((x - serX) / sigmaX, 2) - 2 * kor * ((x - serX) / sigmaX) * ((y - serY) / sigmaY) + Math.Pow((y - serY) / sigmaY, 2);
+            double exp = Math.Exp(square / (2 * (kor * kor - 1)));
+            return (exp / (2 * Math.PI * sigmaX * sigmaY * Math.Sqrt(1 - kor * kor)));
+        }
+        int number_classes(double[] arr)
+        {
+            int numclass = 0;
+            int len = arr.Length;
+             
+            if (len <= 100)
+            {
+                int kek = (int)Math.Truncate(Math.Sqrt(len));
+                if (kek % 2 == 0)
+                    numclass = kek - 1;
+                else
+                    numclass = kek;
+            }
+            else
+            {
+                int kek = (int)Math.Truncate(Math.Pow(len, 0.3333333));
+                if (kek % 2 == 0)
+                    numclass = kek - 1;
+                else
+                    numclass = kek;
+
+            }
+            return numclass;
+        }
+        double[,] VidtvorenaChastota(double[] X, double[] Y)
+        {
+            int numclass = number_classes(X);
+            double[,] UserChast = new double[numclass, numclass];
+            double minX = X.Min();
+            double minY = Y.Min();
+            double stepX = (X.Max() - minX) / (double)numclass;
+            double stepY = (Y.Max() - minY) / (double)numclass;
+            double[] serX = new double[numclass];
+            string s = "";
+            for (int i = 0; i < numclass; i++)
+            {
+                serX[i] = (minX + stepX) / 2;
+                s += serX[i].ToString() + " ";
+                minX = minX + stepX;
+            }
+            double[] serY = new double[numclass];
+            for (int i = 0; i < numclass; i++)
+            {
+                serY[i] = (minY + stepY) / 2;
+                minY = minY + stepY;
+            }
+            for (int i = 0; i < numclass; i++)
+            {
+                for (int j = 0; j < numclass; j++)
+                {
+                    UserChast[i, j] = func(X, Y, serX[j], serY[i]) * stepX * stepY;
+                }
+            }
+            return UserChast;
+        }
+
         private void button20_Click(object sender, EventArgs e)
         {
             chart4.Series.Clear();
@@ -2517,6 +2593,8 @@ namespace po_laba1
             dataGridView6.Columns.Clear();
             dataGridView5.Columns.Clear();
             chart3.Series.Clear();
+            while (dataGridView4.ColumnCount > 0)
+                dataGridView4.Columns.RemoveAt(0);
             if (textBox14.Text != "" && textBox15.Text != "")
             {
                 int length1 = list_mass[Convert.ToInt32(textBox14.Text) - 1].Length;
@@ -2560,9 +2638,6 @@ namespace po_laba1
                     }
                 }
             }
-
-            chart4.Series.Add("korelation");
-            chart4.Series["korelation"].ChartType = SeriesChartType.Point;
             chart4.ChartAreas[0].CursorX.IsUserEnabled = true;
             chart4.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
             chart4.ChartAreas[0].CursorX.Interval = 0.01D;
@@ -2571,14 +2646,18 @@ namespace po_laba1
             chart4.ChartAreas[0].CursorY.Interval = 0.01D;
             dataGridView6.Columns.Add("byX", "X");
             dataGridView6.Columns.Add("byY", "Y");
-
             int N = X.Length;
             korelation.Sort(X, Y, N);
-
+            chart4.Series.Add("korelation");
+            chart4.Series["korelation"].ChartType = SeriesChartType.Point;
             for (int i = 0; i < N; i++)
             {
                 chart4.Series["korelation"].Points.AddXY(X[i], Y[i]);
             }
+            double[] temp_arr = new double[N];
+            for (int i = 0; i < N; i++)
+                temp_arr[i] = 0;
+            list_mass.Add(temp_arr);
             list_mass.Add(X);
             list_mass.Add(Y);
             int count_elem = 0;
@@ -2589,8 +2668,7 @@ namespace po_laba1
                     count_elem = list_mass[i].Length;
                 }
             }
-            while (dataGridView4.ColumnCount > 0)
-                dataGridView4.Columns.RemoveAt(0);
+
             for (int j = 0; j < count_elem; j++)
                 dataGridView4.Columns.Add("", "El_" + j.ToString());
 
@@ -2599,24 +2677,17 @@ namespace po_laba1
                 dataGridView4.Rows.Add();
                 for (int j = 0; j < list_mass[i].Length; j++)
                 {
-                    dataGridView4.Rows[i].Cells[j].Value = Math.Round(list_mass[i][j], 4).ToString();
+                    if (list_mass[i][j] == 0)
+                        dataGridView4.Rows[i].Cells[j].Value = "";
+                    else
+                        dataGridView4.Rows[i].Cells[j].Value = Math.Round(list_mass[i][j], 4).ToString();
                 }
             }
-
-            dataGridView5.Columns.Add("gl", "");
-            dataGridView5.Columns.Add("left", "Нижнє");
-            dataGridView5.Columns.Add("mark", "Оцінка");
-            dataGridView5.Columns.Add("right", "Верхнє");
-            dataGridView5.Rows.Add("Коефіцієнт кореляції", Math.Round(koef_kor_nyzh(koef_kor(X, Y), X), 8), Math.Round(koef_kor(X, Y), 10), Math.Round(koef_kor_verh(koef_kor(X, Y), X), 8));
-            dataGridView5.Rows.Add("Кореляційне відношення по X", kor_vidn_nyzh(X), korelation.korel_vidn(X), kor_vidn_verh(X));
-            dataGridView5.Rows.Add("Кореляційне відношення по Y", kor_vidn_nyzh(Y), korelation.korel_vidn(Y), kor_vidn_verh(Y));
-
             int numclass = korelation.num_class(X);
             double stepX = (korelation.max1(X) - korelation.min1(X)) / korelation.num_class(X);
             double stepY = (korelation.max1(Y) - korelation.min1(Y)) / korelation.num_class(X);
             double minX = korelation.min1(X);
             double minY = korelation.min1(Y);
-
             chart3.ChartAreas[0].AxisX.Minimum = minX;
             chart3.ChartAreas[0].AxisY.Minimum = minY;
             chart3.ChartAreas[0].AxisX.Maximum = X.Max();
@@ -2633,9 +2704,7 @@ namespace po_laba1
             chart3.ChartAreas[0].AxisY.LabelStyle.Format = "###,##0.000";
             chart4.ChartAreas[0].AxisX.LabelStyle.Format = "###,##0.000";
             chart4.ChartAreas[0].AxisY.LabelStyle.Format = "###,##0.000";
-
             double[,] pervynna_ocinka = new double[numclass, numclass];
-
             for (int x = 0; x < numclass; x++)
             {
                 for (int y = 0; y < numclass; y++)
@@ -2648,18 +2717,13 @@ namespace po_laba1
                 minX = minX + stepX;
                 minY = korelation.min1(Y);
             }
-
             double[,] perv_oc_nn = pervynna_ocinka;
-
             for (int i = 0; i < numclass; i++)
                 for (int j = 0; j < numclass; j++)
                     pervynna_ocinka[i, j] = pervynna_ocinka[i, j] / N;
-
             Series[,] series = new Series[numclass, numclass];
             for (int i = 0; i < numclass; i++)
-            {
                 for (int j = 0; j < numclass; j++)
-                {
                     if (pervynna_ocinka[i, j] > 0.005)
                     {
                         series[i, j] = new Series();
@@ -2672,9 +2736,6 @@ namespace po_laba1
                         series[i, j].Color = Color.FromArgb(240, 240 - (int)(240 * pervynna_ocinka[i, j]), 240 - (int)(240 * pervynna_ocinka[i, j]), 240 - (int)(255 * pervynna_ocinka[i, j]));
                         chart3.Series.Add(series[i, j]);
                     }
-                }
-            }
-
             if (N <= 3000)
             {
                 for (int i = 0; i < N; i++)
@@ -2682,99 +2743,118 @@ namespace po_laba1
                     dataGridView6.Rows.Add(Math.Round(X[i], 4), Math.Round(Y[i], 4));
                 }
             }
-
             /////////////////////////////////////////////////////////
+            dataGridView5.Columns.Add("gl", "");
+            dataGridView5.Columns.Add("left", "Нижнє");
+            dataGridView5.Columns.Add("mark", "Оцінка");
+            dataGridView5.Columns.Add("right", "Верхнє");
+            /***
+             * *  Перевірка значущості
+             * */
             string RESULT = "Результат:\n";
+            double XI2 = 0;
+            double[,] vidnchast = VidtvorenaChastota(X, Y);
+            for (int i = 0; i < numclass; i++)
+            {
+                for (int j = 0; j < numclass; j++)
+                {
+                    XI2 += Math.Pow(pervynna_ocinka[i, j] - vidnchast[i, j], 2) / vidnchast[i, j];
+                }
+            }
+            double xistat = Quantil.XIquantil(numclass * numclass - 1);
+            if (XI2 <= xistat)
+                RESULT += "За перевіркою статистики Xi2 видно, що дана вибірка має розподіл близький до нормального.\n" + "Статистика Хі = " + XI2.ToString() + "\n\n";
+            else
+                RESULT += "За перевіркою статистики Xi2 видно, що дана вибірка має розподіл відмінний від нормального.\n" + "Статистика Хі = " + XI2.ToString() + "\n\n";
+            dataGridView5.Rows.Add("Коефіцієнт кореляції", Math.Round(koef_kor_nyzh(koef_kor(X, Y), X), 5), Math.Round(koef_kor(X, Y), 5), Math.Round(koef_kor_verh(koef_kor(X, Y), X), 5));
+            dataGridView5.Rows.Add("Кореляційне відношення по X", "", Math.Round(Math.Sqrt(korelation.korel_vidn(X)), 5), "");
+            dataGridView5.Rows.Add("Кореляційне відношення по Y", "", Math.Round(Math.Sqrt(korelation.korel_vidn(Y)), 5), "");
+            /*
+             * **
+             * */
             double res_t_test = t_test_kor(koef_kor(X, Y), N);
-            if (Math.Abs(res_t_test) <= Quantil.StudentQuantil(N, X))
-            {
-                RESULT += "1) Парний коефіцієнт кореляції незначyщий\n   Статистика T = " + Math.Round(res_t_test, 8).ToString() + "\n";
-            }
+            if (Math.Abs(res_t_test) <= Quantil.StudentQuantil(X))
+                RESULT += "1) Парний коефіцієнт кореляції незначyщий\n   Статистика T = " + Math.Round(res_t_test / N, 5).ToString() + "\n";
             else
-            {
-                RESULT += "1) Парний коефіцієнт кореляції значyщий\n   Статистика T = " + Math.Round(res_t_test, 8).ToString() + "\n";
-            }
-
+                RESULT += "1) Парний коефіцієнт кореляції значyщий\n   Статистика T = " + Math.Round(res_t_test / N, 5).ToString() + "\n";
+            
             double res_kor_vidn_X = t_test_kor_vidn(korelation.korel_vidn(X), N);
-            if (Math.Abs(res_kor_vidn_X) <= Quantil.StudentQuantil(N,X))
-            {
-                RESULT += "2.1) Kоефіцієнт кореляційного відношення по Х незначyщий\n   Статистика Р1 = " + Math.Round(res_kor_vidn_X, 8).ToString() + "\n";
-            }
+            if (Math.Abs(res_kor_vidn_X) <= Quantil.StudentQuantil(X))
+                RESULT += "2.1) Kоефіцієнт кореляційного відношення по Х незначyщий\n   Статистика Р1 = " + Math.Round(res_kor_vidn_X, 5).ToString() + "\n";
             else
-            {
-                RESULT += "2.1) Kоефіцієнт кореляційного відношення по Х значyщий\n   Статистика Р1 = " + Math.Round(res_kor_vidn_X, 8).ToString() + "\n";
-            }
-
+                RESULT += "2.1) Kоефіцієнт кореляційного відношення по Х значyщий\n   Статистика Р1 = " + Math.Round(res_kor_vidn_X, 5).ToString() + "\n";
+            
             double res_kor_vidn_Y = t_test_kor_vidn(korelation.korel_vidn(Y), N);
-            if (Math.Abs(res_kor_vidn_Y) <= Quantil.StudentQuantil(N, Y))
-            {
-                RESULT += "2.2) Kоефіцієнт кореляційного відношення по Y незначyщий\n   Статистика Р2 = " + Math.Round(res_kor_vidn_Y, 8).ToString() + "\n";
-            }
+            if (Math.Abs(res_kor_vidn_Y) <= Quantil.StudentQuantil(Y))
+                RESULT += "2.2) Kоефіцієнт кореляційного відношення по Y незначyщий\n   Статистика Р2 = " + Math.Round(res_kor_vidn_Y, 5).ToString() + "\n";
             else
-            {
-                RESULT += "2.2) Kоефіцієнт кореляційного відношення по Y значyщий\n   Статистика Р2 = " + Math.Round(res_kor_vidn_Y, 8).ToString() + "\n";
-            }
-
+                RESULT += "2.2) Kоефіцієнт кореляційного відношення по Y значyщий\n   Статистика Р2 = " + Math.Round(res_kor_vidn_Y, 5).ToString() + "\n";
+            
             double infehn = IndexFehnera(X, Y);
             if (infehn > 0.0005)
             {
-                RESULT += "3) За індексом Фехнера кореляція додатна\n   Статистика І = " + Math.Round(infehn, 8).ToString() + "\n";
+                RESULT += "3) За індексом Фехнера кореляція додатна\n   Статистика І = " + Math.Round(infehn, 5).ToString() + "\n";
             }
             else if (infehn < -0.0005)
             {
-                RESULT += "3) За індексом Фехнера кореляція від*ємна\n   Статистика І = " + Math.Round(infehn, 8).ToString() + "\n";
+                RESULT += "3) За індексом Фехнера кореляція від*ємна\n   Статистика І = " + Math.Round(infehn, 5).ToString() + "\n";
             }
             else if (infehn >= -0.0005 && infehn <= 0.0005)
             {
-                RESULT += "3) За індексом Фехнера немає зв*язку, отже вибірки незалежні\n   Статистика І = " + Math.Round(infehn, 8).ToString() + "\n";
+                RESULT += "3) За індексом Фехнера немає зв*язку, отже вибірки незалежні\n   Статистика І = " + Math.Round(infehn, 5).ToString() + "\n";
             }
 
             double Fi = Math.Pow(KoefFi(X, Y), 2) * N;
-            if (Fi >= Quantil.XIquantil(X))
+            if (Fi >= Quantil.XIquantil(1 - 0.025))
             {
-                RESULT += "4) Оцінка коефіцієнта сполучень Ф є знацущою\n   Статистика F = " + Math.Round(Fi, 8).ToString() + "\n";
+                RESULT += "4) Оцінка коефіцієнта сполучень Ф є знацущою\n   Статистика F = " + Math.Round(Fi, 5).ToString() + "\n";
             }
             else
             {
-                RESULT += "4) Оцінка коефіцієнта сполучень Ф не є знацущою\n   Статистика F = " + Math.Round(Fi, 8).ToString() + "\n";
+                RESULT += "4) Оцінка коефіцієнта сполучень Ф не є знацущою\n   Статистика F = " + Math.Round(Fi, 5).ToString() + "\n";
             }
-
+           
             double Yulaq = koefYulaQ(X, Y);
             double Yulay = koefYulaY(X, Y);
             if (Math.Abs(Yulaq) <= Quantil.NormalQuantil() && Math.Abs(Yulay) <= Quantil.NormalQuantil())
             {
-                RESULT += "5) Kоефіцієнти зв*язку Юла не є значyщими\n   Статистика Uq = " + Math.Round(Yulaq, 8).ToString() + "\n   Статистика Uy = " + Math.Round(Yulay, 8).ToString() + "\n";
+                RESULT += "5) Kоефіцієнти зв*язку Юла не є значyщими\n   Статистика Uq = " + Math.Round(Yulaq, 5).ToString() + "\n   Статистика Uy = " + Math.Round(Yulay, 8).ToString() + "\n";
             }
             else
             {
-                RESULT += "5) Kоефіцієнти зв*язку Юла є значyщими\n   Статистика Uq = " + Math.Round(Yulaq, 8).ToString() + "\n   Статистика Uy = " + Math.Round(Yulay, 8).ToString() + "\n";
+                RESULT += "5) Kоефіцієнти зв*язку Юла є значyщими\n   Статистика Uq = " + Math.Round(Yulaq, 5).ToString() + "\n   Статистика Uy = " + Math.Round(Yulay, 8).ToString() + "\n";
             }
 
-            double spirm = spirmen(X, Y);
+            /////////////////////////////////////////////////////////////////////////////////////////////////
+            double[] newX1 = ArrCopy(X);
+            double[] newY1 = ArrCopy(Y);
+            double spirm = spirmen(newX1, newY1);
             double sigma_spirm = Math.Sqrt((1 - spirm * spirm) / (N - 2));
-            dataGridView5.Rows.Add("Ранговий коефіцієнт Спірмена", spirm - Quantil.StudentQuantil(N,X) * sigma_spirm, spirm, spirm + Quantil.StudentQuantil(N, X) * sigma_spirm);
-            if (Math.Sqrt(spirm * spirm * (N -2) / (1 - spirm * spirm)) <= Quantil.StudentQuantil(N, X))
+            dataGridView5.Rows.Add("Ранговий коефіцієнт Спірмена", spirm - Quantil.StudentQuantil(X) * sigma_spirm, spirm, spirm + Quantil.StudentQuantil(X) * sigma_spirm);
+            if (Math.Sqrt(spirm * spirm * (N -2) / (1 - spirm * spirm)) <= Quantil.StudentQuantil(X))
             {
-                RESULT += "6) Ранговий коефіцієнт Спірмена є значyщим\n   Статистика T = " + Math.Round(Yulaq, 8).ToString() + "\n";
+                RESULT += "6) Ранговий коефіцієнт Спірмена є значyщим\n   Статистика T = " + Math.Round(spirm, 5).ToString() + "\n";
             }
             else
             {
-                RESULT += "6) Ранговий коефіцієнт Спірмена є не значyщим\n   Статистика T = " + Math.Round(Yulaq, 8).ToString() + "\n";
+                RESULT += "6) Ранговий коефіцієнт Спірмена є не значyщим\n   Статистика T = " + Math.Round(spirm, 5).ToString() + "\n";
             }
-
-            double cend = kendal(X, Y);
+            /////////////////////////////////////////////////////////////////////////////////////////////////
+            double[] newX2 = ArrCopy(X);
+            double[] newY2 = ArrCopy(Y);
+            double cend = kendal(newX2, newY2);
             double u_kend = Math.Sqrt(9 * cend * cend * N * (N - 1) / (2 * (2 * N + 5)));
             double sigma_kend = Math.Sqrt((4 * N + 10) / (9 * (N * N - N)));
-            dataGridView5.Rows.Add("Ранговий коефіцієнт Кендалла", cend - Quantil.NormalQuantil() * sigma_kend, cend, cend + Quantil.NormalQuantil() * sigma_kend);
+           // dataGridView5.Rows.Add("Ранговий коефіцієнт Кендалла", cend - Quantil.NormalQuantil() * sigma_kend, cend, cend + Quantil.NormalQuantil() * sigma_kend);
             if (Math.Abs(u_kend) <= Quantil.NormalQuantil())
             {
-                RESULT += "7) Ранговий коефіцієнт Кендалла є значyщим\n   Статистика T = " + Math.Round(cend, 8).ToString() + "\n";
+                RESULT += "7) Ранговий коефіцієнт Кендалла є значyщим\n   Статистика T = " + Math.Round(cend, 5).ToString() + "\n";
             }
             else
             {
-                RESULT += "7) Ранговий коефіцієнт Кендалла є не значyщим\n   Статистика T = " + Math.Round(cend, 8).ToString() + "\n";
+                RESULT += "7) Ранговий коефіцієнт Кендалла є не значyщим\n   Статистика T = " + Math.Round(cend, 5).ToString() + "\n";
             }
-            
+
             double[] ni = new double[numclass];
             double[] mi = new double[numclass];
             double Nnn = 0;
@@ -2797,15 +2877,15 @@ namespace po_laba1
             }
             double C = Math.Sqrt(XIcc / (N + XIcc));
             dataGridView5.Rows.Add("Коефіцієнт сполучень Пірсона", "", C, "");
-            if (Math.Abs(C) <= Quantil.XIquantil(X))
+            if (Math.Abs(C) >= Quantil.XIquantil(1 - 0.025))
             {
-                RESULT += "8) Коефіцієнт сполучень Пірсона є не значyщим\n   Статистика Xi2 = " + Math.Round(C, 8).ToString() + "\n";
+                RESULT += "8) Коефіцієнт сполучень Пірсона є не значyщим\n   Статистика Xi2 = " + Math.Round(C, 5).ToString() + "\n";
             }
             else
             {
-                RESULT += "8) Коефіцієнт сполучень Пірсона є значyщим\n   Статистика Xi2 = " + Math.Round(C, 8).ToString() + "\n";
+                RESULT += "8) Коефіцієнт сполучень Пірсона є значyщим\n   Статистика Xi2 = " + Math.Round(C, 5).ToString() + "\n";
             }
-
+            
             double P = 0;
             double Q = 0;
             for (int i = 0; i < numclass; i++)
@@ -2846,15 +2926,15 @@ namespace po_laba1
             dataGridView5.Rows.Add("Міра зв’язку Кендалла ", t_kend - Quantil.NormalQuantil() * sigma_kend, t_kend, t_kend + Quantil.NormalQuantil() * sigma_kend);
             if (Math.Abs(u_t_kend) <= Quantil.NormalQuantil())
             {
-                RESULT += "9) Міра зв’язку Кендалла  є значyщою\n   Статистика T = " + Math.Round(t_kend, 8).ToString() + "\n";
+                RESULT += "9) Міра зв’язку Кендалла  є значyщою\n   Статистика T = " + Math.Round(t_kend, 5).ToString() + "\n";
             }
             else
             {
-                RESULT += "9) Міра зв’язку Кендалла  є не значyщою\n   Статистика T = " + Math.Round(t_kend, 8).ToString() + "\n";
+                RESULT += "9) Міра зв’язку Кендалла  є не значyщою\n   Статистика T = " + Math.Round(t_kend, 5).ToString() + "\n";
             }
 
             double stuart = 2 * (P - Q) * numclass / (N * N * (numclass - 1));
-            dataGridView5.Rows.Add("статистика Стюарда", "", stuart, "");
+            dataGridView5.Rows.Add("статистика Стюарда", "", Math.Round(stuart, 5), "");
 
             label25.Text = RESULT;
         }
@@ -2885,10 +2965,10 @@ namespace po_laba1
             double M0 = N00 + N10;
             double M1 = N01 + N11;
             double N = N0 + N1;
-            return (N00*N11 - N01*N10) / Math.Sqrt(N0 * N1 * M0 * M1);
+            return ((double)N00 * (double)N11 - (double)N01 * (double)N10) / Math.Sqrt((double)N0 * (double)N1 * (double)M0 * (double)M1);
         }
 
-        double koefYulaY(double[] X, double[] Y)
+        double  koefYulaY(double[] X, double[] Y)
         {
             double sravX = ser_ar(X);
             double sravY = ser_ar(Y);
@@ -2914,10 +2994,10 @@ namespace po_laba1
             double M0 = N00 + N10;
             double M1 = N01 + N11;
             double N = N0 + N1;
-            double Y0 = (Math.Sqrt(N00 * N11) - Math.Sqrt(N10 * N01)) / (Math.Sqrt(N00 * N11) + Math.Sqrt(N10 * N01));
+            double Y0 = (Math.Sqrt((double)N00 * (double)N11) - Math.Sqrt((double)N10 * (double)N01)) / (Math.Sqrt((double)N00 * (double)N11) + Math.Sqrt((double)N10 * (double)N01));
             try
             {
-                double Sy = (1 / 4) * (1 - Y0 * Y0) * Math.Sqrt(1 / N00 + 1 / N01 + 1 / N10 + 1 / N11);
+                double Sy = 0.25 * (1 - Y0 * Y0) * Math.Sqrt(1 / (double)N00 + 1 / (double)N01 + 1 / (double)N10 + 1 / (double)N11);
                 return Y0 / Sy;
             }
             catch
@@ -2925,7 +3005,7 @@ namespace po_laba1
                 return (0);
             }
         }
-        double koefYulaQ(double[] X, double[] Y)
+        double  koefYulaQ(double[] X, double[] Y)
         {
             double sravX = ser_ar(X);
             double sravY = ser_ar(Y);
@@ -2951,11 +3031,11 @@ namespace po_laba1
             double M0 = N00 + N10;
             double M1 = N01 + N11;
             double N = N0 + N1;
-            double Y0 = (Math.Sqrt(N00 * N11) - Math.Sqrt(N10 * N01)) / (Math.Sqrt(N00 * N11) + Math.Sqrt(N10 * N01));
+            double Y0 = (Math.Sqrt((double)N00 * (double)N11) - Math.Sqrt((double)N10 * (double)N01)) / (Math.Sqrt((double)N00 * (double)N11) + Math.Sqrt((double)N10 * (double)N01));
             double Q = 2 * Y0 / Math.Pow(1 + Y0, 2);
             try
             {
-                double Sq = (1 / 2) * (1 - Q * Q) * Math.Sqrt(1 / N00 + 1 / N01 + 1 / N10 + 1 / N11);
+                double Sq = 0.5 * (1 - Q * Q) * Math.Sqrt(1 / (double)N00 + 1 / (double)N01 + 1 / (double)N10 + 1 / (double)N11);
                 return Q / Sq;
             }
             catch
@@ -2971,17 +3051,16 @@ namespace po_laba1
             double koef = korelation.korel_vidn(arr);
             double nyu1 = Math.Pow(k - 1 + N * koef, 2) / (k - 1 + N * 2 * koef);
             double nyu2 = N - k;
+            MessageBox.Show(((N - k) * koef / (N * (1 - koef) * Quantil.QuantilFishera1(0.975, nyu1, nyu2))).ToString());
             return (N - k) * koef / (N * (1 - koef) * Quantil.QuantilFishera1(0.975, nyu1, nyu2)) - (k - 1) / N;
         }
-
-        double kor_vidn_nyzh(double[] arr)
+        double  kor_vidn_nyzh(double[] arr)
         {
             double N = arr.Length;
             double k = korelation.num_class(arr);
             double koef = korelation.korel_vidn(arr);
             double nyu1 = Math.Pow(k - 1 + N * koef, 2) / (k - 1 + N * 2 * koef);
             double nyu2 = N - k;
-            MessageBox.Show((nyu2 * koef).ToString());
             return ((nyu2 * koef) / (N * (1 - koef) * Quantil.QuantilFishera1(0.025, nyu1, nyu2)) - (k - 1) / N);
         }
 
@@ -2993,7 +3072,7 @@ namespace po_laba1
             for (int i = 0; i < N; i++)
                 var += first[i] * second[i];
             var = var / N;
-            return (N) * (var - ser_ar(first)* ser_ar(second)) / ((N - 1)*dispersion(first)*dispersion(second));
+            return (N) * (var - ser_ar(first)* ser_ar(second)) / ((N - 1)*Math.Sqrt(dispersion(first))*Math.Sqrt(dispersion(second)));
         }
 
         double  t_test_kor_vidn(double koef, int len)
@@ -3006,17 +3085,17 @@ namespace po_laba1
             return koef * (len - 2) / Math.Sqrt(1 - koef * koef);
         }
 
-        double koef_kor_nyzh(double koef, double[] arr)
+        double  koef_kor_nyzh(double koef, double[] arr)
         {
             return koef + koef * (1 - koef * koef) / (2 * arr.Length) - Quantil.NormalQuantil() * (1 - koef * koef) / Math.Sqrt(arr.Length - 1);
         }
 
-        double koef_kor_verh(double koef, double[] arr)
+        double  koef_kor_verh(double koef, double[] arr)
         {
             return koef + koef * (1 - koef * koef) / (2 * arr.Length) + Quantil.NormalQuantil() * (1 - koef * koef) / Math.Sqrt(arr.Length - 1);
         }
 
-        double spirmen(double[] X, double[] Y)
+        double  spirmen(double[] X, double[] Y)
         {
             int N = X.Length;
             double[,] rangX = rang1(X);
@@ -3049,7 +3128,7 @@ namespace po_laba1
             return sumd;
         }
 
-        double kendal(double[] X, double[] Y)
+        double  kendal(double[] X, double[] Y)
         {
             int N = X.Length;
             double[,] rangX = rang1(X);
@@ -3088,7 +3167,7 @@ namespace po_laba1
             return (2 * nyu / (N * (N - 1)));
         }
 
-        double IndexFehnera(double[] X, double[] Y)
+        double  IndexFehnera(double[] X, double[] Y)
         {
             double sravX = ser_ar(X);
             double sravY = ser_ar(Y);
@@ -3109,12 +3188,7 @@ namespace po_laba1
                 else if (sravX <= X[i] && sravY <= Y[i])
                     N00++;
             }
-            double N0 = N00 + N01;
-            double N1 = N11 + N10;
-            double M0 = N00 + N10;
-            double M1 = N01 + N11;
-            double N = N0 + N1;
-            return (N00 + N11 - N10 - N01) / (N00 + N11 + N10 + N01);
+            return ((double)N00 + (double)N11 - (double)N10 - (double)N01) / ((double)N00 + (double)N11 + (double)N10 + (double)N01);
         }
         #endregion
 
@@ -3139,11 +3213,38 @@ namespace po_laba1
             }
         }
 
+        //регресія лінійна
         private void button22_Click(object sender, EventArgs e)
         {
+            dataGridView5.Rows.Clear();
+            chart4.Series.Clear();
+            chart4.Series.Add("regr_nyzh");
+            chart4.Series["regr_nyzh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regr_nyzh"].Color = Color.Blue;
+            chart4.Series.Add("regr_verh");
+            chart4.Series["regr_verh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regr_verh"].Color = Color.Blue;
             chart4.Series.Add("regr");
             chart4.Series["regr"].ChartType = SeriesChartType.Line;
+            chart4.Series.Add("regr_int_nyzh");
+            chart4.Series["regr_int_nyzh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regr_int_nyzh"].Color = Color.Black;
+            chart4.Series.Add("regr_int_verh");
+            chart4.Series["regr_int_verh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regr_int_verh"].Color = Color.Black;
+            chart4.Series.Add("regr_nove_verh");
+            chart4.Series["regr_nove_verh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regr_nove_verh"].Color = Color.Red;
+            chart4.Series.Add("regr_nove_nyzh");
+            chart4.Series["regr_nove_nyzh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regr_nove_nyzh"].Color = Color.Red;
+            chart4.Series.Add("korelation");
+            chart4.Series["korelation"].ChartType = SeriesChartType.Point;
+            chart4.Series["korelation"].Color = Color.Blue;
+
             int N = X.Length;
+            for (int i = 0; i < N; i++)
+                chart4.Series["korelation"].Points.AddXY(X[i], Y[i]);
             double x_ser = ser_ar(X);
             double y_ser = ser_ar(Y);
             double sigX = Math.Sqrt(dispersion(X));
@@ -3154,338 +3255,131 @@ namespace po_laba1
             //a + bx
             double sigm = sigY * Math.Sqrt((N - 1) * (1 - kor * kor) / (N - 2));
 
-            chart4.Series.Add("regr_nyzh");
-            chart4.Series["regr_nyzh"].ChartType = SeriesChartType.Spline;
-            chart4.Series.Add("regr_verh");
-            chart4.Series["regr_verh"].ChartType = SeriesChartType.Spline;
+            double S_zal_kv = regression.SzalKvLinear(X, Y);
+            double disp_a = Math.Sqrt(S_zal_kv * (1 / N + x_ser * x_ser / (sigX * sigX * (N - 1))));
+            double disp_b = Math.Sqrt( S_zal_kv) / (sigma(X) * Math.Sqrt(N - 1));
+            dataGridView5.Rows.Add("Параметр 'а'", Math.Round(a - Quantil.StudentQuantil(X) * disp_a, 4), Math.Round(a, 4), Math.Round(a + Quantil.StudentQuantil(X) * disp_a, 4));
+            dataGridView5.Rows.Add("Параметр 'b'", Math.Round(b - Quantil.StudentQuantil(X) * disp_b, 4), Math.Round(b, 4), Math.Round(b + Quantil.StudentQuantil(X) * disp_b, 4));
 
+            double inter_disp = 0;
+            double nove_disp = 0;
             for (double i = X.Min(); i < X.Max(); i += 0.1)
             {
+                inter_disp = Math.Sqrt(sigm * sigm / N + Math.Pow(disp_b * (i - x_ser), 2));
+                chart4.Series["regr_int_verh"].Points.AddXY(i, a + b * i + Quantil.StudentQuantil(X) * inter_disp);
+                chart4.Series["regr_int_nyzh"].Points.AddXY(i, a + b * i - Quantil.StudentQuantil(X) * inter_disp);
+
+                nove_disp = Math.Sqrt(sigm * sigm * (1 + 1 / N) + Math.Pow(disp_b * (i - x_ser), 2));
+                chart4.Series["regr_nove_verh"].Points.AddXY(i, a + b * i + Quantil.StudentQuantil(X) * nove_disp);
+                chart4.Series["regr_nove_nyzh"].Points.AddXY(i, a + b * i - Quantil.StudentQuantil(X) * nove_disp);
                 chart4.Series["regr"].Points.AddXY(i, a + b * i);
-                chart4.Series["regr_nyzh"].Points.AddXY(i, a + b * i - Quantil.StudentQuantil(N, X) * sigm);
-                chart4.Series["regr_verh"].Points.AddXY(i, a + b * i + Quantil.StudentQuantil(N, X) * sigm);
+                chart4.Series["regr_nyzh"].Points.AddXY(i, a + b * i - Quantil.StudentQuantil(X) * sigm);
+                chart4.Series["regr_verh"].Points.AddXY(i, a + b * i + Quantil.StudentQuantil(X) * sigm);
             }
-        }
-    }
+            double koef_determ = (1 - S_zal_kv / Math.Pow(sigY, 2)) * 100;
+            dataGridView5.Rows.Add("Коефіцієнт детермінації(загальний випадок)", "", Math.Round(koef_determ, 4), "");
+            dataGridView5.Rows.Add("Коефіцієнт детермінації(лінійна регресія)", "", Math.Round(kor * kor * 100, 4), "");
 
-    public class Strfunc
-    {
-        static public int str_size(string str)
-        {
-            int i;
-            int count;
-
-            i = 0;
-            count = 0;
-            if (str == null)
-                return (0);
-            while (i != str.Length)
-            {
-                if (str[i] == '\t' || str[i] == ' ')
-                    i++;
-                while (i != str.Length && str[i] != ' ' && str[i] != '\t')
-                {
-                    i++;
-                    if (i == str.Length || str[i] == ' ' || str[i] == '\t')
-                        count++;
-                }
-            }
-            return (count);
-        }
-
-        int word_size(string str, int i)
-        {
-            int count;
-
-            count = 0;
-            while (i != str.Length && str[i] != ' ' && str[i] != '\t')
-            {
-                count++;
-                i++;
-            }
-            return (count);
-        }
-
-        static public string[] ft_split_whitespaces(string str)
-        {
-            string[] arr;
-            int i;
-            int j;
-
-            arr = new string[str_size(str)];
-            i = 0;
-            j = 0;
-            while (i != str.Length)
-            {
-                if ((str[i] == '\t' || str[i] == ' ') && (i != str.Length))
-                {
-                    i++;
-                    continue;
-                }
-                while (i != str.Length && str[i] != ' ' && str[i] != '\t')
-                    arr[j] += str[i++];
-                j++;
-            }
-            return (arr);
-        }
-    }
-
-    public class Quantil
-    {
-        static public double QuantilFishera(int N1, int N2)
-        {
-            double res;
-            double norm_kv = Quantil.NormalQuantil();
-            double sig = (1.0 / N1) + (1.0 / N2);
-            double delta = (1.0 / N1) - (1.0 / N2);
-            res = norm_kv * Math.Sqrt(sig / 2.0);
-            res -= (1.0 / 6) * delta * (Math.Pow(norm_kv, 2) + 2);
-            res += Math.Sqrt(sig / 2.0) * ((sig / 24) * (Math.Pow(norm_kv, 2) + 3 * norm_kv) + (1.0 / 72) * (delta * delta / sig) * (Math.Pow(norm_kv, 3) + 11 * norm_kv));
-            res -= (delta * sig / 120) * (Math.Pow(norm_kv, 4) + 9 * Math.Pow(norm_kv, 2) + 8);
-            res += Math.Pow(delta, 3) / (sig * 3240) * (3 * Math.Pow(norm_kv, 4) + 7 * Math.Pow(norm_kv, 2) - 16);
-            res += Math.Sqrt(sig / 2.0) * ((Math.Pow(sig, 2) / 1920) * (Math.Pow(norm_kv, 5) + 20 * Math.Pow(norm_kv, 3) + 15 * norm_kv) + (Math.Pow(delta, 4) / 2880) * (Math.Pow(norm_kv, 5) + 44 * Math.Pow(norm_kv, 3) + 183 * norm_kv) + (Math.Pow(delta, 4) / (155520 * sig * sig)) * (9 * Math.Pow(norm_kv, 5) - 284 * Math.Pow(norm_kv, 3) - 1513 * norm_kv));
-            res = Math.Exp(2 * res);
-            return res;
-        }
-
-        static public double NormalQuantil()
-        {
-            double p = 0.025;
-            double t = Math.Sqrt(Math.Log(1 / Math.Pow(p, 2)));
-            double Ealpha = 4.5 * Math.Pow(10, -4);
-            double c0 = 2.515517;
-            double c1 = 0.802853;
-            double c2 = 0.010328;
-            double d1 = 1.432788;
-            double d2 = 0.1892659;
-            double d3 = 0.001308;
-            double u = t - ((c0 + c1 * t + c2 * Math.Pow(t, 2)) / (1 + d1 * t + d2 * Math.Pow(t, 2) + d3 * Math.Pow(t, 3))) + Ealpha;
-            return u;
-        }
-
-        static public double NormalQuantil1(double p)
-        {
-            double t = Math.Sqrt(Math.Log(1 / Math.Pow(p, 2)));
-            double Ealpha = 4.5 * Math.Pow(10, -4);
-            double c0 = 2.515517;
-            double c1 = 0.802853;
-            double c2 = 0.010328;
-            double d1 = 1.432788;
-            double d2 = 0.1892659;
-            double d3 = 0.001308;
-            double u = t - ((c0 + c1 * t + c2 * Math.Pow(t, 2)) / (1 + d1 * t + d2 * Math.Pow(t, 2) + d3 * Math.Pow(t, 3))) + Ealpha;
-            return u;
-        }
-
-
-        static public double QuantilFishera1(double alpha, double v1, double v2)
-        {
-            double s = 1 / v1 + 1 / v2;
-            double d = 1 / v1 - 1 / v2;
-            double u = NormalQuantil1(alpha);
-            double z = u * Math.Sqrt(s / 2) - 1 / 6.0 * d * (u * u + 2) + Math.Sqrt(s / 2) * (s / 24.0 * (u * u + 3 * u) + 1 / 72.0 * d * d / s * (u * u * u + 11 * u));
-            z -= s * d / 120.0 * (Math.Pow(u, 4) + 9 * u * u + 8);
-            z += d * d * d / 3240 / s * (3 * Math.Pow(u, 4) + 7 * u * u - 16) + Math.Sqrt(s / 2) * (s * s / 1920.0 * (Math.Pow(u, 5) + 20 * u * u * u + 15 * u));
-            z += Math.Pow(d, 4) / 2880.0 * (Math.Pow(u, 5) + 44 * u * u * u + 183 * u) + Math.Pow(d, 4) / (155520.0 * s * s) * (9 * Math.Pow(u, 5) - 284 * u * u * u - 1513 * u);
-            return Math.Exp(2 * z);
-        }
-
-        static public double StudentQuantil(double sum, double[] A)
-        {
-            double g1 = (Math.Pow(NormalQuantil(), 3) + NormalQuantil()) / 4;
-            double g2 = (5 * Math.Pow(NormalQuantil(), 5) + 16 * Math.Pow(NormalQuantil(), 3) + 3 * NormalQuantil()) / 96;
-            double g3 = (3 * Math.Pow(NormalQuantil(), 7) + 19 * Math.Pow(NormalQuantil(), 5) + 17 * Math.Pow(NormalQuantil(), 3) + 15 * NormalQuantil()) / 384;
-            double g4 = (79 * Math.Pow(NormalQuantil(), 9) + 779 * Math.Pow(NormalQuantil(), 7) + 1482 * Math.Pow(NormalQuantil(), 5) + 1920 * Math.Pow(NormalQuantil(), 3) + 945 * NormalQuantil()) / 92160;
-            double SQ = NormalQuantil() + (g1 / start_moment(1, A) + (g2 / start_moment(2, A)) + (g3 / start_moment(3, A)) + (g4 / start_moment(4, A)));
-            return SQ;
-        }
-
-        static public double XIquantil(double[] arr)
-        {
-            double first = (1 - 2 / (9 * start_moment(1, arr)) + NormalQuantil() * Math.Sqrt(2 / (9 * start_moment(1, arr))));
-            double second = start_moment(1, arr) * Math.Pow(first, 3);
-            return second;
-        }
-
-        static public double start_moment(int k, double[] mass)
-        {
-            double nyu = 0;
-
-            for (int i = 0; i < mass.Length; i++)
-            {
-                nyu += Math.Pow(mass[i], k);
-            }
-            return nyu / mass.Length;
-        }
-
-        double central_moment(int k, double[] mass)
-        {
-            double myu = 0;
-
-            for (int i = 0; i < mass.Length; i++)
-            {
-                myu += Math.Pow(mass[i] - start_moment(1, mass), k);
-            }
-
-            return myu / mass.Length;
-        }
-    }
-
-    public class korelation
-    {
-        static public double ser_ar(double[] mass)
-        {
-            double ser_ar = 0;
-            double ga = 0;
-            for (int i = 0; i < mass.Length; i++)
-                ga += mass[i];
-
-            ser_ar = Math.Round(ga / mass.Length, 4);
-            return ser_ar;
-        }
-
-        static public double dispersion(double[] mass)
-        {
-
-            double[] mass_disp = new double[mass.Length];
-            for (int i = 0; i < mass.Length; i++)
-            {
-                mass_disp[i] = Math.Pow((mass[i] - korelation.ser_ar(mass)), 2);
-            }
-            double gb = 0;
-            for (int i = 0; i < mass_disp.Length; i++)
-                gb += mass_disp[i];
-            return Math.Round(gb / (mass_disp.Length - 1), 4);
-        }
-        static public double korel_vidn(double[] arr1)
-        {
-            int numclass = korelation.num_class(arr1);
-            double min = korelation.min1(arr1);
-            double disp = korelation.dispersion(arr1);
-            double step = (korelation.max1(arr1) - korelation.min1(arr1)) / korelation.num_class(arr1);
-            double sum = 0;
-
-            for (int i = 0; i < numclass; i++)
-            {
-                //MessageBox.Show(korelation.num_y(arr1, min, min + step).ToString() + " " + ser_ar(arr1).ToString() + " " + ser_y(arr1, min, min + step).ToString());
-                sum += korelation.num_y(arr1, min, min + step) * Math.Pow(ser_ar(arr1) - ser_y(arr1, min, min + step), 2);
-                min = min + step;
-            }
-            return Math.Sqrt(sum / (disp * (arr1.Length - 1)));
-        }
-
-        static double ser_y(double[] arr, double min, double max)
-        {
-            double sum = 0;
-            int num = 0;
-
-            for (int i = 0; i < arr.Length; i++)
-            {
-                if (arr[i] >= min && arr[i] <= max)
-                {
-                    sum += arr[i];
-                    num++;
-                }
-            }
-            return sum / num;
-        }
-
-        static int num_y(double[] arr, double min, double max)
-        {
-            int num = 0;
-
-            for (int i = 0; i < arr.Length; i++)
-            {
-                if (arr[i] >= min && arr[i] <= max)
-                    num++;
-            }
-            return (num);
-        }
-
-        public int num_entr(double[] X, double[] Y, int num)
-        {
-            int N = X.Length;
-            double minX = korelation.min1(X);
-            double minY = korelation.min1(Y);
-            int numclass = korelation.num_class(X);
-            double stepX = (korelation.max1(X) - korelation.min1(X)) / numclass;
-            double stepY = (korelation.max1(Y) - korelation.min1(Y)) / numclass;
-
-            for (int i = 0; i < numclass; i++)
-            {
-                if (X[num] >= minX && X[num] <= minX + stepX + 0.00005)
-                {
-
-                }
-                minX = minX + stepX;
-            }
-
-            return num;
-        }
-
-        static public void Sort(double[] X, double[] Y, int length)
-        {
-            double temp1 = 0;
-            double temp2 = 0;
-            bool exit = false;
-
-            while (!exit)
-            {
-                exit = true;
-                for (int i = 0; i < (length - 1); i++)
-                {
-                    if (X[i] > X[i + 1])
-                    {
-                        temp1 = X[i];
-                        X[i] = X[i + 1];
-                        X[i + 1] = temp1;
-
-                        temp2 = Y[i];
-                        Y[i] = Y[i + 1];
-                        Y[i + 1] = temp2;
-                        exit = false;
-                    }
-                }
-            }
-        }
-        static public int num_class(double[] arr)
-        {
-            int numclass = 0;
-            if (arr.Length < 100)
-            {
-                int kakaha = (int)Math.Truncate(Math.Sqrt(arr.Length));
-                if (kakaha % 2 == 0)
-                    numclass = kakaha - 1;
-                else
-                    numclass = kakaha;
-            }
+            double f_statistic = Math.Pow(sigm / sigY, 2);
+            string s = "Результат:\n";
+            if (f_statistic <= Quantil.QuantilFishera(N - 1, N - 3))
+                s += "\nЗа перевіркою адекватності відтвореної моделі регресії, модель є значущою.\n  Статистика F = " + Math.Round(f_statistic, 4).ToString() + "\n";
             else
+                s += "\nЗа перевіркою адекватності відтвореної моделі регресії, модель не є значущою.\n  Статистика F = " + Math.Round(f_statistic, 4).ToString() + "\n";
+            label25.Text = s;
+        }
+
+        //параболічна
+        private void button23_Click(object sender, EventArgs e)
+        {
+            dataGridView5.Rows.Clear();
+            chart4.Series.Clear();
+            chart4.Series.Add("korelation");
+            chart4.Series["korelation"].ChartType = SeriesChartType.Point;
+            chart4.Series["korelation"].Color = Color.Blue;
+
+            chart4.Series.Add("regression");
+            chart4.Series["regression"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regression"].Color = Color.Black;
+            chart4.Series.Add("regression_nyzh");
+            chart4.Series["regression_nyzh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regression_nyzh"].Color = Color.Red;
+            chart4.Series.Add("regression_verh");
+            chart4.Series["regression_verh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regression_verh"].Color = Color.Red;
+
+            int N = X.Length;
+            for (int i = 0; i < N; i++)
+                chart4.Series["korelation"].Points.AddXY(X[i], Y[i]);
+            double serX = ser_ar(X);
+            double serY = ser_ar(Y);
+            double sigmaX = ser_kvad_vidh(X);
+            double sigmaY = ser_kvad_vidh(Y);
+            double koefkor = korelation.koef_kor(X, Y);
+            double part2 = 0;
+            double part3 = 0;
+            double part4 = 0;
+            for (int i = 0; i < N; i++)
             {
-                double kakaha = Math.Truncate(Math.Pow(arr.Length, 1.0 / 3.0));
-                if (kakaha % 2 == 0)
-                    numclass = (int)kakaha - 1;
-                else
-                    numclass = (int)kakaha;
+                part2 += Math.Pow(X[i], 2);
+                part3 += Math.Pow(X[i], 3);
+                part4 += Math.Pow(X[i], 4);
             }
-            return numclass;
+            part2 = part2 / N;
+            part3 = part3 / N;
+            part4 = part4 / N;
+            double SomeKek = 0;
+            for (int i = 0; i < N; i++)
+                SomeKek += (X[i] * X[i] - part2) * (Y[i] - serY);
+            SomeKek = SomeKek / N;
+            double BigPart1 = 0, BigPart2 = 0;
+            BigPart1 = (part4 - part2 * part2) * koefkor * sigmaX * sigmaY - (part3 - part2 * serX) * SomeKek;
+            BigPart2 = sigmaX * sigmaX * (part4 - part2 * part2) - Math.Pow(part3 - part2 * serX, 2);
+            double B = BigPart1 / BigPart2;
+            BigPart1 = sigmaX * sigmaX * SomeKek - (part3 - part2 * serX) * koefkor * sigmaX * sigmaY;
+            BigPart2 = sigmaX * sigmaX * (part4 - part2 * part2) - Math.Pow(part3 - part2 * serX, 2);
+            double C = BigPart1 / BigPart2;
+            double A = serY - B * serX - C * part2;
+            double S_zal_kv = regression.SzalKvParabolic(X, Y);
+            double disp_a = S_zal_kv / Math.Sqrt(N);
+            double disp_b = S_zal_kv / (Math.Sqrt(N) * sigmaX);
+            double SOME = 0;
+            for (int i = 0; i < N; i++)
+                SOME += Math.Pow(regression.fi2(X, i), 2);
+            SOME = SOME / N;
+            double disp_c = S_zal_kv / Math.Sqrt(N * SOME);
+            for (double i = X.Min(); i < X.Max(); i += 0.1)
+            {
+                chart4.Series["regression"].Points.AddXY(i, A + B * i + C * i * i);
+            }/*
+            dataGridView5.Rows.Add("Параметр 'а'", Math.Round(A - Quantil.StudentQuantil(N, X) * disp_a, 4), Math.Round(A, 4), Math.Round(A + Quantil.StudentQuantil(N, X) * disp_a, 4));
+            dataGridView5.Rows.Add("Параметр 'b'", Math.Round(B - Quantil.StudentQuantil(N, X) * disp_b, 4), Math.Round(B, 4), Math.Round(B + Quantil.StudentQuantil(N, X) * disp_b, 4));
+            dataGridView5.Rows.Add("Параметр 'c'", Math.Round(C - Quantil.StudentQuantil(N, X) * disp_c, 4), Math.Round(C, 4), Math.Round(C + Quantil.StudentQuantil(N, X) * disp_c, 4));
+        */
+            double koef_determ = (1 - S_zal_kv / Math.Pow(sigmaY, 2)) * 100;
+            double korvidn = korelation.korel_vidn(X);
+            dataGridView5.Rows.Add("Коефіцієнт детермінації(загальний випадок)", "", Math.Round(koef_determ, 4), "");
+            dataGridView5.Rows.Add("Коефіцієнт детермінації(лінійна регресія)", "", Math.Round(korvidn * 100, 4), "");
+
         }
-        static public double max1(double[] A)
+
+        //квазілінійна
+        private void button24_Click(object sender, EventArgs e)
         {
-            double m = A[0];
-            int i = 0;
-            for (; i < A.Length; i++)
-                if (m < A[i])
-                    m = A[i];
-            return m;
+
         }
-        static public double min1(double[] A)
+
+        //порівняння двох
+        private void button25_Click(object sender, EventArgs e) 
         {
-            double m = A[0];
-            int i = 0;
-            for (; i < A.Length; i++)
-                if (m > A[i])
-                    m = A[i];
-            return m;
+            TwoRergessions window = new TwoRergessions(this);
+            window.ShowDialog(); 
+        }
+        
+        //перевірка на значущість
+        private void перевіркаЗначущостіToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("kek");
         }
     }
 }

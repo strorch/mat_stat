@@ -48,23 +48,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="dialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dialog.Designer.cs">
-      <DependentUpon>dialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="korelation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="dialog.resx">
-      <DependentUpon>dialog.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="Quantil.cs" />
+    <Compile Include="regression.cs" />
+    <Compile Include="RegrValid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegrValid.Designer.cs">
+      <DependentUpon>RegrValid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Strfunc.cs" />
+    <Compile Include="TwoRergessions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TwoRergessions.Designer.cs">
+      <DependentUpon>TwoRergessions.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -77,6 +84,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="RegrValid.resx">
+      <DependentUpon>RegrValid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TwoRergessions.resx">
+      <DependentUpon>TwoRergessions.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

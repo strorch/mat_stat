@@ -154,12 +154,17 @@
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.button22 = new System.Windows.Forms.Button();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.button25 = new System.Windows.Forms.Button();
+            this.button24 = new System.Windows.Forms.Button();
+            this.button23 = new System.Windows.Forms.Button();
             this.dataGridView6 = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button22 = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.перевіркаЗначущостіToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             this.toolStrip1.SuspendLayout();
@@ -192,9 +197,10 @@
             this.tabControl2.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).BeginInit();
             this.panel3.SuspendLayout();
             this.tabPage6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).BeginInit();
+            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // chart1
@@ -1234,9 +1240,10 @@
             // dataGridView5
             // 
             this.dataGridView5.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView5.ContextMenuStrip = this.contextMenuStrip2;
             this.dataGridView5.Location = new System.Drawing.Point(563, 432);
             this.dataGridView5.Name = "dataGridView5";
-            this.dataGridView5.Size = new System.Drawing.Size(460, 163);
+            this.dataGridView5.Size = new System.Drawing.Size(472, 163);
             this.dataGridView5.TabIndex = 3;
             // 
             // button20
@@ -1251,7 +1258,7 @@
             // 
             // textBox15
             // 
-            this.textBox15.Location = new System.Drawing.Point(353, 607);
+            this.textBox15.Location = new System.Drawing.Point(323, 607);
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(24, 20);
             this.textBox15.TabIndex = 1;
@@ -1259,7 +1266,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(123, 610);
+            this.label23.Location = new System.Drawing.Point(93, 610);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(194, 13);
             this.label23.TabIndex = 1;
@@ -1267,7 +1274,7 @@
             // 
             // textBox14
             // 
-            this.textBox14.Location = new System.Drawing.Point(323, 607);
+            this.textBox14.Location = new System.Drawing.Point(293, 607);
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(24, 20);
             this.textBox14.TabIndex = 0;
@@ -1303,7 +1310,7 @@
             this.chart3.ChartAreas.Add(chartArea3);
             this.chart3.Location = new System.Drawing.Point(6, 6);
             this.chart3.Name = "chart3";
-            this.chart3.Size = new System.Drawing.Size(486, 420);
+            this.chart3.Size = new System.Drawing.Size(498, 420);
             this.chart3.TabIndex = 27;
             this.chart3.Text = "chart3";
             // 
@@ -1313,7 +1320,7 @@
             this.chart4.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
             chartArea4.Name = "ChartArea1";
             this.chart4.ChartAreas.Add(chartArea4);
-            this.chart4.Location = new System.Drawing.Point(498, 6);
+            this.chart4.Location = new System.Drawing.Point(510, 6);
             this.chart4.Name = "chart4";
             series4.ChartArea = "ChartArea1";
             series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
@@ -1350,6 +1357,9 @@
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.button25);
+            this.tabPage8.Controls.Add(this.button24);
+            this.tabPage8.Controls.Add(this.button23);
             this.tabPage8.Controls.Add(this.dataGridView6);
             this.tabPage8.Controls.Add(this.button22);
             this.tabPage8.Controls.Add(this.panel3);
@@ -1368,9 +1378,62 @@
             this.tabPage8.Text = "Двовимірні дані";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
+            // button25
+            // 
+            this.button25.Location = new System.Drawing.Point(887, 605);
+            this.button25.Name = "button25";
+            this.button25.Size = new System.Drawing.Size(148, 23);
+            this.button25.TabIndex = 34;
+            this.button25.Text = "Порівняння двох регресій";
+            this.button25.UseVisualStyleBackColor = true;
+            this.button25.Click += new System.EventHandler(this.button25_Click);
+            // 
+            // button24
+            // 
+            this.button24.Location = new System.Drawing.Point(608, 605);
+            this.button24.Name = "button24";
+            this.button24.Size = new System.Drawing.Size(122, 23);
+            this.button24.TabIndex = 33;
+            this.button24.Text = "Квазілінійна регресія";
+            this.button24.UseVisualStyleBackColor = true;
+            this.button24.Click += new System.EventHandler(this.button24_Click);
+            // 
+            // button23
+            // 
+            this.button23.Location = new System.Drawing.Point(474, 605);
+            this.button23.Name = "button23";
+            this.button23.Size = new System.Drawing.Size(128, 23);
+            this.button23.TabIndex = 32;
+            this.button23.Text = "Параболічна регресія";
+            this.button23.UseVisualStyleBackColor = true;
+            this.button23.Click += new System.EventHandler(this.button23_Click);
+            // 
+            // dataGridView6
+            // 
+            this.dataGridView6.AllowUserToAddRows = false;
+            this.dataGridView6.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView6.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn8,
+            this.dataGridViewTextBoxColumn9});
+            this.dataGridView6.Location = new System.Drawing.Point(6, 432);
+            this.dataGridView6.Name = "dataGridView6";
+            this.dataGridView6.Size = new System.Drawing.Size(256, 163);
+            this.dataGridView6.TabIndex = 31;
+            this.dataGridView6.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView6_UserDeletingRow);
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.HeaderText = "Елемент";
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.HeaderText = "Значення";
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            // 
             // button22
             // 
-            this.button22.Location = new System.Drawing.Point(401, 605);
+            this.button22.Location = new System.Drawing.Point(365, 605);
             this.button22.Name = "button22";
             this.button22.Size = new System.Drawing.Size(103, 23);
             this.button22.TabIndex = 30;
@@ -1399,28 +1462,19 @@
             this.tabPage6.Text = "Усі дані";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
-            // dataGridView6
+            // contextMenuStrip2
             // 
-            this.dataGridView6.AllowUserToAddRows = false;
-            this.dataGridView6.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView6.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn8,
-            this.dataGridViewTextBoxColumn9});
-            this.dataGridView6.Location = new System.Drawing.Point(6, 432);
-            this.dataGridView6.Name = "dataGridView6";
-            this.dataGridView6.Size = new System.Drawing.Size(256, 163);
-            this.dataGridView6.TabIndex = 31;
-            this.dataGridView6.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView6_UserDeletingRow);
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.перевіркаЗначущостіToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(197, 26);
             // 
-            // dataGridViewTextBoxColumn8
+            // перевіркаЗначущостіToolStripMenuItem
             // 
-            this.dataGridViewTextBoxColumn8.HeaderText = "Елемент";
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            // 
-            // dataGridViewTextBoxColumn9
-            // 
-            this.dataGridViewTextBoxColumn9.HeaderText = "Значення";
-            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            this.перевіркаЗначущостіToolStripMenuItem.Name = "перевіркаЗначущостіToolStripMenuItem";
+            this.перевіркаЗначущостіToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.перевіркаЗначущостіToolStripMenuItem.Text = "Перевірка значущості";
+            this.перевіркаЗначущостіToolStripMenuItem.Click += new System.EventHandler(this.перевіркаЗначущостіToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -1484,10 +1538,11 @@
             this.tabPage7.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.tabPage6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).EndInit();
+            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1617,5 +1672,10 @@
         private System.Windows.Forms.DataGridView dataGridView6;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private System.Windows.Forms.Button button24;
+        private System.Windows.Forms.Button button23;
+        private System.Windows.Forms.Button button25;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem перевіркаЗначущостіToolStripMenuItem;
     }
 }
