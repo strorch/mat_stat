@@ -8,6 +8,116 @@ namespace po_laba1
 {
     class regression
     {
+        #region Validating statistic
+        private static int num_in_class(double[] X, double min, double step)
+        {
+            int num = 0;
+            for (int i = 0; i < X.Length; i++)
+            {
+                if (X[i] >= min && X[i] < min + step)
+                    num++;
+            }
+            return num;
+        }
+        public static double[]   SerArr(double[][] arr)
+        {
+            double[] new_arr = new double[arr.Length];
+            for (int i = 0; i < arr.Length; i++)
+                new_arr[i] = korelation.ser_ar(arr[i]);
+            return new_arr;
+        }
+        public static double[][] VidnArr(double[] X, double[] Y)
+        {
+            int numclass = korelation.num_class(X);
+            double[][] new_arr = new double[numclass][];
+            double minX = X.Min();
+            double maxX = X.Max();
+            double step = (maxX - minX) / numclass;
+            for (int i = 0; i < numclass; i++)
+            {
+                new_arr[i] = new double[regression.num_in_class(X, minX, step)];
+                int k = 0;
+                for (int j = 0; j < X.Length; j++)
+                {
+                    if (X[j] >= minX && X[j] < minX + step)
+                    {
+                        new_arr[i][k] = Y[j];
+                        k++;
+                    }
+                }
+                minX = minX + step;
+            }
+            return (new_arr);
+        }
+        public static int[] ArrNumbers(double[] X, double[] Y)
+        {
+            int numclass = korelation.num_class(X);
+            int[] num = new int[numclass];
+            double minX = X.Min();
+            double maxX = X.Max();
+            double step = (maxX - minX) / numclass;
+            for (int i = 0; i < numclass; i++)
+            {
+                num[i] = regression.num_in_class(X, minX, step);
+                minX = minX + step;
+            }
+            return num;
+        }
+        static double C(double[] X, double[] Y)
+        {
+            int N = X.Length;
+            int numclass = korelation.num_class(X);
+            int[] arrnum = ArrNumbers(X, Y);
+            double sum = 0;
+            for (int i = 0; i < numclass; i++)
+            {
+                sum += 1 / (double)arrnum[i];
+            }
+            return 1 + (sum - 1 / N) / (3 * (numclass - 1));
+        }
+        static double DispKvXY(double[] Yarr, double serY, double num)
+        {
+            double sum = 0;
+            for (int i = 0; i < num; i++)
+            {
+                sum += Math.Pow(Yarr[i] - serY, 2);
+            }
+            sum = sum / num;
+            return sum;
+        }
+        static double DispKv(double[] X, double[] Y)
+        {
+            int N = X.Length;
+            int[] numbs = ArrNumbers(X, Y);
+            double sum = 0;
+            int numclass = korelation.num_class(X);
+            double[][] ARR = VidnArr(X, Y);
+            double[] SER_Arr = SerArr(ARR);
+            for (int i = 0; i < numclass; i++)
+            {
+                sum += (numbs[i] - 1) * DispKvXY(ARR[i], SER_Arr[i], numbs[i]);
+            }
+            sum = sum / (N - numclass);
+            return sum;
+        }
+        public static double  RegresStat(double[] X, double[] Y)
+        {
+            double[][] MAIN_Arr = VidnArr(X, Y);
+            double[] SER_Arr = SerArr(MAIN_Arr);
+            int numclass = korelation.num_class(X);
+            double C = regression.C(X, Y);
+            double sum = 0;
+            int[] ARR_N = ArrNumbers(X, Y);
+            double DispKv = regression.DispKv(X, Y);
+            for (int i = 0; i < numclass; i++)
+            {
+                double DispKvXY = regression.DispKvXY(MAIN_Arr[i], SER_Arr[i], ARR_N[i]);
+                sum += ARR_N[i] * Math.Log(DispKvXY / DispKv);
+            }
+            return sum / (-C);
+        }
+        #endregion
+
         public static double  SzalKvLinear(double[] X, double[] Y)
         {
             int N = X.Length;

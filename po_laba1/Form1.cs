@@ -3257,7 +3257,7 @@ namespace po_laba1
 
             double S_zal_kv = regression.SzalKvLinear(X, Y);
             double disp_a = Math.Sqrt(S_zal_kv * (1 / N + x_ser * x_ser / (sigX * sigX * (N - 1))));
-            double disp_b = Math.Sqrt( S_zal_kv) / (sigma(X) * Math.Sqrt(N - 1));
+            double disp_b = Math.Sqrt( S_zal_kv) / (sigX * Math.Sqrt(N - 1));
             dataGridView5.Rows.Add("Параметр 'а'", Math.Round(a - Quantil.StudentQuantil(X) * disp_a, 4), Math.Round(a, 4), Math.Round(a + Quantil.StudentQuantil(X) * disp_a, 4));
             dataGridView5.Rows.Add("Параметр 'b'", Math.Round(b - Quantil.StudentQuantil(X) * disp_b, 4), Math.Round(b, 4), Math.Round(b + Quantil.StudentQuantil(X) * disp_b, 4));
 
@@ -3282,6 +3282,17 @@ namespace po_laba1
 
             double f_statistic = Math.Pow(sigm / sigY, 2);
             string s = "Результат:\n";
+
+            double regr_stat = regression.RegresStat(X, Y);
+            numclass = korelation.num_class(X);
+            if (regr_stat <= Quantil.XIquantil(numclass - 1))
+                s += "За початковими умовами регресійного аналізу, модель має регресійну залежність.\n" +
+                    "  Статистика A = " + Math.Round(regr_stat, 4).ToString() + "\n" +
+                    "  Квантиль Хі = " + Math.Round(Quantil.XIquantil(numclass - 1), 4).ToString() + "\n";
+            else
+                s += "За початковими умовами регресійного аналізу, модель не має регресійної залежності.\n" +
+                       "  Статистика A = " + Math.Round(regr_stat, 4).ToString() + "\n" +
+                       "  Квантиль Хі = " + Math.Round(Quantil.XIquantil(numclass - 1), 4).ToString() + "\n";
             if (f_statistic <= Quantil.QuantilFishera(N - 1, N - 3))
                 s += "\nЗа перевіркою адекватності відтвореної моделі регресії, модель є значущою.\n  Статистика F = " + Math.Round(f_statistic, 4).ToString() + "\n";
             else
@@ -3379,7 +3390,8 @@ namespace po_laba1
         //перевірка на значущість
         private void перевіркаЗначущостіToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("kek");
+            RegrValid window = new RegrValid(X, Y);
+            window.ShowDialog();
         }
     }
 }
