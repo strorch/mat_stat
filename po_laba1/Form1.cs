@@ -2717,10 +2717,14 @@ namespace po_laba1
                 minX = minX + stepX;
                 minY = korelation.min1(Y);
             }
+            List<double> elem = new List<double>();
             double[,] perv_oc_nn = pervynna_ocinka;
             for (int i = 0; i < numclass; i++)
                 for (int j = 0; j < numclass; j++)
+                {
                     pervynna_ocinka[i, j] = pervynna_ocinka[i, j] / N;
+                    elem.Add(pervynna_ocinka[i, j]);
+                }
             Series[,] series = new Series[numclass, numclass];
             for (int i = 0; i < numclass; i++)
                 for (int j = 0; j < numclass; j++)
@@ -2733,7 +2737,7 @@ namespace po_laba1
                             series[i, j].Points.AddXY(korelation.min1(X) + (i + 1) * stepX, korelation.min1(Y) + j * stepY + (stepY * k) / 100.0);
                         }
                         series[i, j].ChartType = SeriesChartType.Line;
-                        series[i, j].Color = Color.FromArgb(255, 255 - (int)(255 * pervynna_ocinka[i, j]), 255 - (int)(255 * pervynna_ocinka[i, j]), 255 - (int)(255 * pervynna_ocinka[i, j]));
+                        series[i, j].Color = Color.FromArgb(255, 255 - (int)(255 * pervynna_ocinka[i, j] / elem.Max()), 255 - (int)(255 * pervynna_ocinka[i, j] / elem.Max()), 255 - (int)(255 * pervynna_ocinka[i, j] / elem.Max()));
                         chart3.Series.Add(series[i, j]);
                     }
             if (N <= 3000)
@@ -3516,6 +3520,67 @@ namespace po_laba1
         private void button26_Click(object sender, EventArgs e)
         {
             Transformation wind = new Transformation(X, Y);
+            wind.ShowDialog();
+        }
+
+        //palitra
+        private void chart3_Click(object sender, EventArgs e)
+        {
+            int N = X.Length;
+            int numclass = korelation.num_class(X);
+            double stepX = (korelation.max1(X) - korelation.min1(X)) / korelation.num_class(X);
+            double stepY = (korelation.max1(Y) - korelation.min1(Y)) / korelation.num_class(X);
+            double minX = korelation.min1(X);
+            double minY = korelation.min1(Y);
+            double[,] pervynna_ocinka = new double[numclass, numclass];
+            for (int x = 0; x < numclass; x++)
+            {
+                for (int y = 0; y < numclass; y++)
+                {
+                    for (int i = 0; i < N; i++)
+                        if ((X[i] >= minX && X[i] <= minX + stepX + 0.00005) && (Y[i] >= minY && Y[i] <= minY + stepY + 0.00005))
+                            pervynna_ocinka[x, y]++;
+                    minY = minY + stepY;
+                }
+                minX = minX + stepX;
+                minY = korelation.min1(Y);
+            }
+            List<double> elements = new List<double>();
+            double[,] perv_oc_nn = pervynna_ocinka;
+            for (int i = 0; i < numclass; i++)
+                for (int j = 0; j < numclass; j++)
+                {
+                    pervynna_ocinka[i, j] = pervynna_ocinka[i, j] / N;
+                    elements.Add(pervynna_ocinka[i, j]);
+                }
+
+            double cl = 0, step = elements.Max(), p = elements.Max();
+            step /= 7d;
+            Color[] colors = new Color[7];
+            var tuple1 = Tuple.Create(cl, step);
+            //panel.backcolor
+            //label1.Text = cl + " - " + (cl + step);
+            colors[0] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            cl += step;
+            //label2.Text = cl + " - " + (cl + step);
+            colors[1] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            cl += step;
+            //label3.Text = cl + " - " + (cl + step);
+            colors[2] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            cl += step;
+            //label4.Text = cl + " - " + (cl + step);
+            colors[3] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            cl += step;
+            // label5.Text = cl + " - " + (cl + step);
+            colors[4] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            cl += step;
+            // label6.Text = cl + " - " + (cl + step);
+            colors[5] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            cl += step;
+            // label7.Text = cl + " - " + (cl + step);
+            colors[6] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            cl += step;
+            Palitra wind = new Palitra(colors, tuple1);
             wind.ShowDialog();
         }
     }
