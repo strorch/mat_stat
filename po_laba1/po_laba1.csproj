@@ -66,6 +66,12 @@
       <DependentUpon>RegrValid.cs</DependentUpon>
     </Compile>
     <Compile Include="Strfunc.cs" />
+    <Compile Include="Transformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Transformation.Designer.cs">
+      <DependentUpon>Transformation.cs</DependentUpon>
+    </Compile>
     <Compile Include="TwoRergessions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +92,9 @@
     </Compile>
     <EmbeddedResource Include="RegrValid.resx">
       <DependentUpon>RegrValid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation.resx">
+      <DependentUpon>Transformation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TwoRergessions.resx">
       <DependentUpon>TwoRergessions.cs</DependentUpon>

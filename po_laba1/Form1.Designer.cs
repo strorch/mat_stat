@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -143,6 +143,8 @@
             this.побудуватиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.видалитиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView5 = new System.Windows.Forms.DataGridView();
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.перевіркаЗначущостіToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button20 = new System.Windows.Forms.Button();
             this.textBox15 = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
@@ -163,8 +165,7 @@
             this.button22 = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.перевіркаЗначущостіToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button26 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             this.toolStrip1.SuspendLayout();
@@ -191,6 +192,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).BeginInit();
+            this.contextMenuStrip2.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart4)).BeginInit();
@@ -200,24 +202,23 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).BeginInit();
             this.panel3.SuspendLayout();
             this.tabPage6.SuspendLayout();
-            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // chart1
             // 
             this.chart1.BorderlineColor = System.Drawing.Color.Black;
             this.chart1.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea1.AxisX.Title = "x";
-            chartArea1.AxisY.Title = "f(x)";
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
+            chartArea5.AxisX.Title = "x";
+            chartArea5.AxisY.Title = "f(x)";
+            chartArea5.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea5);
             this.chart1.Location = new System.Drawing.Point(508, 16);
             this.chart1.Name = "chart1";
-            series1.BorderColor = System.Drawing.Color.Black;
-            series1.ChartArea = "ChartArea1";
-            series1.CustomProperties = "PointWidth=1";
-            series1.Name = "his";
-            this.chart1.Series.Add(series1);
+            series5.BorderColor = System.Drawing.Color.Black;
+            series5.ChartArea = "ChartArea1";
+            series5.CustomProperties = "PointWidth=1";
+            series5.Name = "his";
+            this.chart1.Series.Add(series5);
             this.chart1.Size = new System.Drawing.Size(523, 420);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -260,21 +261,21 @@
             // 
             this.chart2.BorderlineColor = System.Drawing.Color.Black;
             this.chart2.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea2.AxisX.Title = "x";
-            chartArea2.AxisY.Title = "F(x)";
-            chartArea2.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea2);
+            chartArea6.AxisX.Title = "x";
+            chartArea6.AxisY.Title = "F(x)";
+            chartArea6.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea6);
             this.chart2.Location = new System.Drawing.Point(0, 16);
             this.chart2.Name = "chart2";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StepLine;
-            series2.LabelBorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
-            series2.Name = "Series1";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series3.Name = "Series2";
-            this.chart2.Series.Add(series2);
-            this.chart2.Series.Add(series3);
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StepLine;
+            series6.LabelBorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
+            series6.Name = "Series1";
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series7.Name = "Series2";
+            this.chart2.Series.Add(series6);
+            this.chart2.Series.Add(series7);
             this.chart2.Size = new System.Drawing.Size(502, 420);
             this.chart2.TabIndex = 9;
             this.chart2.Text = "chart2";
@@ -1246,6 +1247,20 @@
             this.dataGridView5.Size = new System.Drawing.Size(472, 163);
             this.dataGridView5.TabIndex = 3;
             // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.перевіркаЗначущостіToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(197, 26);
+            // 
+            // перевіркаЗначущостіToolStripMenuItem
+            // 
+            this.перевіркаЗначущостіToolStripMenuItem.Name = "перевіркаЗначущостіToolStripMenuItem";
+            this.перевіркаЗначущостіToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.перевіркаЗначущостіToolStripMenuItem.Text = "Перевірка значущості";
+            this.перевіркаЗначущостіToolStripMenuItem.Click += new System.EventHandler(this.перевіркаЗначущостіToolStripMenuItem_Click);
+            // 
             // button20
             // 
             this.button20.Location = new System.Drawing.Point(12, 602);
@@ -1306,8 +1321,8 @@
             // 
             this.chart3.BorderlineColor = System.Drawing.Color.Black;
             this.chart3.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea3.Name = "ChartArea1";
-            this.chart3.ChartAreas.Add(chartArea3);
+            chartArea7.Name = "ChartArea1";
+            this.chart3.ChartAreas.Add(chartArea7);
             this.chart3.Location = new System.Drawing.Point(6, 6);
             this.chart3.Name = "chart3";
             this.chart3.Size = new System.Drawing.Size(498, 420);
@@ -1318,14 +1333,14 @@
             // 
             this.chart4.BorderlineColor = System.Drawing.Color.Black;
             this.chart4.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea4.Name = "ChartArea1";
-            this.chart4.ChartAreas.Add(chartArea4);
+            chartArea8.Name = "ChartArea1";
+            this.chart4.ChartAreas.Add(chartArea8);
             this.chart4.Location = new System.Drawing.Point(510, 6);
             this.chart4.Name = "chart4";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series4.Name = "Series1";
-            this.chart4.Series.Add(series4);
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series8.Name = "Series1";
+            this.chart4.Series.Add(series8);
             this.chart4.Size = new System.Drawing.Size(525, 420);
             this.chart4.TabIndex = 28;
             this.chart4.Text = "chart4";
@@ -1357,6 +1372,7 @@
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.button26);
             this.tabPage8.Controls.Add(this.button25);
             this.tabPage8.Controls.Add(this.button24);
             this.tabPage8.Controls.Add(this.button23);
@@ -1390,7 +1406,7 @@
             // 
             // button24
             // 
-            this.button24.Location = new System.Drawing.Point(608, 605);
+            this.button24.Location = new System.Drawing.Point(759, 605);
             this.button24.Name = "button24";
             this.button24.Size = new System.Drawing.Size(122, 23);
             this.button24.TabIndex = 33;
@@ -1400,7 +1416,7 @@
             // 
             // button23
             // 
-            this.button23.Location = new System.Drawing.Point(474, 605);
+            this.button23.Location = new System.Drawing.Point(625, 605);
             this.button23.Name = "button23";
             this.button23.Size = new System.Drawing.Size(128, 23);
             this.button23.TabIndex = 32;
@@ -1433,7 +1449,7 @@
             // 
             // button22
             // 
-            this.button22.Location = new System.Drawing.Point(365, 605);
+            this.button22.Location = new System.Drawing.Point(516, 605);
             this.button22.Name = "button22";
             this.button22.Size = new System.Drawing.Size(103, 23);
             this.button22.TabIndex = 30;
@@ -1462,19 +1478,15 @@
             this.tabPage6.Text = "Усі дані";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
-            // contextMenuStrip2
+            // button26
             // 
-            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.перевіркаЗначущостіToolStripMenuItem});
-            this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(197, 26);
-            // 
-            // перевіркаЗначущостіToolStripMenuItem
-            // 
-            this.перевіркаЗначущостіToolStripMenuItem.Name = "перевіркаЗначущостіToolStripMenuItem";
-            this.перевіркаЗначущостіToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.перевіркаЗначущостіToolStripMenuItem.Text = "Перевірка значущості";
-            this.перевіркаЗначущостіToolStripMenuItem.Click += new System.EventHandler(this.перевіркаЗначущостіToolStripMenuItem_Click);
+            this.button26.Location = new System.Drawing.Point(371, 605);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(89, 23);
+            this.button26.TabIndex = 35;
+            this.button26.Text = "Перетворення";
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.button26_Click);
             // 
             // Form1
             // 
@@ -1489,7 +1501,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Лабораторна робота №3";
+            this.Text = "Математична статистика";
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
             this.toolStrip1.ResumeLayout(false);
@@ -1530,6 +1542,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).EndInit();
+            this.contextMenuStrip2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart3)).EndInit();
@@ -1542,7 +1555,6 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.tabPage6.ResumeLayout(false);
-            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1677,5 +1689,6 @@
         private System.Windows.Forms.Button button25;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem перевіркаЗначущостіToolStripMenuItem;
+        private System.Windows.Forms.Button button26;
     }
 }

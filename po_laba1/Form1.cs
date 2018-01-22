@@ -562,7 +562,7 @@ namespace po_laba1
             for (int i = 0; i < mass.Length; i++)
                 ga += mass[i];
 
-            ser_ar = Math.Round(ga / mass.Length, 4);
+            ser_ar = Math.Round(ga / (double)mass.Length, 4);
             return ser_ar;
         }
 
@@ -612,12 +612,12 @@ namespace po_laba1
             double gb = 0;
             for (int i = 0; i < mass_disp.Length; i++)
                 gb += mass_disp[i];
-            return Math.Round(gb / (mass_disp.Length - 1), 4);
+            return gb / (double)(mass_disp.Length - 1);
         }
 
         public double ser_kvad_vidh(double[] mass)
         {
-            return Math.Round(Math.Sqrt(dispersion(mass)), 4);
+            return Math.Sqrt(dispersion(mass));
         }
 
         public double MAD(double[] mass)
@@ -2733,7 +2733,7 @@ namespace po_laba1
                             series[i, j].Points.AddXY(korelation.min1(X) + (i + 1) * stepX, korelation.min1(Y) + j * stepY + (stepY * k) / 100.0);
                         }
                         series[i, j].ChartType = SeriesChartType.Line;
-                        series[i, j].Color = Color.FromArgb(240, 240 - (int)(240 * pervynna_ocinka[i, j]), 240 - (int)(240 * pervynna_ocinka[i, j]), 240 - (int)(255 * pervynna_ocinka[i, j]));
+                        series[i, j].Color = Color.FromArgb(255, 255 - (int)(255 * pervynna_ocinka[i, j]), 255 - (int)(255 * pervynna_ocinka[i, j]), 255 - (int)(255 * pervynna_ocinka[i, j]));
                         chart3.Series.Add(series[i, j]);
                     }
             if (N <= 3000)
@@ -3318,6 +3318,18 @@ namespace po_laba1
             chart4.Series.Add("regression_verh");
             chart4.Series["regression_verh"].ChartType = SeriesChartType.Spline;
             chart4.Series["regression_verh"].Color = Color.Red;
+            chart4.Series.Add("regression_int_verh");
+            chart4.Series["regression_int_verh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regression_int_verh"].Color = Color.Green;
+            chart4.Series.Add("regression_int_nyzh");
+            chart4.Series["regression_int_nyzh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regression_int_nyzh"].Color = Color.Green;
+            chart4.Series.Add("regression_nove_verh");
+            chart4.Series["regression_nove_verh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regression_nove_verh"].Color = Color.Yellow;
+            chart4.Series.Add("regression_nove_nyzh");
+            chart4.Series["regression_nove_nyzh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regression_nove_nyzh"].Color = Color.Yellow;
 
             int N = X.Length;
             for (int i = 0; i < N; i++)
@@ -3351,22 +3363,35 @@ namespace po_laba1
             BigPart2 = sigmaX * sigmaX * (part4 - part2 * part2) - Math.Pow(part3 - part2 * serX, 2);
             double C = BigPart1 / BigPart2;
             double A = serY - B * serX - C * part2;
-            double S_zal_kv = regression.SzalKvParabolic(X, Y);
-            double disp_a = S_zal_kv / Math.Sqrt(N);
-            double disp_b = S_zal_kv / (Math.Sqrt(N) * sigmaX);
             double SOME = 0;
             for (int i = 0; i < N; i++)
                 SOME += Math.Pow(regression.fi2(X, i), 2);
             SOME = SOME / N;
+      
+            double S_zal_kv = Math.Sqrt(regression.SzalKvParabolic(X, Y));
+            double disp_a = S_zal_kv / Math.Sqrt(N);
+            double disp_b = S_zal_kv / (Math.Sqrt(N) * sigmaX);
             double disp_c = S_zal_kv / Math.Sqrt(N * SOME);
+
+            double inter_disp = 0;
             for (double i = X.Min(); i < X.Max(); i += 0.1)
             {
                 chart4.Series["regression"].Points.AddXY(i, A + B * i + C * i * i);
-            }/*
-            dataGridView5.Rows.Add("Параметр 'а'", Math.Round(A - Quantil.StudentQuantil(N, X) * disp_a, 4), Math.Round(A, 4), Math.Round(A + Quantil.StudentQuantil(N, X) * disp_a, 4));
-            dataGridView5.Rows.Add("Параметр 'b'", Math.Round(B - Quantil.StudentQuantil(N, X) * disp_b, 4), Math.Round(B, 4), Math.Round(B + Quantil.StudentQuantil(N, X) * disp_b, 4));
-            dataGridView5.Rows.Add("Параметр 'c'", Math.Round(C - Quantil.StudentQuantil(N, X) * disp_c, 4), Math.Round(C, 4), Math.Round(C + Quantil.StudentQuantil(N, X) * disp_c, 4));
-        */
+                chart4.Series["regression_nyzh"].Points.AddXY(i, A + B * i + C * i * i - Quantil.StudentQuantil1(N - 2) * S_zal_kv);
+                chart4.Series["regression_verh"].Points.AddXY(i, A + B * i + C * i * i + Quantil.StudentQuantil1(N - 2) * S_zal_kv);
+                inter_disp = (S_zal_kv / Math.Sqrt(N)) * Math.Sqrt(1 + Math.Pow(regression.fi1(X, i) / sigmaX, 2) + Math.Pow(regression.fi2(X, i), 2) / SOME);
+                chart4.Series["regression_int_nyzh"].Points.AddXY(i, A + B * i + C * i * i - Quantil.StudentQuantil1(N - 2) * inter_disp);
+                chart4.Series["regression_int_verh"].Points.AddXY(i, A + B * i + C * i * i + Quantil.StudentQuantil1(N - 2) * inter_disp);
+                inter_disp = (S_zal_kv / Math.Sqrt(N)) * Math.Sqrt(1 + N + Math.Pow(regression.fi1(X, i) / sigmaX, 2) + Math.Pow(regression.fi2(X, i), 2) / SOME);
+                chart4.Series["regression_nove_nyzh"].Points.AddXY(i, A + B * i + C * i * i - Quantil.StudentQuantil1(N - 2) * inter_disp);
+                chart4.Series["regression_nove_verh"].Points.AddXY(i, A + B * i + C * i * i + Quantil.StudentQuantil1(N - 2) * inter_disp);
+            }
+
+            var TupleArgs = regression.Params(X, Y);
+            dataGridView5.Rows.Add("Параметр 'а'", Math.Round(TupleArgs.Item1 - Quantil.StudentQuantil1(N - 3) * disp_a, 4), Math.Round(TupleArgs.Item1, 4), Math.Round(TupleArgs.Item1 + Quantil.StudentQuantil1(N - 3) * disp_a, 4));
+            dataGridView5.Rows.Add("Параметр 'b'", Math.Round(TupleArgs.Item2 - Quantil.StudentQuantil1(N - 3) * disp_b, 4), Math.Round(TupleArgs.Item2, 4), Math.Round(TupleArgs.Item2 + Quantil.StudentQuantil1(N - 3) * disp_b, 4));
+            dataGridView5.Rows.Add("Параметр 'c'", Math.Round(TupleArgs.Item3 - Quantil.StudentQuantil1(N - 3) * disp_c, 4), Math.Round(TupleArgs.Item3, 4), Math.Round(TupleArgs.Item3 + Quantil.StudentQuantil1(N - 3) * disp_c, 4));
+        
             double koef_determ = (1 - S_zal_kv / Math.Pow(sigmaY, 2)) * 100;
             double korvidn = korelation.korel_vidn(X);
             dataGridView5.Rows.Add("Коефіцієнт детермінації(загальний випадок)", "", Math.Round(koef_determ, 4), "");
@@ -3377,11 +3402,104 @@ namespace po_laba1
         //квазілінійна
         private void button24_Click(object sender, EventArgs e)
         {
+            int N = X.Length;
+            chart4.Series.Clear();
+            chart4.Series.Add("korelation");
+            chart4.Series["korelation"].ChartType = SeriesChartType.Point;
+            chart4.Series["korelation"].Color = Color.Blue;
+            chart4.Series.Add("regr");
+            chart4.Series["regr"].ChartType = SeriesChartType.Line;
+            chart4.Series.Add("regr_nyzh");
+            chart4.Series["regr_nyzh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regr_nyzh"].Color = Color.Black;
+            chart4.Series.Add("regr_verh");
+            chart4.Series["regr_verh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regr_verh"].Color = Color.Black;
+            chart4.Series.Add("regr_int_verh");
+            chart4.Series["regr_int_verh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regr_int_verh"].Color = Color.Red;
+            chart4.Series.Add("regr_int_nyzh");
+            chart4.Series["regr_int_nyzh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regr_int_nyzh"].Color = Color.Red;
+            chart4.Series.Add("regr_nove_nyzh");
+            chart4.Series["regr_nove_nyzh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regr_nove_nyzh"].Color = Color.Green;
+            chart4.Series.Add("regr_nove_verh");
+            chart4.Series["regr_nove_verh"].ChartType = SeriesChartType.Spline;
+            chart4.Series["regr_nove_verh"].Color = Color.Green;
+            for (int i = 0; i < N; i++)
+                chart4.Series["korelation"].Points.AddXY(X[i], Y[i]);
+            double[] NewX = new double[N];
+            double[] NewY = new double[N];
+            Array.Copy(X, NewX, N);
+            Array.Copy(Y, NewY, N);
+            for (int i = 0; i < N; i++)
+            {
+                if (NewX[i] <= 0 || NewY[i] <= 0)
+                {
+                    MessageBox.Show("Неможливо порахувати логарифм!");
+                    return;
+                }
+                NewX[i] = 1 / NewX[i];
+                NewY[i] = Math.Log(NewY[i]);
+            }
+            dataGridView5.Rows.Clear();
+            double x_ser = ser_ar(NewX);
+            double y_ser = ser_ar(NewY);
+            double sigX = ser_kvad_vidh(NewX);
+            double sigY = ser_kvad_vidh(NewY);
+            double kor = koef_kor(NewX, NewY);
+            double b = kor * sigY / sigX;
+            double a = y_ser - b * x_ser;
+            double sigm = sigY * Math.Sqrt((N - 1) * (1 - kor * kor) / (N - 2));
 
+            double S_zal_kv = regression.SzalKvLinear(NewX, NewY);
+            double disp_a = Math.Sqrt(S_zal_kv * (1 / N + x_ser * x_ser / (sigX * sigX * (N - 1))));
+            double disp_b = Math.Sqrt(S_zal_kv) / (sigX * Math.Sqrt(N - 1));
+            double inter_disp = 0;
+            double nove_disp = 0;
+            for (double i = X.Min(); i <= X.Max(); i += 0.1)
+            {
+                inter_disp = Math.Sqrt(S_zal_kv / N + Math.Pow(disp_b * (i - x_ser), 2));
+                double kek = Math.Exp(a + b / i);
+                chart4.Series["regr"].Points.AddXY(i, kek);
+                double lol = Quantil.StudentQuantil1(N - 2) * inter_disp;
+                chart4.Series["regr_nyzh"].Points.AddXY(i, kek - lol);
+                chart4.Series["regr_verh"].Points.AddXY(i, kek + lol);
+                chart4.Series["regr_nove_nyzh"].Points.AddXY(i, kek - Quantil.StudentQuantil(X) * sigm);
+                chart4.Series["regr_nove_verh"].Points.AddXY(i, kek + Quantil.StudentQuantil(X) * sigm);
+                nove_disp = Math.Sqrt(sigm * sigm * (1 + 1 / N) + Math.Pow(disp_b * (i - x_ser), 2));
+                chart4.Series["regr_int_verh"].Points.AddXY(i, a + b * i + Quantil.StudentQuantil(X) * nove_disp);
+                chart4.Series["regr_int_nyzh"].Points.AddXY(i, a + b * i - Quantil.StudentQuantil(X) * nove_disp);
+            }
+            dataGridView5.Rows.Add("Параметр 'а'", Math.Round(a - Quantil.StudentQuantil(X) * disp_a, 4), Math.Round(a, 4), Math.Round(a + Quantil.StudentQuantil(X) * disp_a, 4));
+            dataGridView5.Rows.Add("Параметр 'b'", Math.Round(b - Quantil.StudentQuantil(X) * disp_b, 4), Math.Round(b, 4), Math.Round(b + Quantil.StudentQuantil(X) * disp_b, 4));
+            double koef_determ = (1 - S_zal_kv / Math.Pow(sigY, 2)) * 100;
+            dataGridView5.Rows.Add("Коефіцієнт детермінації(загальний випадок)", "", Math.Round(koef_determ, 4), "");
+            dataGridView5.Rows.Add("Коефіцієнт детермінації(лінійна регресія)", "", Math.Round(kor * kor * 100, 4), "");
+
+            string s = "Результат:\n";
+
+            double regr_stat = regression.RegresStat(NewX, NewY);
+            numclass = korelation.num_class(X);
+            if (regr_stat <= Quantil.XIquantil(numclass - 1))
+                s += "За початковими умовами регресійного аналізу, модель має регресійну залежність.\n" +
+                    "  Статистика A = " + Math.Round(regr_stat, 4).ToString() + "\n" +
+                    "  Квантиль Хі = " + Math.Round(Quantil.XIquantil(numclass - 1), 4).ToString() + "\n";
+            else
+                s += "За початковими умовами регресійного аналізу, модель не має регресійної залежності.\n" +
+                       "  Статистика A = " + Math.Round(regr_stat, 4).ToString() + "\n" +
+                       "  Квантиль Хі = " + Math.Round(Quantil.XIquantil(numclass - 1), 4).ToString() + "\n";
+            double f_statistic = Math.Pow(sigm / sigY, 2);
+            if (f_statistic <= Quantil.QuantilFishera(N - 1, N - 3))
+                s += "\nЗа перевіркою адекватності відтвореної моделі регресії, модель є значущою.\n  Статистика F = " + Math.Round(f_statistic, 4).ToString() + "\n";
+            else
+                s += "\nЗа перевіркою адекватності відтвореної моделі регресії, модель не є значущою.\n  Статистика F = " + Math.Round(f_statistic, 4).ToString() + "\n";
+            label25.Text = s;
         }
 
         //порівняння двох
-        private void button25_Click(object sender, EventArgs e) 
+        private void button25_Click(object sender, EventArgs e)
         {
             TwoRergessions window = new TwoRergessions(this);
             window.ShowDialog(); 
@@ -3392,6 +3510,13 @@ namespace po_laba1
         {
             RegrValid window = new RegrValid(X, Y);
             window.ShowDialog();
+        }
+
+        //операції над вибіркою
+        private void button26_Click(object sender, EventArgs e)
+        {
+            Transformation wind = new Transformation(X, Y);
+            wind.ShowDialog();
         }
     }
 }

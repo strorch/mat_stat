@@ -167,6 +167,33 @@ namespace po_laba1
                 S_zal_kv += Math.Pow(Y[i] - A1 - B1 * regression.fi1(X, i) - C1 * regression.fi2(X, i), 2);
             return S_zal_kv / (N - 3);
         }
+        public static Tuple<double, double, double> Params(double[] X, double[] Y)
+        {
+            int N = X.Length;
+            double serX = korelation.ser_ar(X);
+            double serY = korelation.ser_ar(Y);
+            double sigX = Math.Sqrt(korelation.dispersion(Y));
+            double sigY = Math.Sqrt(korelation.dispersion(Y));
+            double kor = korelation.koef_kor(X, Y);
+            double A1 = serY;
+            double part11 = 0;
+            double part21 = 0;
+            for (int i = 0; i < N; i++)
+            {
+                part11 += (X[i] - serX) * serY;
+                part21 += Math.Pow(X[i] - serX, 2);
+            }
+            double B1 = part11 / part21;
+            part11 = 0;
+            part21 = 0;
+            for (int i = 0; i < N; i++)
+            {
+                part11 += regression.fi2(X, i) * Y[i];
+                part21 += Math.Pow(regression.fi2(X, i), 2);
+            }
+            double C1 = part11 / part21;
+            return Tuple.Create(A1, B1, C1);
+        }
 
         public static double fi1(double[] X, int i)
         {
