@@ -7,6 +7,8 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using SimpleMatrix;
+using Algebra;
 
 namespace po_laba1
 {
@@ -16,8 +18,11 @@ namespace po_laba1
         {
             InitializeComponent();
         }
-        
-        List<double[]> list_mass = new List<double[]>();
+        int Created_Veibula = 0;
+        int Created_Norm = 0;
+        int Created_Exp = 0;
+
+        List<Tuple<double[], string>> list_mass = new List<Tuple<double[], string>>();
         public double[] massiv;
         public string[] data_mas;
         public double step;
@@ -32,7 +37,10 @@ namespace po_laba1
         string[] GorisontalArr;
         double[,] GorDoubArr;
 
+        NNData nnvymir;
+        List<NNData> nnvymir_list = new List<NNData>();
         List<Tuple<double[,], int>> TupleList = new List<Tuple<double[,], int>>();
+
         public Tuple<double[,], int> ReturnTuple(int num)
         {
             return TupleList[num];
@@ -81,6 +89,8 @@ namespace po_laba1
         //logarifmization e
         private void button11_Click(object sender, EventArgs e)
         {
+
+            Console.Beep(300, 100);
             for (int i = 0; i < massiv.Length; i++)
             {
                 if (massiv[i] < 0)
@@ -100,6 +110,8 @@ namespace po_laba1
         //logarifmization 10
         private void button12_Click(object sender, EventArgs e)
         {
+
+            Console.Beep(400, 100);
             for (int i = 0; i < massiv.Length; i++)
             {
                 if (massiv[i] < 0)
@@ -118,6 +130,8 @@ namespace po_laba1
         //standartization
         private void button5_Click_1(object sender, EventArgs e)
         {
+
+            Console.Beep(800, 100);
             double MED_but = MED(massiv);
             double MAD_but = MAD(massiv);
 
@@ -215,6 +229,7 @@ namespace po_laba1
             //openf.Filter = "txt files (*.txt)|*.txt|dat files (*.DAT)|*.DAT";
             openf.FilterIndex = 1;
             openf.RestoreDirectory = true;
+            string file_name = "";
             string all_f = "";
             if (openf.ShowDialog() == DialogResult.OK)
             {
@@ -224,6 +239,7 @@ namespace po_laba1
                         try
                         {
                             all_f = File.ReadAllText(openf.FileName);
+                            file_name = openf.FileName;
                         }
                         catch
                         {
@@ -272,6 +288,16 @@ namespace po_laba1
                 }
             }
             var tuple = Tuple.Create(GorDoubArr, N);
+            file_name = NNData.FileNoDir(file_name);
+            comboBox3.Items.Add(file_name + "X");
+            comboBox4.Items.Add(file_name + "X");
+            comboBox5.Items.Add(file_name + "X");
+            comboBox3.Items.Add(file_name + "Y");
+            comboBox4.Items.Add(file_name + "Y");
+            comboBox5.Items.Add(file_name + "Y");
+
+            list_mass.Add(Tuple.Create(X, file_name + "X"));
+            list_mass.Add(Tuple.Create(X, file_name + "Y"));
             TupleList.Add(tuple);
         }
         private void зчитатиНапрямуToolStripMenuItem_Click(object sender, EventArgs e)
@@ -285,6 +311,7 @@ namespace po_laba1
             //openF.Filter = "txt files (*.txt)|*.txt";
             openF.FilterIndex = 1;
             openF.RestoreDirectory = true;
+            string file_name = "";
             string data = "";
             if (openF.ShowDialog() == DialogResult.OK)
             {
@@ -297,6 +324,7 @@ namespace po_laba1
                             try
                             {
                                 data = File.ReadAllText(openF.FileName);
+                                file_name = (openF.FileName);
                             }
                             catch
                             {
@@ -332,8 +360,81 @@ namespace po_laba1
                 }
             }
             Array.Sort(massiv);
+            file_name = NNData.FileNoDir(file_name);
+            comboBox3.Items.Add(file_name);
+            comboBox4.Items.Add(file_name);
+            comboBox5.Items.Add(file_name);
 
-            list_mass.Add(massiv);
+            list_mass.Add(Tuple.Create(massiv, file_name));
+        }
+        private void багатовимірніДаніToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Stream stream = null;
+            OpenFileDialog openf = new OpenFileDialog();
+            openf.InitialDirectory = Application.StartupPath.ToString();
+            //openf.Filter = "txt files (*.txt)|*.txt|dat files (*.DAT)|*.DAT";
+            openf.FilterIndex = 1;
+            openf.RestoreDirectory = true;
+            string file_name = "";
+            string all_f = "";
+            if (openf.ShowDialog() == DialogResult.OK)
+            {
+                if ((stream = openf.OpenFile()) != null)
+                    using (stream)
+                    {
+                        try
+                        {
+                            all_f = File.ReadAllText(openf.FileName);
+                            file_name += openf.FileName;
+                        }
+                        catch
+                        {
+                            MessageBox.Show("nu da");
+                        }
+                    }
+                else
+                {
+                    MessageBox.Show("couldn't read file");
+                    return;
+                }
+            }
+            else
+                return;
+            string[] sep = { "\n" };
+            string s = "";
+            GorisontalArr = all_f.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+            GorDoubArr = new double[GorisontalArr.Length, Strfunc.ft_split_whitespaces(GorisontalArr[0]).Length];
+            for (int i = 0; i < GorisontalArr.Length; i++)
+            {
+                for (int j = 0; j < Strfunc.ft_split_whitespaces(GorisontalArr[i]).Length; j++)
+                {
+                    try
+                    {
+                        GorDoubArr[i, j] = Convert.ToDouble(Strfunc.ft_split_whitespaces(GorisontalArr[i])[j]);
+                        s += GorDoubArr[i, j].ToString() + " ";
+                    }
+                    catch
+                    {
+                        MessageBox.Show("wrong file");
+                        return;
+                    }
+                }
+                s += "\n";
+            }
+            
+            var data = Tuple.Create(GorDoubArr, Strfunc.ft_split_whitespaces(GorisontalArr[0]).Length, GorisontalArr.Length, file_name);
+            nnvymir = new NNData(data);
+            nnvymir_list.Add(nnvymir);
+            file_name = NNData.FileNoDir(file_name);
+            comboBox6.Items.Add(file_name);
+            comboBox6.Text = file_name;
+            for (int i = 0; i < nnvymir.Num; i++)
+            {
+                comboBox3.Items.Add(file_name + i.ToString());
+                comboBox4.Items.Add(file_name + i.ToString());
+                comboBox5.Items.Add(file_name + i.ToString());
+            }
+
         }
 
         //Побудова даних
@@ -344,34 +445,27 @@ namespace po_laba1
             chart2.Series.Clear();
             dataGridView2.Rows.Clear();
             dataGridView1.Rows.Clear();
-            if (massiv == null)
-            {
-                MessageBox.Show("Не вибрано ніяких початкових даних");
-                return;
-            }
+            
             but = 1;
             vyb = 1;
             kvantili = 1;
             int count_elem = 0;
             for (int i = 0; i < list_mass.Count(); i++)
             {
-                    if (list_mass[i].Length > count_elem)
+                    if (list_mass[i].Item1.Length > count_elem)
                     {
-                        count_elem = list_mass[i].Length;
+                        count_elem = list_mass[i].Item1.Length;
                     }
             }
-            while (dataGridView4.ColumnCount > 0)
-                dataGridView4.Columns.RemoveAt(0);
-            for (int j = 0; j < count_elem; j++)
-                dataGridView4.Columns.Add("", "El_"+j.ToString());
 
-            for (int i = 0; i < list_mass.Count(); i++)
+            if (comboBox3.Text != "")
             {
-                dataGridView4.Rows.Add();
-                for (int j = 0; j < list_mass[i].Length; j++)
-                {
-                    dataGridView4.Rows[i].Cells[j].Value = Math.Round(list_mass[i][j],4).ToString();
-                }
+                massiv = find_arr(list_mass, comboBox3.Text);
+            }
+            if (massiv == null)
+            {
+                MessageBox.Show("Не вибрано ніяких початкових даних");
+                return;
             }
 
             //Data grid filling 1
@@ -768,8 +862,6 @@ namespace po_laba1
             chart4.Series.Clear();
             dataGridView1.Rows.Clear();
             dataGridView2.Rows.Clear();
-            dataGridView4.Rows.Clear();
-            dataGridView4.Columns.Clear();
             label18.Text = "Резульати оцінок:\n";
         }
         
@@ -899,7 +991,8 @@ namespace po_laba1
                     massiv[i] = TestSimpleRNG.SimpleRNG.GetExponential(1 / l);
                     mass1[i] = TestSimpleRNG.SimpleRNG.GetExponential(1 / l);
                 }
-                list_mass.Add(massiv);
+                list_mass.Add(Tuple.Create(massiv, "ExponentialCreated" + Created_Exp.ToString()));
+                Created_Exp++;
                 expon_raspr = false;
             }
             else if (norm_raspr == true)
@@ -932,8 +1025,8 @@ namespace po_laba1
                     massiv[i] = TestSimpleRNG.SimpleRNG.GetNormal(m, O);
                     mass1[i] = TestSimpleRNG.SimpleRNG.GetNormal(m, O);
                 }
-                list_mass.Add(massiv);
-
+                list_mass.Add(Tuple.Create(massiv, "NormalCreated" + Created_Norm.ToString()));
+                Created_Norm++;
                 norm_raspr = false;
             }
             else if (raspr_veibulla == true)
@@ -967,8 +1060,8 @@ namespace po_laba1
                     massiv[i] = TestSimpleRNG.SimpleRNG.GetWeibull(alfa, beta);
                     mass1[i] = TestSimpleRNG.SimpleRNG.GetWeibull(alfa, beta);
                 }
-                list_mass.Add(massiv);
-
+                list_mass.Add(Tuple.Create(massiv, "VeibulalCreated" + Created_Veibula.ToString()));
+                Created_Veibula++;
                 raspr_veibulla = false;
             }
             else
@@ -1711,25 +1804,6 @@ namespace po_laba1
 
         #endregion
 
-        //побудування вибраної вибірки
-        private void побудуватиToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            int index = dataGridView4.CurrentCell.RowIndex;
-            massiv = new double[list_mass[index].Length];
-            for (int i = 0; i < list_mass[index].Length; i++)
-            {
-                massiv[i] = list_mass[index][i];
-            }
-        }
-
-        //видалення вибірки
-        private void видалитиToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            int index = dataGridView4.CurrentCell.RowIndex;
-
-            list_mass.RemoveAt(index);
-        }
-
         //очищення журналу
         private void button14_Click(object sender, EventArgs e)
         {
@@ -1821,24 +1895,24 @@ namespace po_laba1
             if (comboBox1.Text == "Вілкоксона ")
             {
                 double W = 0;
-                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
-                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length;
+                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length;
                 int N = N1 + N2;
-                double[] sum_mass = new double[list_mass[Convert.ToInt32(textBox12.Text) - 1].Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Length];
-                for(int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i++)
+                double[] sum_mass = new double[list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length];
+                for(int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length; i++)
                 {
-                    sum_mass[i] = list_mass[Convert.ToInt32(textBox12.Text) - 1][i];
+                    sum_mass[i] = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1[i];
                 }
 
-                for (int i = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Length; i++)
+                for (int i = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length; i++)
                 {
-                    sum_mass[i] = list_mass[Convert.ToInt32(textBox13.Text) - 1][i - list_mass[Convert.ToInt32(textBox12.Text) - 1].Length];
+                    sum_mass[i] = list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1[i - list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length];
                 }
 
 
-                for (int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i++)
+                for (int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length; i++)
                 {
-                    if (list_mass[Convert.ToInt32(textBox12.Text) - 1][i] == rang1(sum_mass)[i, 0])
+                    if (list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1[i] == rang1(sum_mass)[i, 0])
                         W += rang1(sum_mass)[i, 1];
                 }
 
@@ -1861,18 +1935,18 @@ namespace po_laba1
             {
                 int z = 0;
                 double u = 0;
-                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
-                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length;
+                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length;
                 int N = N1 + N2;
                 for (int j = 0; j < N2; j++)
                 {
                     for (int i = 0; i < N1; i++)
                     {
-                        if (list_mass[Convert.ToInt32(textBox12.Text) - 1][i] > list_mass[Convert.ToInt32(textBox13.Text) - 1][j])
+                        if (list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1[i] > list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1[j])
                         {
                             z = 1;
                         }
-                        else if (list_mass[Convert.ToInt32(textBox12.Text) - 1][i] <= list_mass[Convert.ToInt32(textBox13.Text) - 1][j])
+                        else if (list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1[i] <= list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1[j])
                         {
                             z = 0;
                         }
@@ -1897,24 +1971,24 @@ namespace po_laba1
             }
             else if (comboBox1.Text == "Різниці середніх рангів")
             {
-                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
-                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length;
+                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length;
                 int N = N1 + N2;
-                double[] sum_mass = new double[list_mass[Convert.ToInt32(textBox12.Text) - 1].Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Length];
-                for (int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i++)
+                double[] sum_mass = new double[list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length];
+                for (int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length; i++)
                 {
-                    sum_mass[i] = list_mass[Convert.ToInt32(textBox12.Text) - 1][i];
+                    sum_mass[i] = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1[i];
                 }
 
-                for (int i = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Length; i++)
+                for (int i = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length; i++)
                 {
-                    sum_mass[i] = list_mass[Convert.ToInt32(textBox13.Text) - 1][i - list_mass[Convert.ToInt32(textBox12.Text) - 1].Length];
+                    sum_mass[i] = list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1[i - list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length];
                 }
 
                 double sum_r1 = 0;
-                for (int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i++)
+                for (int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length; i++)
                 {
-                    if (list_mass[Convert.ToInt32(textBox12.Text) - 1][i] == rang1(sum_mass)[i, 0])
+                    if (list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1[i] == rang1(sum_mass)[i, 0])
                     {
                         sum_r1 += rang1(sum_mass)[i, 1];
                     }
@@ -1922,9 +1996,9 @@ namespace po_laba1
                 sum_r1 = sum_r1 / N1;
 
                 double sum_r2 = 0;
-                for (int i = 0; i < list_mass[Convert.ToInt32(textBox13.Text) - 1].Length; i++)
+                for (int i = 0; i < list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length; i++)
                 {
-                    if (list_mass[Convert.ToInt32(textBox13.Text) - 1][i] == rang1(sum_mass)[i, 0])
+                    if (list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1[i] == rang1(sum_mass)[i, 0])
                     {
                         sum_r2 += rang1(sum_mass)[i, 1];
                     }
@@ -1946,10 +2020,10 @@ namespace po_laba1
             }
             else if (comboBox1.Text == "Критерій знаків")
             {
-                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
-                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length;
+                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length;
                 int N = N1 + N2;
-                if (list_mass[Convert.ToInt32(textBox12.Text) - 1].Length != list_mass[Convert.ToInt32(textBox13.Text) - 1].Length)
+                if (list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length != list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length)
                 {
                     MessageBox.Show("Розмір вибірок не однаковий!");
                     return;
@@ -1960,7 +2034,7 @@ namespace po_laba1
 
                 for(int i = 0; i < N1; i++)
                 {
-                    zl[i] = list_mass[Convert.ToInt32(textBox12.Text) - 1][i] - list_mass[Convert.ToInt32(textBox13.Text) - 1][i];
+                    zl[i] = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1[i] - list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1[i];
                     if (zl[i] > 0) U[i] = 1;
                     else U[i] = 0;
                 }
@@ -1999,15 +2073,15 @@ namespace po_laba1
                 if(textBox12.Text != "" || textBox13.Text != "")
                 {
                     double d = 0;
-                    double[] array1 = list_mass[Convert.ToInt32(textBox12.Text) - 1];
-                    double[] array2 = list_mass[Convert.ToInt32(textBox13.Text) - 1];
+                    double[] array1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1;
+                    double[] array2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1;
                     if (array1.Length != array2.Length)
                     {
                         MessageBox.Show("Довжина вибірок різна!");
                         return;
                     }
                     double[] array = new double[array1.Length];
-                    int just_N = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
+                    int just_N = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length;
 
                     for (int i = 0; i < array.Length; i++)
                     {
@@ -2038,8 +2112,8 @@ namespace po_laba1
                 if(textBox12.Text == "")
                 {
                     double d = 0;
-                    double[] array = list_mass[Convert.ToInt32(textBox13.Text) - 1];
-                    int just_N = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
+                    double[] array = list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1;
+                    int just_N = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length;
                     for (int i = 0; i < just_N - 1; i++)
                     {
                         d += Math.Pow((array[i + 1] - array[i]), 2);
@@ -2063,8 +2137,8 @@ namespace po_laba1
                 else if(textBox13.Text == "")
                 {
                     double d = 0;
-                    double[] array = list_mass[Convert.ToInt32(textBox12.Text) - 1];
-                    int just_N = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
+                    double[] array = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1;
+                    int just_N = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length;
                     for (int i = 0; i < just_N - 1; i++)
                     {
                         d += Math.Pow((array[i + 1] - array[i]), 2);
@@ -2096,9 +2170,9 @@ namespace po_laba1
                 }
                 double[] z = new double[Convert.ToInt32(textBox12.Text) - 1];
 
-                for(int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i++)
+                for(int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length; i++)
                 {
-                    z[i] = list_mass[Convert.ToInt32(textBox12.Text) - 1][i] - list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                    z[i] = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1[i] - list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length;
                 }
 
                 double z_ser = ser_ar(z);
@@ -2119,8 +2193,8 @@ namespace po_laba1
             }
             else if (comboBox1.Text == "Збіг середніх(незалежні вибірки)")
             {
-                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
-                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                int N1 = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length;
+                int N2 = list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length;
                 int N = N1 + N2;
                 if (Convert.ToInt32(textBox12.Text) == Convert.ToInt32(textBox13.Text))
                 {
@@ -2128,24 +2202,24 @@ namespace po_laba1
                     return;
                 }
 
-                double z_ser = ser_ar(list_mass[Convert.ToInt32(textBox12.Text) - 1]) - ser_ar(list_mass[Convert.ToInt32(textBox13.Text) - 1]);
+                double z_ser = ser_ar(list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1) - ser_ar(list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1);
 
-                double Sx = dispersion(list_mass[Convert.ToInt32(textBox12.Text) - 1]);
-                double Sy = dispersion(list_mass[Convert.ToInt32(textBox13.Text) - 1]);
+                double Sx = dispersion(list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1);
+                double Sy = dispersion(list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1);
 
-                double Sz = Sx / list_mass[Convert.ToInt32(textBox12.Text) - 1].Length + Sy / list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                double Sz = Sx / list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length + Sy / list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length;
                 double t = z_ser / Math.Sqrt(Sz);
 
                 string s = "";
 
-                double[] new_mas = new double[list_mass[Convert.ToInt32(textBox12.Text) - 1].Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Length];
-                for(int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i++)
+                double[] new_mas = new double[list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length];
+                for(int i = 0; i < list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length; i++)
                 {
-                    new_mas[i] = list_mass[Convert.ToInt32(textBox12.Text) - 1][i];
+                    new_mas[i] = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1[i];
                 }
-                for (int i = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i < list_mass[Convert.ToInt32(textBox13.Text) - 1].Length + list_mass[Convert.ToInt32(textBox12.Text) - 1].Length; i++)
+                for (int i = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length; i < list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length + list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length; i++)
                 {
-                    new_mas[i] = list_mass[Convert.ToInt32(textBox13.Text) - 1][i - list_mass[Convert.ToInt32(textBox12.Text) - 1].Length];
+                    new_mas[i] = list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1[i - list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length];
                 }
 
                 if (t > Quantil.StudentQuantil(new_mas))
@@ -2160,8 +2234,8 @@ namespace po_laba1
             }
             else if (comboBox1.Text == "Збіг дисперсій")
             {
-                double disp_x = dispersion(list_mass[Convert.ToInt32(textBox12.Text) - 1]);
-                double disp_y = dispersion(list_mass[Convert.ToInt32(textBox13.Text) - 1]);
+                double disp_x = dispersion(list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1);
+                double disp_y = dispersion(list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1);
                 double f = 0;
 
                 if(disp_x >= disp_y)
@@ -2174,7 +2248,7 @@ namespace po_laba1
                 }
 
                 string s = "";
-                if (f > Quantil.QuantilFishera(list_mass[Convert.ToInt32(textBox12.Text)].Length - 2, list_mass[Convert.ToInt32(textBox13.Text)].Length - 2))
+                if (f > Quantil.QuantilFishera(list_mass[Convert.ToInt32(textBox12.Text)].Item1.Length - 2, list_mass[Convert.ToInt32(textBox13.Text)].Item1.Length - 2))
                 {
                     s = "\nЗначення статистики f потрапило до критичної області, отже результат перевірки на збіг дисперсій негативний.\n   Статистика f = " + f.ToString() + "\n";
                 }
@@ -2186,8 +2260,8 @@ namespace po_laba1
             }
             else if (comboBox1.Text == "Смирнова-Колмогорова")
             {
-                int just_N = list_mass[Convert.ToInt32(textBox12.Text) - 1].Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
-                int N_ = Math.Min(list_mass[Convert.ToInt32(textBox12.Text) - 1].Length, list_mass[Convert.ToInt32(textBox13.Text) - 1].Length);
+                int just_N = list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length + list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length;
+                int N_ = Math.Min(list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length, list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length);
                 double[] arr_f1 = new double[N_];
                 double[] arr_f2 = new double[N_];
                 for (int i = 0; i < N_; i++)
@@ -2195,31 +2269,31 @@ namespace po_laba1
                     double a = 0;
                     for (int j = 0; j < N_; j++)
                     {
-                        if (list_mass[Convert.ToInt32(textBox12.Text) - 1][j] <= list_mass[Convert.ToInt32(textBox12.Text) - 1][i])
+                        if (list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1[j] <= list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1[i])
                         {
                             a++;
                         }
                     }
 
-                    arr_f1[i] =  a / list_mass[Convert.ToInt32(textBox12.Text) - 1].Length;
+                    arr_f1[i] =  a / list_mass[Convert.ToInt32(textBox12.Text) - 1].Item1.Length;
                 }
                 for (int i = 0; i < N_; i++)
                 {
                     double a = 0;
                     for (int j = 0; j < N_; j++)
                     {
-                        if (list_mass[Convert.ToInt32(textBox13.Text) - 1][j] <= list_mass[Convert.ToInt32(textBox13.Text) - 1][i])
+                        if (list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1[j] <= list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1[i])
                         {
                             a++;
                         }
                     }
 
-                    arr_f2[i] = a / list_mass[Convert.ToInt32(textBox13.Text) - 1].Length;
+                    arr_f2[i] = a / list_mass[Convert.ToInt32(textBox13.Text) - 1].Item1.Length;
                 }
                 double z = Math.Abs(arr_f1[0] - arr_f2[0]);
                 for (int i = 1; i < N_; i++)
                 {
-                    if (z > Math.Abs(arr_f1[i] - arr_f2[i])) ;
+                    //if (z > Math.Abs(arr_f1[i] - arr_f2[i])) ;
                     z = Math.Abs(arr_f1[i] - arr_f2[i]);  // supremum від чогось just assk another person
                 }
                 double L = 1 - Math.Exp(-2 * z * z) * (1 - (2 * z) / (3 * Math.Sqrt(just_N)) * (1 - (2 * z * z) / 3) + (4 * z / (9 * Math.Sqrt(Math.Pow(just_N, 3)))) * (1.0 / 5 - (19 * z * z) / 15 + (2 * z * z * z * z) / 3));
@@ -2273,21 +2347,21 @@ namespace po_laba1
 
                 for(int i = 0; i < list_mass.Count(); i++)
                 {
-                    for(int j = 0; j < list_mass[i].Length; j++)
+                    for(int j = 0; j < list_mass[i].Item1.Length; j++)
                     {
-                        x_ser[i] += list_mass[i][j];
+                        x_ser[i] += list_mass[i].Item1[j];
                     }
                     x_ser[i] = x_ser[i] / list_mass.Count(); 
                 }
 
                 for (int i = 0; i < list_mass.Count(); i++)
                 {
-                    for (int j = 0; j < list_mass[i].Length; j++)
+                    for (int j = 0; j < list_mass[i].Item1.Length; j++)
                     {
-                        disp[i] += Math.Pow((list_mass[i][j] - x_ser[i]), 2);
+                        disp[i] += Math.Pow((list_mass[i].Item1[j] - x_ser[i]), 2);
                     }
 
-                    disp[i] = (1.0 / (list_mass[i].Length - 1.0)) * disp[i];
+                    disp[i] = (1.0 / (list_mass[i].Item1.Length - 1.0)) * disp[i];
                 }
 
                 double top = 0;
@@ -2298,14 +2372,14 @@ namespace po_laba1
                 double X_stat = 0;
                 for (int i = 0; i < list_mass.Count(); i++)
                 {
-                    top += (list_mass[i].Length - 1) * disp[i];
-                    bot += (list_mass[i].Length - 1);
+                    top += (list_mass[i].Item1.Length - 1) * disp[i];
+                    bot += (list_mass[i].Item1.Length - 1);
                 }
                 S_stat = top / bot;
 
                 for (int i = 0; i < list_mass.Count(); i++)
                 {
-                    B += (list_mass[i].Length - 1) * Math.Log(disp[i] / S_stat);
+                    B += (list_mass[i].Item1.Length - 1) * Math.Log(disp[i] / S_stat);
                 }
                 B = B * -1;
 
@@ -2313,8 +2387,8 @@ namespace po_laba1
                 double temp2 = 0;
                 for (int i = 0; i < list_mass.Count(); i++)
                 {
-                    temp1 += 1.0 / (list_mass[i].Length - 1);
-                    temp2 += (list_mass[i].Length - 1);
+                    temp1 += 1.0 / (list_mass[i].Item1.Length - 1);
+                    temp2 += (list_mass[i].Item1.Length - 1);
                 }
 
                 C = 1 + 1.0 / (3 * (list_mass.Count() - 1)) * (temp1 - 1.0 / temp2);
@@ -2342,26 +2416,26 @@ namespace po_laba1
                 double Total_x_average = 0;
                 for (int i = 0; i < list_mass.Count(); i++)
                 {
-                    for (int j = 0; j < list_mass[i].Length; j++)
-                        x_average[i] += list_mass[i][j];
+                    for (int j = 0; j < list_mass[i].Item1.Length; j++)
+                        x_average[i] += list_mass[i].Item1[j];
 
-                    x_average[i] = (1.0 / list_mass[i].Length) * x_average[i];
+                    x_average[i] = (1.0 / list_mass[i].Item1.Length) * x_average[i];
                 }
 
                 for (int i = 0; i < list_mass.Count(); i++)
-                    Total_x_average += list_mass[i].Length * x_average[i];
+                    Total_x_average += list_mass[i].Item1.Length * x_average[i];
 
                 int Total_count = 0;
                 for (int i = 0; i < list_mass.Count(); i++)
                 {
-                    Total_count += list_mass[i].Length;
+                    Total_count += list_mass[i].Item1.Length;
                 }
 
                 Total_x_average = (1.0 / Total_count) * Total_x_average;
 
                 for (int i = 0; i < list_mass.Count(); i++)
                 {
-                    Stat_S += list_mass[i].Length * Math.Pow((x_average[i] - Total_x_average), 2);
+                    Stat_S += list_mass[i].Item1.Length * Math.Pow((x_average[i] - Total_x_average), 2);
                 }
                 Stat_S = 1.0 / (list_mass.Count() - 1) * Stat_S;
 
@@ -2369,7 +2443,7 @@ namespace po_laba1
 
                 for (int i = 0; i < list_mass.Count(); i++)
                 {
-                    Stat_S_2 += (list_mass[i].Length - 1) * dispersion(list_mass[i]);
+                    Stat_S_2 += (list_mass[i].Item1.Length - 1) * dispersion(list_mass[i].Item1);
                 }
                 Stat_S_2 = 1.0 / (Total_count - list_mass.Count()) * Stat_S_2;
 
@@ -2391,7 +2465,7 @@ namespace po_laba1
             {
                 for (int i = 0; i < list_mass.Count() - 1; i++)
                 {
-                    if (list_mass[i].Length != list_mass[i+1].Length)
+                    if (list_mass[i].Item1.Length != list_mass[i+1].Item1.Length)
                     {
                         MessageBox.Show("Довжина вибірок не однакова!");
                         return;
@@ -2400,7 +2474,7 @@ namespace po_laba1
 
                 double[][] koh = new double[list_mass.Count()][];
                 for (int i = 0; i < koh.Length; i++)
-                    koh[i] = (double[])list_mass[i].Clone();
+                    koh[i] = (double[])list_mass[i].Item1.Clone();
 
                 double aver;
                 for (int i = 0; i < koh.Length; i++)
@@ -2466,7 +2540,7 @@ namespace po_laba1
                 int N = 0;
                 for (int i = 0; i < list_mass.Count(); i++)
                 {
-                    for (int j= 0; j < list_mass[i].Length; j++)
+                    for (int j= 0; j < list_mass[i].Item1.Length; j++)
                     {
                         N++;
                     }
@@ -2474,11 +2548,11 @@ namespace po_laba1
                 double[] all_arr = new double[N];
                 for (int i = 0; i < list_mass.Count(); i++)
                 {
-                    for(int j = 0; j < list_mass[i].Length; j++)
+                    for(int j = 0; j < list_mass[i].Item1.Length; j++)
                     {
                         for (int k = 0; k < all_arr.Length; k++)
                         {
-                            all_arr[k] = list_mass[i][j];
+                            all_arr[k] = list_mass[i].Item1[j];
                         }
                     }
                 }
@@ -2585,6 +2659,21 @@ namespace po_laba1
             return UserChast;
         }
 
+        private static double[] find_arr(List<Tuple<double[], string>> list, string name)
+        {
+            string s = "";
+            for (int i = 0; i < list.Count(); i++)
+            {
+                s += list[i].Item2;
+                if (list[i].Item2 == name)
+                {
+                    return list[i].Item1;
+                }
+            }
+            MessageBox.Show(s);
+            return null;
+        }
+
         private void button20_Click(object sender, EventArgs e)
         {
             chart4.Series.Clear();
@@ -2593,15 +2682,14 @@ namespace po_laba1
             dataGridView6.Columns.Clear();
             dataGridView5.Columns.Clear();
             chart3.Series.Clear();
-            while (dataGridView4.ColumnCount > 0)
-                dataGridView4.Columns.RemoveAt(0);
-            if (textBox14.Text != "" && textBox15.Text != "")
+            if (comboBox4.Text != "" && comboBox5.Text != "")
             {
-                int length1 = list_mass[Convert.ToInt32(textBox14.Text) - 1].Length;
-                int length2 = list_mass[Convert.ToInt32(textBox15.Text) - 1].Length;
-                double[] arr1 = list_mass[Convert.ToInt32(textBox14.Text) - 1];
-                double[] arr2 = list_mass[Convert.ToInt32(textBox15.Text) - 1];
+                double[] arr1 = find_arr(list_mass, comboBox4.Text);
+                double[] arr2 = find_arr(list_mass, comboBox5.Text);
 
+                int length1 = arr1.Length;
+                int length2 = arr2.Length;
+                
                 if (length1 != length2)
                 {
                     string message = "Вибырки не э залежними!";
@@ -2638,6 +2726,10 @@ namespace po_laba1
                     }
                 }
             }
+            int N = X.Length;
+            double[] temp_arr = new double[N];
+            for (int i = 0; i < N; i++)
+                temp_arr[i] = 0;
             chart4.ChartAreas[0].CursorX.IsUserEnabled = true;
             chart4.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
             chart4.ChartAreas[0].CursorX.Interval = 0.01D;
@@ -2646,43 +2738,16 @@ namespace po_laba1
             chart4.ChartAreas[0].CursorY.Interval = 0.01D;
             dataGridView6.Columns.Add("byX", "X");
             dataGridView6.Columns.Add("byY", "Y");
-            int N = X.Length;
             korelation.Sort(X, Y, N);
-            chart4.Series.Add("korelation");
-            chart4.Series["korelation"].ChartType = SeriesChartType.Point;
-            for (int i = 0; i < N; i++)
-            {
-                chart4.Series["korelation"].Points.AddXY(X[i], Y[i]);
-            }
-            double[] temp_arr = new double[N];
-            for (int i = 0; i < N; i++)
-                temp_arr[i] = 0;
-            list_mass.Add(temp_arr);
-            list_mass.Add(X);
-            list_mass.Add(Y);
             int count_elem = 0;
             for (int i = 0; i < list_mass.Count(); i++)
             {
-                if (list_mass[i].Length > count_elem)
+                if (list_mass[i].Item1.Length > count_elem)
                 {
-                    count_elem = list_mass[i].Length;
+                    count_elem = list_mass[i].Item1.Length;
                 }
             }
-
-            for (int j = 0; j < count_elem; j++)
-                dataGridView4.Columns.Add("", "El_" + j.ToString());
-
-            for (int i = 0; i < list_mass.Count(); i++)
-            {
-                dataGridView4.Rows.Add();
-                for (int j = 0; j < list_mass[i].Length; j++)
-                {
-                    if (list_mass[i][j] == 0)
-                        dataGridView4.Rows[i].Cells[j].Value = "";
-                    else
-                        dataGridView4.Rows[i].Cells[j].Value = Math.Round(list_mass[i][j], 4).ToString();
-                }
-            }
+            
             int numclass = korelation.num_class(X);
             double stepX = (korelation.max1(X) - korelation.min1(X)) / korelation.num_class(X);
             double stepY = (korelation.max1(Y) - korelation.min1(Y)) / korelation.num_class(X);
@@ -2737,9 +2802,15 @@ namespace po_laba1
                             series[i, j].Points.AddXY(korelation.min1(X) + (i + 1) * stepX, korelation.min1(Y) + j * stepY + (stepY * k) / 100.0);
                         }
                         series[i, j].ChartType = SeriesChartType.Line;
-                        series[i, j].Color = Color.FromArgb(255, 255 - (int)(255 * pervynna_ocinka[i, j] / elem.Max()), 255 - (int)(255 * pervynna_ocinka[i, j] / elem.Max()), 255 - (int)(255 * pervynna_ocinka[i, j] / elem.Max()));
+                        series[i, j].Color = Color.FromArgb(100, 255 - (int)(255 * pervynna_ocinka[i, j] / elem.Max()), 255 - (int)(255 * pervynna_ocinka[i, j] / elem.Max()), /*255 - (int)(255 * pervynna_ocinka[i, j] / elem.Max())*/ 0);
                         chart3.Series.Add(series[i, j]);
                     }
+            chart4.Series.Add("korelation");
+            chart4.Series["korelation"].ChartType = SeriesChartType.Point;
+            for (int i = 0; i < N; i++)
+            {
+                chart4.Series["korelation"].Points.AddXY(X[i], Y[i]);
+            }
             if (N <= 3000)
             {
                 for (int i = 0; i < N; i++)
@@ -3224,10 +3295,10 @@ namespace po_laba1
             chart4.Series.Clear();
             chart4.Series.Add("regr_nyzh");
             chart4.Series["regr_nyzh"].ChartType = SeriesChartType.Spline;
-            chart4.Series["regr_nyzh"].Color = Color.Blue;
+            chart4.Series["regr_nyzh"].Color = Color.Green;
             chart4.Series.Add("regr_verh");
             chart4.Series["regr_verh"].ChartType = SeriesChartType.Spline;
-            chart4.Series["regr_verh"].Color = Color.Blue;
+            chart4.Series["regr_verh"].Color = Color.Green;
             chart4.Series.Add("regr");
             chart4.Series["regr"].ChartType = SeriesChartType.Line;
             chart4.Series.Add("regr_int_nyzh");
@@ -3315,25 +3386,24 @@ namespace po_laba1
 
             chart4.Series.Add("regression");
             chart4.Series["regression"].ChartType = SeriesChartType.Spline;
-            chart4.Series["regression"].Color = Color.Black;
             chart4.Series.Add("regression_nyzh");
             chart4.Series["regression_nyzh"].ChartType = SeriesChartType.Spline;
-            chart4.Series["regression_nyzh"].Color = Color.Red;
+            chart4.Series["regression_nyzh"].Color = Color.Green;
             chart4.Series.Add("regression_verh");
             chart4.Series["regression_verh"].ChartType = SeriesChartType.Spline;
-            chart4.Series["regression_verh"].Color = Color.Red;
+            chart4.Series["regression_verh"].Color = Color.Green;
             chart4.Series.Add("regression_int_verh");
             chart4.Series["regression_int_verh"].ChartType = SeriesChartType.Spline;
-            chart4.Series["regression_int_verh"].Color = Color.Green;
+            chart4.Series["regression_int_verh"].Color = Color.Black;
             chart4.Series.Add("regression_int_nyzh");
             chart4.Series["regression_int_nyzh"].ChartType = SeriesChartType.Spline;
-            chart4.Series["regression_int_nyzh"].Color = Color.Green;
+            chart4.Series["regression_int_nyzh"].Color = Color.Black;
             chart4.Series.Add("regression_nove_verh");
             chart4.Series["regression_nove_verh"].ChartType = SeriesChartType.Spline;
-            chart4.Series["regression_nove_verh"].Color = Color.Yellow;
+            chart4.Series["regression_nove_verh"].Color = Color.Red;
             chart4.Series.Add("regression_nove_nyzh");
             chart4.Series["regression_nove_nyzh"].ChartType = SeriesChartType.Spline;
-            chart4.Series["regression_nove_nyzh"].Color = Color.Yellow;
+            chart4.Series["regression_nove_nyzh"].Color = Color.Red;
 
             int N = X.Length;
             for (int i = 0; i < N; i++)
@@ -3400,12 +3470,21 @@ namespace po_laba1
             double korvidn = korelation.korel_vidn(X);
             dataGridView5.Rows.Add("Коефіцієнт детермінації(загальний випадок)", "", Math.Round(koef_determ, 4), "");
             dataGridView5.Rows.Add("Коефіцієнт детермінації(лінійна регресія)", "", Math.Round(korvidn * 100, 4), "");
+            double f_statistic = Math.Pow(Math.Sqrt(S_zal_kv) / sigmaY, 2);
+            string s = "Результат:\n";
+            if (f_statistic <= Quantil.QuantilFishera(N - 1, N - 3))
+                s += "\nЗа перевіркою адекватності відтвореної моделі регресії, модель є значущою.\n  Статистика F = " + Math.Round(f_statistic, 4).ToString() + "\n";
+            else
+                s += "\nЗа перевіркою адекватності відтвореної моделі регресії, модель не є значущою.\n  Статистика F = " + Math.Round(f_statistic, 4).ToString() + "\n";
+            label25.Text = s;
 
         }
 
         //квазілінійна
         private void button24_Click(object sender, EventArgs e)
         {
+            if (X == null || Y == null)
+                return;
             int N = X.Length;
             chart4.Series.Clear();
             chart4.Series.Add("korelation");
@@ -3415,10 +3494,10 @@ namespace po_laba1
             chart4.Series["regr"].ChartType = SeriesChartType.Line;
             chart4.Series.Add("regr_nyzh");
             chart4.Series["regr_nyzh"].ChartType = SeriesChartType.Spline;
-            chart4.Series["regr_nyzh"].Color = Color.Black;
+            chart4.Series["regr_nyzh"].Color = Color.Green;
             chart4.Series.Add("regr_verh");
             chart4.Series["regr_verh"].ChartType = SeriesChartType.Spline;
-            chart4.Series["regr_verh"].Color = Color.Black;
+            chart4.Series["regr_verh"].Color = Color.Green;
             chart4.Series.Add("regr_int_verh");
             chart4.Series["regr_int_verh"].ChartType = SeriesChartType.Spline;
             chart4.Series["regr_int_verh"].Color = Color.Red;
@@ -3427,10 +3506,10 @@ namespace po_laba1
             chart4.Series["regr_int_nyzh"].Color = Color.Red;
             chart4.Series.Add("regr_nove_nyzh");
             chart4.Series["regr_nove_nyzh"].ChartType = SeriesChartType.Spline;
-            chart4.Series["regr_nove_nyzh"].Color = Color.Green;
+            chart4.Series["regr_nove_nyzh"].Color = Color.Black;
             chart4.Series.Add("regr_nove_verh");
             chart4.Series["regr_nove_verh"].ChartType = SeriesChartType.Spline;
-            chart4.Series["regr_nove_verh"].Color = Color.Green;
+            chart4.Series["regr_nove_verh"].Color = Color.Black;
             for (int i = 0; i < N; i++)
                 chart4.Series["korelation"].Points.AddXY(X[i], Y[i]);
             double[] NewX = new double[N];
@@ -3526,6 +3605,8 @@ namespace po_laba1
         //palitra
         private void chart3_Click(object sender, EventArgs e)
         {
+            if (X == null || Y == null)
+                return;
             int N = X.Length;
             int numclass = korelation.num_class(X);
             double stepX = (korelation.max1(X) - korelation.min1(X)) / korelation.num_class(X);
@@ -3560,28 +3641,354 @@ namespace po_laba1
             var tuple1 = Tuple.Create(cl, step);
             //panel.backcolor
             //label1.Text = cl + " - " + (cl + step);
-            colors[0] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            colors[0] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), /*255 - (int)((cl / p) * 255*/ 0);
             cl += step;
             //label2.Text = cl + " - " + (cl + step);
-            colors[1] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            colors[1] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), /*255 - (int)((cl / p) * 255*/ 0);
             cl += step;
             //label3.Text = cl + " - " + (cl + step);
-            colors[2] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            colors[2] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), /*255 - (int)((cl / p) * 255*/ 0);
             cl += step;
             //label4.Text = cl + " - " + (cl + step);
-            colors[3] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            colors[3] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), /*255 - (int)((cl / p) * 255)*/0);
             cl += step;
             // label5.Text = cl + " - " + (cl + step);
-            colors[4] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            colors[4] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), /*255 - (int)((cl / p) * 255*/ 0);
             cl += step;
             // label6.Text = cl + " - " + (cl + step);
-            colors[5] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            colors[5] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), /*255 - (int)((cl / p) * 255*/ 0);
             cl += step;
             // label7.Text = cl + " - " + (cl + step);
-            colors[6] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255));
+            colors[6] = Color.FromArgb(255 - (int)((cl / p) * 255), 255 - (int)((cl / p) * 255), /*255 - (int)((cl / p) * 255*/ 0);
             cl += step;
             Palitra wind = new Palitra(colors, tuple1);
             wind.ShowDialog();
+        }
+
+        //моделювання
+        private void button27_Click(object sender, EventArgs e)
+        {
+            Modelation window = new Modelation(X, Y);
+            window.ShowDialog();
+        }
+
+        //bagatovymirnist
+        private void button28_Click(object sender, EventArgs e)
+        {
+            if (comboBox6.Text != "")
+            {
+                for (int r = 0; r < nnvymir_list.Count(); r++)
+                {
+                    if (comboBox6.Text == nnvymir_list[r].file_name)
+                    {
+                        nnvymir = nnvymir_list[r];
+                        break;
+                    }
+                }
+            }
+
+            if (nnvymir == null)
+                return;
+            for (int l = 0; l < nnvymir.Num; l++)
+                comboBox7.Items.Add(nnvymir.file_name + l.ToString());
+            dataGridView4.Columns.Clear();
+            dataGridView4.Rows.Clear();
+            dataGridView7.Columns.Clear();
+            dataGridView7.Rows.Clear();
+            dataGridView8.Columns.Clear();
+            dataGridView8.Rows.Clear();
+            dataGridView7.Columns.Add("num", "Num");
+            dataGridView7.Columns.Add("ser", "Ser");
+            for (int l = 0; l < nnvymir.Num; l++)
+            {
+                double[] arr = NNData.PartArr(nnvymir.ARR, nnvymir.Length, l);
+                list_mass.Add(Tuple.Create(arr, nnvymir.file_name + l.ToString()));
+            }
+            
+
+            double[] Ser = nnvymir.SerAr();
+            int i = 0;
+            foreach (var a in Ser)
+            {
+                dataGridView7.Rows.Add(i, a);
+                i++;
+            }
+            double[] KoefKor = nnvymir.KoefKor();
+            double[] Sigmas = nnvymir.Sigmas();
+            for (i = 0; i < nnvymir.Num; i++)
+            {
+                dataGridView4.Columns.Add(i.ToString(), i.ToString());
+                dataGridView8.Columns.Add(i.ToString(), i.ToString());
+            }
+            int k = 0;
+            double[,] KorelationMatrix = new double[nnvymir.Num, nnvymir.Num];
+            for (i = 0; i < nnvymir.Num; i++)
+            {
+                dataGridView4.Rows.Add();
+                dataGridView8.Rows.Add();
+                for (int j = 0; j < nnvymir.Num; j++)
+                {
+                    if (i == j)
+                    {
+                        dataGridView4.Rows[i].Cells[i].Value = Sigmas[i] * Sigmas[i];
+                        dataGridView8.Rows[i].Cells[i].Value = 1d;
+                        KorelationMatrix[i, j] = 1d;
+                    }
+                    else
+                    {
+                        dataGridView4.Rows[i].Cells[j].Value = Sigmas[i] * Sigmas[j] * KoefKor[k];
+                        dataGridView8.Rows[i].Cells[j].Value = KoefKor[k];
+                        KorelationMatrix[i, j] = KoefKor[k];
+                    }
+                    k++;
+                }
+            }
+            nnvymir.KorelationMatrix = KorelationMatrix;
+        }
+
+        private void button30_Click(object sender, EventArgs e)
+        {
+            NNGipotezy gg = new NNGipotezy(nnvymir_list);
+            gg.ShowDialog();
+        }
+
+        private void button29_Click(object sender, EventArgs e)
+        {
+            MultiCharting gg = new MultiCharting(nnvymir);
+            gg.ShowDialog();
+        }
+
+        private void button31_Click(object sender, EventArgs e)
+        {
+            TemperatureMap map = new TemperatureMap(nnvymir);
+            map.ShowDialog();
+        }
+
+        private void button32_Click(object sender, EventArgs e)
+        {
+            Radar rad = new Radar(nnvymir);
+            rad.ShowDialog();
+        }
+
+        private void button33_Click(object sender, EventArgs e)
+        {
+            Sitka sitka = new Sitka(nnvymir);
+            sitka.ShowDialog();
+        }
+
+        private int find_index(List<Tuple<double[], string>> lst, string name)
+        {
+            for (int i = 0; i < lst.Count(); i++)
+            {
+                if (lst[i].Item2 == name + "0")
+                    return i;
+            }
+            return 0;
+        }
+
+        private void button34_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < nnvymir_list.Count(); i++)
+            {
+                if (nnvymir_list[i].file_name == comboBox6.Text)
+                {
+                    dataGridView4.Rows.Clear();
+                    dataGridView4.Columns.Clear();
+                    dataGridView7.Rows.Clear();
+                    dataGridView7.Columns.Clear();
+                    dataGridView8.Rows.Clear();
+                    dataGridView8.Columns.Clear();
+                    nnvymir = null;
+                    comboBox6.Items.Remove(nnvymir_list[i].file_name);
+                    int index = find_index(list_mass, nnvymir_list[i].file_name);
+                    list_mass.RemoveRange(index, nnvymir_list[i].Num);
+                    for (int j = 0; j < nnvymir_list[i].Num; j++)
+                    {
+                        comboBox3.Items.Remove(nnvymir_list[i].file_name + j.ToString());
+                        comboBox4.Items.Remove(nnvymir_list[i].file_name + j.ToString());
+                        comboBox5.Items.Remove(nnvymir_list[i].file_name + j.ToString());
+                    }
+                    comboBox3.Text = "";
+                    comboBox4.Text = "";
+                    comboBox5.Text = "";
+                    comboBox6.Text = "";
+                    nnvymir_list.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+
+        private void dataGridView8_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int index = e.RowIndex;
+            dataGridView8.Rows[index].DefaultCellStyle.BackColor = Color.Red;
+            dataGridView8.Columns[index].DefaultCellStyle.BackColor = Color.Red;
+            string[,] znach = new string[nnvymir.Num, nnvymir.Num];
+            for (int i = 0; i < nnvymir.Num; i++)
+            {
+                dataGridView8.Rows[i].Cells[index].Value = "";
+                dataGridView8.Rows[index].Cells[i].Value = "";
+                znach[i, index] = "";
+                znach[index, i] = "";
+                for (int j = 0; j < nnvymir.Num; j++)
+                {
+                    if (i == index || j == index)
+                        continue;
+                    if (dataGridView8.Rows[i].Cells[j].Value.ToString() == "")
+                        continue;
+                    dataGridView8.Rows[i].Cells[j].Value = NNData.ChastkovyyKorelation(nnvymir.KorelationMatrix, i, j, index);
+                    znach[i, j] = dataGridView8.Rows[i].Cells[j].Value.ToString();
+                }
+            }
+            nnvymir.Znachushchist = znach;
+            nnvymir.kor_num++;
+        }
+
+        private void backupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            nnvymir.kor_num = 0;
+            for (int i = 0; i < nnvymir.Num; i++)
+            {
+                dataGridView8.Rows[i].DefaultCellStyle.BackColor = Color.Empty;
+                dataGridView8.Columns[i].DefaultCellStyle.BackColor = Color.Empty;
+                for (int j = 0; j < nnvymir.Num; j++)
+                {
+                    dataGridView8.Rows[i].Cells[j].Value = nnvymir.KorelationMatrix[i, j];
+                }
+            }
+        }
+
+        private void znchushchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChastkovyyZnachushchist chastkovyy = new ChastkovyyZnachushchist(nnvymir);
+            chastkovyy.ShowDialog();
+        }
+
+        private void dataGridView8_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int index = e.RowIndex;
+
+            double koef = NNData.MnozhynnKorelation(nnvymir, index);
+            label23.Text = "koef = " + koef.ToString() + "\n";
+            double statistic = (nnvymir.Length - nnvymir.Num - 1) * koef * koef / (nnvymir.Num * (1 - koef * koef));
+            if (Math.Abs(statistic) <= Quantil.QuantilFishera(nnvymir.Num, nnvymir.Length - nnvymir.Num - 1))
+                label23.Text += "++++++stat = " + statistic.ToString();
+            else
+                label23.Text += "------stat = " + statistic.ToString();
+        }
+
+        private static Tuple<double[][], double[]> CeparateArr(NNData data, int index)
+        {
+            double[] Y = NNData.PartArr(data.ARR, data.Length, index);
+            List<double[]> lst = new List<double[]>();
+            for (int i = 0; i < data.Num; i++)
+            {
+                if (i != index)
+                {
+                    double[] arr = new double[data.Length];
+                    for (int j = 0; j < data.Length; j++)
+                    {
+                        arr[j] = data.ARR[j, i];
+                    }
+                    lst.Add(arr);
+                }
+            }
+            double[][] array = lst.ToArray();
+            return Tuple.Create(array, Y);
+        }
+
+        private static double[] SerY(double[] Y)
+        {
+            double Ser = Y.Average();
+            double[] Yser = new double[Y.Length];
+            for (int i = 0; i < Y.Length; i++)
+            {
+                Yser[i] = Y[i] - Ser;
+            }
+            return Yser;
+        }
+
+        private static void MatrixVector(ref double[][] arr, double[] ser)
+        {
+            for (int i = 0; i < arr.Length; i++)
+            {
+                for (int j = 0; j < arr[i].Length; j++)
+                {
+                    arr[i][j] = arr[i][j] - ser[i];
+                }
+            }
+        }
+
+        private void button35_Click(object sender, EventArgs e)
+        {
+            if (comboBox7.Text == "")
+            {
+                return;
+            }
+            int index = 0;
+            for (int i = 0; i < nnvymir.Num; i++)
+            {
+                if (comboBox7.Text == nnvymir.file_name + i.ToString())
+                {
+                    index = i;
+                    break;
+                }
+            }
+            var cep = CeparateArr(nnvymir, index);
+            double[][] Xarr = cep.Item1;
+            double[] Ser_X = nnvymir.SerAr();
+            MatrixVector(ref Xarr, Ser_X);
+            double[] Yarr = cep.Item2;
+
+            List<double> SerXLst = new List<double>(Ser_X);
+            for (int i = 0; i < SerXLst.Count(); i++)
+            {
+                if (i == index)
+                {
+                    SerXLst.RemoveAt(i);
+                    break;
+                }
+            }
+
+            Matrix X = Matrix.Create.New(Xarr).Transpose();
+            Vector Y = Vector.Create.New(SerY(Yarr));
+            Matrix XTrans = X.Transpose();
+            Matrix tmp = XTrans * X;
+            Matrix tmp_inv = tmp.Inverse();
+            Matrix before = tmp_inv * XTrans;
+            Vector final = before.MultiplyOnVectorColumn(Y);
+            Matrix C = (XTrans * X).Inverse();
+            double mnozhyn = NNData.MnozhynnKorelation(nnvymir, index);
+
+            double Szal = (nnvymir.Length - 1) * korelation.dispersion(Yarr) * (1 - mnozhyn * mnozhyn) / (nnvymir.Length - nnvymir.Num);
+            
+            string s = "Regression\n";
+            double sum = 0;
+            double interval = 0;
+            for (int i = 0; i < final.Length; i++)
+            {
+                sum += final[i] * SerXLst[i];
+                interval = Quantil.StudentQuantil1(nnvymir.Length - nnvymir.Num) * Math.Sqrt(Szal * C[i, i]);
+                s += "An=" + (final[i] - interval).ToString("N4") + "   A" + (i + 1).ToString() + "=" + final[i].ToString("N4") + "   Av=" + (final[i] + interval).ToString("N4") + "\n";
+            }
+            interval = Quantil.StudentQuantil1(nnvymir.Length - nnvymir.Num) * Math.Sqrt(Szal * C[0, 0]);
+            double a0 = Yarr.Average() - sum;
+            s += "An=" + (a0 - interval).ToString("N4") + "   A0 = " + a0.ToString("N4") + "   Av=" + (a0 + interval).ToString("N4") + "\n";
+
+
+            double det = mnozhyn * mnozhyn;
+            double Fstat = det * det * (nnvymir.Length - nnvymir.Num - 1) / (1 - det * det) / nnvymir.Num;
+            s += "Determination = " + det.ToString("N4") + "\n";
+            if (Fstat > Quantil.QuantilFishera(nnvymir.Length, nnvymir.Length - nnvymir.Num - 1))
+            {
+                s += "+++ " + Fstat.ToString("N4") +"\n";
+            }
+            else
+            {
+                s += "--- " + Fstat.ToString("N4") + "\n";
+            }
+
+            label23.Text = s;
         }
     }
 }

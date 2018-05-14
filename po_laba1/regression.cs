@@ -82,7 +82,7 @@ namespace po_laba1
             {
                 sum += Math.Pow(Yarr[i] - serY, 2);
             }
-            sum = sum / num;
+            sum = sum / (num - 1);
             return sum;
         }
         static double DispKv(double[] X, double[] Y)

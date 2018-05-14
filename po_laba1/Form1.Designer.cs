@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea25 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series25 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea26 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series26 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series27 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea27 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea28 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series28 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -138,7 +138,6 @@
             this.label17 = new System.Windows.Forms.Label();
             this.button16 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
-            this.dataGridView4 = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.побудуватиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.видалитиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -146,16 +145,17 @@
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.перевіркаЗначущостіToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button20 = new System.Windows.Forms.Button();
-            this.textBox15 = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.textBox14 = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart4 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.button27 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
             this.button24 = new System.Windows.Forms.Button();
@@ -165,7 +165,29 @@
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button22 = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.label23 = new System.Windows.Forms.Label();
+            this.button34 = new System.Windows.Forms.Button();
+            this.comboBox6 = new System.Windows.Forms.ComboBox();
+            this.button33 = new System.Windows.Forms.Button();
+            this.button32 = new System.Windows.Forms.Button();
+            this.button31 = new System.Windows.Forms.Button();
+            this.button29 = new System.Windows.Forms.Button();
+            this.button30 = new System.Windows.Forms.Button();
+            this.dataGridView8 = new System.Windows.Forms.DataGridView();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.dataGridView7 = new System.Windows.Forms.DataGridView();
+            this.button28 = new System.Windows.Forms.Button();
+            this.label26 = new System.Windows.Forms.Label();
+            this.dataGridView4 = new System.Windows.Forms.DataGridView();
+            this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.backupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.znchushchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.button35 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             this.toolStrip1.SuspendLayout();
@@ -189,7 +211,6 @@
             this.groupBox10.SuspendLayout();
             this.groupBox9.SuspendLayout();
             this.groupBox8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).BeginInit();
             this.contextMenuStrip2.SuspendLayout();
@@ -201,31 +222,37 @@
             this.tabPage8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).BeginInit();
             this.panel3.SuspendLayout();
-            this.tabPage6.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            this.panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
+            this.contextMenuStrip3.SuspendLayout();
+            this.groupBox12.SuspendLayout();
             this.SuspendLayout();
             // 
             // chart1
             // 
             this.chart1.BorderlineColor = System.Drawing.Color.Black;
             this.chart1.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea1.AxisX.Title = "x";
-            chartArea1.AxisY.Title = "f(x)";
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
+            chartArea25.AxisX.Title = "x";
+            chartArea25.AxisY.Title = "f(x)";
+            chartArea25.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea25);
             this.chart1.Location = new System.Drawing.Point(508, 16);
             this.chart1.Name = "chart1";
-            series1.BorderColor = System.Drawing.Color.Black;
-            series1.ChartArea = "ChartArea1";
-            series1.CustomProperties = "PointWidth=1";
-            series1.Name = "his";
-            this.chart1.Series.Add(series1);
+            series25.BorderColor = System.Drawing.Color.Black;
+            series25.ChartArea = "ChartArea1";
+            series25.CustomProperties = "PointWidth=1";
+            series25.Name = "his";
+            this.chart1.Series.Add(series25);
             this.chart1.Size = new System.Drawing.Size(523, 420);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(3, 3);
+            this.button1.Location = new System.Drawing.Point(4, 32);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(150, 23);
             this.button1.TabIndex = 3;
@@ -261,28 +288,28 @@
             // 
             this.chart2.BorderlineColor = System.Drawing.Color.Black;
             this.chart2.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea2.AxisX.Title = "x";
-            chartArea2.AxisY.Title = "F(x)";
-            chartArea2.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea2);
+            chartArea26.AxisX.Title = "x";
+            chartArea26.AxisY.Title = "F(x)";
+            chartArea26.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea26);
             this.chart2.Location = new System.Drawing.Point(0, 16);
             this.chart2.Name = "chart2";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StepLine;
-            series2.LabelBorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
-            series2.Name = "Series1";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series3.Name = "Series2";
-            this.chart2.Series.Add(series2);
-            this.chart2.Series.Add(series3);
+            series26.ChartArea = "ChartArea1";
+            series26.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StepLine;
+            series26.LabelBorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
+            series26.Name = "Series1";
+            series27.ChartArea = "ChartArea1";
+            series27.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series27.Name = "Series2";
+            this.chart2.Series.Add(series26);
+            this.chart2.Series.Add(series27);
             this.chart2.Size = new System.Drawing.Size(502, 420);
             this.chart2.TabIndex = 9;
             this.chart2.Text = "chart2";
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(3, 32);
+            this.button3.Location = new System.Drawing.Point(4, 61);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(150, 23);
             this.button3.TabIndex = 11;
@@ -353,6 +380,7 @@
             this.багатовимірніДаніToolStripMenuItem.Name = "багатовимірніДаніToolStripMenuItem";
             this.багатовимірніДаніToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.багатовимірніДаніToolStripMenuItem.Text = "Багатовимірні дані";
+            this.багатовимірніДаніToolStripMenuItem.Click += new System.EventHandler(this.багатовимірніДаніToolStripMenuItem_Click);
             // 
             // toolStripButton2
             // 
@@ -1206,16 +1234,6 @@
             this.button15.UseVisualStyleBackColor = true;
             this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
-            // dataGridView4
-            // 
-            this.dataGridView4.AllowUserToAddRows = false;
-            this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView4.ContextMenuStrip = this.contextMenuStrip1;
-            this.dataGridView4.Location = new System.Drawing.Point(3, 3);
-            this.dataGridView4.Name = "dataGridView4";
-            this.dataGridView4.Size = new System.Drawing.Size(1032, 643);
-            this.dataGridView4.TabIndex = 0;
-            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1229,14 +1247,12 @@
             this.побудуватиToolStripMenuItem.Name = "побудуватиToolStripMenuItem";
             this.побудуватиToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.побудуватиToolStripMenuItem.Text = "Побудувати";
-            this.побудуватиToolStripMenuItem.Click += new System.EventHandler(this.побудуватиToolStripMenuItem_Click);
             // 
             // видалитиToolStripMenuItem
             // 
             this.видалитиToolStripMenuItem.Name = "видалитиToolStripMenuItem";
             this.видалитиToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.видалитиToolStripMenuItem.Text = "Видалити";
-            this.видалитиToolStripMenuItem.Click += new System.EventHandler(this.видалитиToolStripMenuItem_Click);
             // 
             // dataGridView5
             // 
@@ -1271,29 +1287,6 @@
             this.button20.UseVisualStyleBackColor = true;
             this.button20.Click += new System.EventHandler(this.button20_Click);
             // 
-            // textBox15
-            // 
-            this.textBox15.Location = new System.Drawing.Point(323, 607);
-            this.textBox15.Name = "textBox15";
-            this.textBox15.Size = new System.Drawing.Size(24, 20);
-            this.textBox15.TabIndex = 1;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(93, 610);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(194, 13);
-            this.label23.TabIndex = 1;
-            this.label23.Text = "Введіть номери вибірок для аналізу :";
-            // 
-            // textBox14
-            // 
-            this.textBox14.Location = new System.Drawing.Point(293, 607);
-            this.textBox14.Name = "textBox14";
-            this.textBox14.Size = new System.Drawing.Size(24, 20);
-            this.textBox14.TabIndex = 0;
-            // 
             // label25
             // 
             this.label25.AutoSize = true;
@@ -1307,6 +1300,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.comboBox3);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.label2);
@@ -1317,12 +1311,20 @@
             this.panel1.Size = new System.Drawing.Size(160, 198);
             this.panel1.TabIndex = 26;
             // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(4, 5);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(149, 21);
+            this.comboBox3.TabIndex = 13;
+            // 
             // chart3
             // 
             this.chart3.BorderlineColor = System.Drawing.Color.Black;
             this.chart3.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea3.Name = "ChartArea1";
-            this.chart3.ChartAreas.Add(chartArea3);
+            chartArea27.Name = "ChartArea1";
+            this.chart3.ChartAreas.Add(chartArea27);
             this.chart3.Location = new System.Drawing.Point(6, 6);
             this.chart3.Name = "chart3";
             this.chart3.Size = new System.Drawing.Size(498, 420);
@@ -1334,14 +1336,14 @@
             // 
             this.chart4.BorderlineColor = System.Drawing.Color.Black;
             this.chart4.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea4.Name = "ChartArea1";
-            this.chart4.ChartAreas.Add(chartArea4);
+            chartArea28.Name = "ChartArea1";
+            this.chart4.ChartAreas.Add(chartArea28);
             this.chart4.Location = new System.Drawing.Point(510, 6);
             this.chart4.Name = "chart4";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series4.Name = "Series1";
-            this.chart4.Series.Add(series4);
+            series28.ChartArea = "ChartArea1";
+            series28.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series28.Name = "Series1";
+            this.chart4.Series.Add(series28);
             this.chart4.Size = new System.Drawing.Size(525, 420);
             this.chart4.TabIndex = 28;
             this.chart4.Text = "chart4";
@@ -1350,11 +1352,11 @@
             // 
             this.tabControl2.Controls.Add(this.tabPage7);
             this.tabControl2.Controls.Add(this.tabPage8);
-            this.tabControl2.Controls.Add(this.tabPage6);
+            this.tabControl2.Controls.Add(this.tabPage5);
             this.tabControl2.Location = new System.Drawing.Point(12, 28);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(1051, 675);
+            this.tabControl2.Size = new System.Drawing.Size(1051, 686);
             this.tabControl2.TabIndex = 29;
             // 
             // tabPage7
@@ -1366,13 +1368,16 @@
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(1043, 649);
+            this.tabPage7.Size = new System.Drawing.Size(1043, 660);
             this.tabPage7.TabIndex = 0;
             this.tabPage7.Text = "Одновимірні дані";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.comboBox5);
+            this.tabPage8.Controls.Add(this.comboBox4);
+            this.tabPage8.Controls.Add(this.button27);
             this.tabPage8.Controls.Add(this.button26);
             this.tabPage8.Controls.Add(this.button25);
             this.tabPage8.Controls.Add(this.button24);
@@ -1380,24 +1385,47 @@
             this.tabPage8.Controls.Add(this.dataGridView6);
             this.tabPage8.Controls.Add(this.button22);
             this.tabPage8.Controls.Add(this.panel3);
-            this.tabPage8.Controls.Add(this.label23);
             this.tabPage8.Controls.Add(this.dataGridView5);
             this.tabPage8.Controls.Add(this.button20);
             this.tabPage8.Controls.Add(this.chart3);
             this.tabPage8.Controls.Add(this.chart4);
-            this.tabPage8.Controls.Add(this.textBox15);
-            this.tabPage8.Controls.Add(this.textBox14);
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(1043, 649);
+            this.tabPage8.Size = new System.Drawing.Size(1043, 660);
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "Двовимірні дані";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
+            // comboBox5
+            // 
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Location = new System.Drawing.Point(220, 607);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(121, 21);
+            this.comboBox5.TabIndex = 38;
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(93, 607);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(121, 21);
+            this.comboBox4.TabIndex = 37;
+            // 
+            // button27
+            // 
+            this.button27.Location = new System.Drawing.Point(887, 631);
+            this.button27.Name = "button27";
+            this.button27.Size = new System.Drawing.Size(148, 23);
+            this.button27.TabIndex = 36;
+            this.button27.Text = "Моделювання вибірки";
+            this.button27.UseVisualStyleBackColor = true;
+            this.button27.Click += new System.EventHandler(this.button27_Click);
+            // 
             // button26
             // 
-            this.button26.Location = new System.Drawing.Point(371, 605);
+            this.button26.Location = new System.Drawing.Point(421, 605);
             this.button26.Name = "button26";
             this.button26.Size = new System.Drawing.Size(89, 23);
             this.button26.TabIndex = 35;
@@ -1479,15 +1507,233 @@
             this.panel3.Size = new System.Drawing.Size(292, 164);
             this.panel3.TabIndex = 29;
             // 
-            // tabPage6
+            // tabPage5
             // 
-            this.tabPage6.Controls.Add(this.dataGridView4);
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(1043, 649);
-            this.tabPage6.TabIndex = 2;
-            this.tabPage6.Text = "Усі дані";
-            this.tabPage6.UseVisualStyleBackColor = true;
+            this.tabPage5.Controls.Add(this.groupBox12);
+            this.tabPage5.Controls.Add(this.panel4);
+            this.tabPage5.Controls.Add(this.button34);
+            this.tabPage5.Controls.Add(this.comboBox6);
+            this.tabPage5.Controls.Add(this.button33);
+            this.tabPage5.Controls.Add(this.button32);
+            this.tabPage5.Controls.Add(this.button31);
+            this.tabPage5.Controls.Add(this.button29);
+            this.tabPage5.Controls.Add(this.button30);
+            this.tabPage5.Controls.Add(this.dataGridView8);
+            this.tabPage5.Controls.Add(this.label28);
+            this.tabPage5.Controls.Add(this.label27);
+            this.tabPage5.Controls.Add(this.dataGridView7);
+            this.tabPage5.Controls.Add(this.button28);
+            this.tabPage5.Controls.Add(this.label26);
+            this.tabPage5.Controls.Add(this.dataGridView4);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(1043, 660);
+            this.tabPage5.TabIndex = 3;
+            this.tabPage5.Text = "Багатовимірні дані";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.Silver;
+            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel4.Controls.Add(this.label23);
+            this.panel4.Location = new System.Drawing.Point(623, 240);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(412, 112);
+            this.panel4.TabIndex = 19;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label23.Location = new System.Drawing.Point(12, 9);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(41, 13);
+            this.label23.TabIndex = 0;
+            this.label23.Text = "label23";
+            // 
+            // button34
+            // 
+            this.button34.Location = new System.Drawing.Point(256, 17);
+            this.button34.Name = "button34";
+            this.button34.Size = new System.Drawing.Size(75, 23);
+            this.button34.TabIndex = 18;
+            this.button34.Text = "button34";
+            this.button34.UseVisualStyleBackColor = true;
+            this.button34.Click += new System.EventHandler(this.button34_Click);
+            // 
+            // comboBox6
+            // 
+            this.comboBox6.FormattingEnabled = true;
+            this.comboBox6.Location = new System.Drawing.Point(118, 17);
+            this.comboBox6.Name = "comboBox6";
+            this.comboBox6.Size = new System.Drawing.Size(121, 21);
+            this.comboBox6.TabIndex = 17;
+            // 
+            // button33
+            // 
+            this.button33.Location = new System.Drawing.Point(27, 328);
+            this.button33.Name = "button33";
+            this.button33.Size = new System.Drawing.Size(75, 23);
+            this.button33.TabIndex = 16;
+            this.button33.Text = "button33";
+            this.button33.UseVisualStyleBackColor = true;
+            this.button33.Click += new System.EventHandler(this.button33_Click);
+            // 
+            // button32
+            // 
+            this.button32.Location = new System.Drawing.Point(27, 240);
+            this.button32.Name = "button32";
+            this.button32.Size = new System.Drawing.Size(75, 23);
+            this.button32.TabIndex = 15;
+            this.button32.Text = "button32";
+            this.button32.UseVisualStyleBackColor = true;
+            this.button32.Click += new System.EventHandler(this.button32_Click);
+            // 
+            // button31
+            // 
+            this.button31.Location = new System.Drawing.Point(27, 298);
+            this.button31.Name = "button31";
+            this.button31.Size = new System.Drawing.Size(75, 23);
+            this.button31.TabIndex = 14;
+            this.button31.Text = "button31";
+            this.button31.UseVisualStyleBackColor = true;
+            this.button31.Click += new System.EventHandler(this.button31_Click);
+            // 
+            // button29
+            // 
+            this.button29.Location = new System.Drawing.Point(27, 269);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(75, 23);
+            this.button29.TabIndex = 13;
+            this.button29.Text = "button29";
+            this.button29.UseVisualStyleBackColor = true;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
+            // 
+            // button30
+            // 
+            this.button30.Location = new System.Drawing.Point(302, 240);
+            this.button30.Name = "button30";
+            this.button30.Size = new System.Drawing.Size(75, 23);
+            this.button30.TabIndex = 12;
+            this.button30.Text = "button30";
+            this.button30.UseVisualStyleBackColor = true;
+            this.button30.Click += new System.EventHandler(this.button30_Click);
+            // 
+            // dataGridView8
+            // 
+            this.dataGridView8.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView8.ContextMenuStrip = this.contextMenuStrip3;
+            this.dataGridView8.Location = new System.Drawing.Point(623, 65);
+            this.dataGridView8.Name = "dataGridView8";
+            this.dataGridView8.Size = new System.Drawing.Size(412, 168);
+            this.dataGridView8.TabIndex = 6;
+            this.dataGridView8.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView8_CellClick);
+            this.dataGridView8.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView8_CellDoubleClick);
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(620, 49);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(41, 13);
+            this.label28.TabIndex = 5;
+            this.label28.Text = "label28";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(380, 49);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(92, 13);
+            this.label27.TabIndex = 4;
+            this.label27.Text = "Вектор середніх:";
+            // 
+            // dataGridView7
+            // 
+            this.dataGridView7.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView7.Location = new System.Drawing.Point(383, 65);
+            this.dataGridView7.Name = "dataGridView7";
+            this.dataGridView7.Size = new System.Drawing.Size(234, 169);
+            this.dataGridView7.TabIndex = 3;
+            // 
+            // button28
+            // 
+            this.button28.Location = new System.Drawing.Point(27, 15);
+            this.button28.Name = "button28";
+            this.button28.Size = new System.Drawing.Size(75, 23);
+            this.button28.TabIndex = 2;
+            this.button28.Text = "Побудувати";
+            this.button28.UseVisualStyleBackColor = true;
+            this.button28.Click += new System.EventHandler(this.button28_Click);
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(24, 49);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(188, 13);
+            this.label26.TabIndex = 1;
+            this.label26.Text = "Дисперсійно-коваріаційна матриця:";
+            // 
+            // dataGridView4
+            // 
+            this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView4.Location = new System.Drawing.Point(27, 65);
+            this.dataGridView4.Name = "dataGridView4";
+            this.dataGridView4.Size = new System.Drawing.Size(350, 169);
+            this.dataGridView4.TabIndex = 0;
+            // 
+            // contextMenuStrip3
+            // 
+            this.contextMenuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.backupToolStripMenuItem,
+            this.znchushchToolStripMenuItem});
+            this.contextMenuStrip3.Name = "contextMenuStrip3";
+            this.contextMenuStrip3.Size = new System.Drawing.Size(134, 48);
+            // 
+            // backupToolStripMenuItem
+            // 
+            this.backupToolStripMenuItem.Name = "backupToolStripMenuItem";
+            this.backupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.backupToolStripMenuItem.Text = "Backup";
+            this.backupToolStripMenuItem.Click += new System.EventHandler(this.backupToolStripMenuItem_Click);
+            // 
+            // znchushchToolStripMenuItem
+            // 
+            this.znchushchToolStripMenuItem.Name = "znchushchToolStripMenuItem";
+            this.znchushchToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.znchushchToolStripMenuItem.Text = "Znchushch";
+            this.znchushchToolStripMenuItem.Click += new System.EventHandler(this.znchushchToolStripMenuItem_Click);
+            // 
+            // groupBox12
+            // 
+            this.groupBox12.Controls.Add(this.button35);
+            this.groupBox12.Controls.Add(this.comboBox7);
+            this.groupBox12.Location = new System.Drawing.Point(417, 240);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(200, 111);
+            this.groupBox12.TabIndex = 20;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "groupBox12";
+            // 
+            // comboBox7
+            // 
+            this.comboBox7.FormattingEnabled = true;
+            this.comboBox7.Location = new System.Drawing.Point(6, 60);
+            this.comboBox7.Name = "comboBox7";
+            this.comboBox7.Size = new System.Drawing.Size(121, 21);
+            this.comboBox7.TabIndex = 0;
+            // 
+            // button35
+            // 
+            this.button35.Location = new System.Drawing.Point(143, 60);
+            this.button35.Name = "button35";
+            this.button35.Size = new System.Drawing.Size(39, 23);
+            this.button35.TabIndex = 1;
+            this.button35.Text = "Ok";
+            this.button35.UseVisualStyleBackColor = true;
+            this.button35.Click += new System.EventHandler(this.button35_Click);
             // 
             // Form1
             // 
@@ -1502,7 +1748,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Математична статистика";
+            this.Text = "Математична статистика та аналіз даних";
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
             this.toolStrip1.ResumeLayout(false);
@@ -1540,7 +1786,6 @@
             this.groupBox9.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).EndInit();
             this.contextMenuStrip2.ResumeLayout(false);
@@ -1551,11 +1796,18 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
-            this.tabPage8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            this.tabPage6.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
+            this.contextMenuStrip3.ResumeLayout(false);
+            this.groupBox12.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1638,7 +1890,6 @@
         private System.Windows.Forms.GroupBox groupBox10;
         private System.Windows.Forms.Button button17;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.DataGridView dataGridView4;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
@@ -1666,9 +1917,6 @@
         private System.Windows.Forms.ToolStripMenuItem однуВибіркуToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem двіВибіркиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem всіВибіркиToolStripMenuItem;
-        private System.Windows.Forms.TextBox textBox15;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.TextBox textBox14;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart3;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart4;
         private System.Windows.Forms.Button button20;
@@ -1679,7 +1927,6 @@
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.Button button21;
-        private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button button22;
         private System.Windows.Forms.DataGridView dataGridView6;
@@ -1691,5 +1938,32 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem перевіркаЗначущостіToolStripMenuItem;
         private System.Windows.Forms.Button button26;
+        private System.Windows.Forms.Button button27;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.Button button28;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.DataGridView dataGridView4;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.DataGridView dataGridView7;
+        private System.Windows.Forms.DataGridView dataGridView8;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Button button30;
+        private System.Windows.Forms.Button button29;
+        private System.Windows.Forms.Button button31;
+        private System.Windows.Forms.Button button32;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.Button button33;
+        private System.Windows.Forms.ComboBox comboBox6;
+        private System.Windows.Forms.Button button34;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip3;
+        private System.Windows.Forms.ToolStripMenuItem backupToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem znchushchToolStripMenuItem;
+        private System.Windows.Forms.GroupBox groupBox12;
+        private System.Windows.Forms.Button button35;
+        private System.Windows.Forms.ComboBox comboBox7;
     }
 }
